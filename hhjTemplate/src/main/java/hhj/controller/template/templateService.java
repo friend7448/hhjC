@@ -12,6 +12,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import hhj.service.hhjService;
 
+
+/** 
+* @FileName      : templateService.java 
+* @Project     : hhjTemplate 
+* @Date        : 2017. 6. 28. 
+* @작성자          : hhj 
+* @변경이력     : 
+* @프로그램 설명     : 
+*/
 @Controller
 public class templateService {
 	@Resource(name = "hhjService")

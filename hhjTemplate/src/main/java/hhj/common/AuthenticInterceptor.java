@@ -10,13 +10,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+
+
 /** 
 * @FileName      : AuthenticInterceptor.java 
-* @Project     : hhjC 
-* @Date        : 2017. 6. 5. 
+* @Project     : hhjTemplate 
+* @Date        : 2017. 6. 28. 
 * @작성자          : hhj 
 * @변경이력     : 
-* @프로그램 설명     : controller로 인입 전 처리
+* @프로그램 설명     : 
 */
 @Controller("authenticInterceptor")
 public class AuthenticInterceptor extends HandlerInterceptorAdapter {

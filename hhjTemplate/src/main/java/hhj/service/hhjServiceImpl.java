@@ -10,6 +10,15 @@ import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
+
+/** 
+* @FileName      : hhjServiceImpl.java 
+* @Project     : hhjTemplate 
+* @Date        : 2017. 6. 28. 
+* @작성자          : hhj 
+* @변경이력     : 
+* @프로그램 설명     : 
+*/
 @Service("hhjService")
 public class hhjServiceImpl extends EgovAbstractServiceImpl  implements hhjService 
 {

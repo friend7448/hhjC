@@ -16,6 +16,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import hhj.service.hhjService;
 
+
+/** 
+* @FileName      : templateController.java 
+* @Project     : hhjTemplate 
+* @Date        : 2017. 6. 28. 
+* @작성자          : hhj 
+* @변경이력     : 
+* @프로그램 설명     : 
+*/
 @Controller
 public class templateController {
 	@Resource(name = "hhjService")
