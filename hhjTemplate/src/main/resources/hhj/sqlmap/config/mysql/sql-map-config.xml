@@ -3,6 +3,8 @@
     "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
 
 <sqlMapConfig>
-	<sqlMap resource="hhj/sqlmap/query/mysql/hhj/template_SQL.xml"/>
+<!-- namespace를 사용(namespace_name.query_ id)  -->
+	<settings useStatementNamespaces="true"/>
+	<sqlMap resource="hhj/sqlmap/query/mysql/portal/program_SQL.xml"/>
 
 </sqlMapConfig>

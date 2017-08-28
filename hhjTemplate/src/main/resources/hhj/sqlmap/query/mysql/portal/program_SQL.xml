@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="program">
+    <!--상위프로그램 메뉴 조회 -->
+	<select id="doSelectUpPrg" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		SELECT MENU_ID,
+			   MENU_NAME
+		FROM IS_MENU
+		WHERE UP_MENU_ID IS NULL 
+			OR UP_MENU_ID = ''
+		ORDER BY MENU_ID ASC
+	</select>
+	
+	<!--프로그램 정보 리스트 건수 조회-->
+    <select id="doSelectCnt" parameterClass="java.util.HashMap" resultClass="int">
+		SELECT COUNT(*)
+	    FROM IS_MENU
+	    WHERE MENU_ID LIKE CONCAT('%', #MENU_ID#, '%')
+			AND MENU_NAME LIKE CONCAT('%', #MENU_NAME#, '%')
+    </select>
+    
+    <!--프로그램 정보 리스트 조회-->
+    <select id="doSelect" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT A.*
+		FROM(
+				SELECT 
+					MENU_ID,
+					IFNULL(UP_MENU_ID, '') AS UP_MENU_ID,
+					MENU_NAME, 
+					IFNULL(SORT_ORDER, '0') AS SORT_ORDER,
+					IF(USE_YN='Y', '사용', '미사용') AS USE_YN,
+					PROGRM_URL,
+					UPDUSR_SN,
+					UPDT_DT,
+					@ROWNUM := @ROWNUM + 1 AS RNUM
+				FROM IS_MENU,
+					(SELECT @ROWNUM := 0) R
+		        WHERE
+		        	MENU_ID LIKE CONCAT('%', #MENU_ID#, '%')
+		           	AND MENU_NAME LIKE CONCAT('%', #MENU_NAME#, '%')
+				ORDER BY UP_MENU_ID ASC, SORT_ORDER ASC
+		) A	
+		<![CDATA[
+    	WHERE A.RNUM  >= #START_ROW# 
+    		AND A.RNUM <= #END_ROW#
+		]]>
+    </select>
+    
+    <!--메뉴 상세조회-->
+    <select id="doSelectDetail" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+        SELECT 
+        	a.UP_MENU_ID, 
+            a.MENU_ID, 
+            a.MENU_NAME,
+            a.SORT_ORDER, 
+            a.PROGRM_URL, 
+            a.USE_YN,
+            a.UPDUSR_SN,
+            a.UPDT_DT
+         FROM IS_MENU a 
+         WHERE a.MENU_ID = #MENU_ID#
+    </select> 
+    
+    <!--메뉴 등록-->
+    <insert id="doInsert" parameterClass="java.util.HashMap">
+ 		<![CDATA[
+            INSERT INTO IS_MENU
+                     (MENU_ID,
+                      UP_MENU_ID,
+                      MENU_NAME,
+                      PROGRM_URL,
+                      SORT_ORDER,
+                      USE_YN,
+                      UPDUSR_SN,
+                      UPDT_DT)
+             VALUES  (#TXT_MENU_ID#,
+                      #SLT_UP_MENU_ID#,
+                      #TXT_MENU_NAME#,
+                      #TXT_PROGRM_URL#,
+                      #TXT_SORT_ORDER#,
+                      #SLT_USE_AT#,
+                      #TXT_UPDUSR_SN#,
+                      DATE_FORMAT(now(),'%m%d%Y%H%i%s'))
+        ]]>
+        <selectKey keyProperty="MENU_ID" resultClass="int">
+			SELECT	COUNT(*) + 1
+				FROM 	IS_MENU
+		</selectKey>
+    </insert>
+    
+    <!--메뉴 수정-->
+    <update id="doUpdate" parameterClass="java.util.HashMap" >
+            UPDATE IS_MENU
+            SET    UP_MENU_ID = #SLT_UP_MENU_ID#,
+                   MENU_NAME = #TXT_MENU_NAME#,
+                   PROGRM_URL = #TXT_PROGRM_URL#, 
+                   SORT_ORDER = #TXT_SORT_ORDER#, 
+                   USE_YN = #SLT_USE_AT#,
+                   UPDUSR_SN = #TXT_UPDUSR_SN#,
+                   UPDT_DT = SYSDATE() + 0
+            WHERE MENU_ID = #TXT_MENU_ID#
+    </update>
+    
+
+	<!--메뉴 삭제-->
+    <delete id="doDelete" parameterClass="java.util.HashMap" >
+        <![CDATA[
+            DELETE FROM	IS_MENU
+             WHERE MENU_ID = #TXT_MENU_ID#
+        ]]>				  
+    </delete>  
+	
+	
+</sqlMap>
