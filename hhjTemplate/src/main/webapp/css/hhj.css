@@ -1,0 +1,15 @@
+﻿/* 검색 폼의 오른쪽 버튼 패딩 적용 */
+.hhj-search-btn {
+	padding-right: 15px;
+}
+
+/* 윈도우 화면 크기 변경시 가로 스크롤 생기는데 안생기게.. */
+.ui-jqgrid .ui-jqgrid-bdiv {
+	position: relative;
+	margin: 0em;
+	padding: 0;
+	/*overflow: auto; */
+	overflow-x: hidden;
+	overflow-y: auto;
+	text-align: left;
+}

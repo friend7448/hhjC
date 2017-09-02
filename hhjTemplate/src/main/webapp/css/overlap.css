@@ -1,0 +1,37 @@
+﻿body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+.sidebar-nav {
+	padding: 9px 0;
+}
+
+input.ui-pg-input {
+	width: auto;
+	padding: 0px;
+	margin: 0px;
+	line-height: normal;
+}
+
+select.ui-pg-selbox {
+	width: auto;
+	padding: 0px;
+	margin: 0px;
+	line-height: normal;
+}
+
+input[type="checkbox"] {
+	width: auto;
+	padding: 0px;
+	margin: 0px;
+	line-height: normal;
+}
+
+input[type="radio"] {
+	width: auto;
+	padding: 0px;
+	margin: 0px;
+	line-height: normal;
+	vertical-align: middle;
+}
