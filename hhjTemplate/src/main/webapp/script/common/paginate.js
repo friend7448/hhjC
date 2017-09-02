@@ -48,6 +48,8 @@ function initPage(gridId, pagerId, data) {
 
 	// 페이징 DIV에 넣어줄 태그 생성변수
 	var pageInner = "<div class='container-fluid' style='border: 1px solid #ddd; border-top-style:none;'>" +
+			"<div class='row'>" +
+			"<div class='col-sm-10' style='text-align: center'>" +
 			"<ul class='pagination' style='margin: 0; margin-top:4px'>";
 
 	// 페이지 리스트가 1이나 데이터가 없을 경우 (링크 빼고 흐린 이미지로 변경)
@@ -83,7 +85,9 @@ function initPage(gridId, pagerId, data) {
 		pageInner += "<li class='disabled'><a href='#'><span class='glyphicon glyphicon-fast-forward'> </span></a></li>";
 	}
 	
-	pageInner += "</ul>";
+	pageInner += "</ul>" +
+			"</div>" +
+			"<div class='col-sm-2'>";
 	if(totalSize == 0){
 		pageInner += "<div class='pull-right' style='padding-top: 20px;'>표시할 데이터가 없습니다";
 	}
@@ -91,7 +95,8 @@ function initPage(gridId, pagerId, data) {
 		pageInner += "<div class='pull-right' style='padding-top: 20px;'>총 " + totalSize + "개 중" + data.START_ROW + "~" + data.END_ROW;	
 	}
 
-	pageInner += "</div>";
+	pageInner += "</div>" +
+			"</div>";
 	
 	
 	$("#" + pagerId).html("");
