@@ -46,7 +46,7 @@ $(document).ready(function() {
 		onSelectRow: function (nId) {
 			detail(nId);
 		}
-	});//.navGrid('#tbodyPager',{edit:false,add:false,del:false});;
+	});
 
 	doMenuSearch();
 	btnBind();
