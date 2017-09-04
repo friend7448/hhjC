@@ -13,3 +13,12 @@
 	overflow-y: auto;
 	text-align: left;
 }
+
+.hhj-content-header {
+	padding-top: 10px;
+}
+
+.hhj-content-detail {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}

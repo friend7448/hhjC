@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div class="container-fluid">
+<div class="container-fluid hhj-content-header">
 	<form action="" class="form-horizontal" onsubmit="return false;">
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="TXT_SEARCH_MENU_ID">프로그램ID</label>
@@ -19,10 +19,9 @@
 </div>
 <div class="container-fluid" id="grid_container">
 	<table id="tbody"></table>
-<!-- 	<div id="tbodyPager"></div> -->
 	<div id="paginate"></div>
 </div>
-<div class="container-fluid">
+<div class="container-fluid hhj-content-detail">
 	<form action="" class="form-horizontal" id="frmDetail" name="frmDetail" method="post" onsubmit="return false;">
 		<div class="form-group">
 			<label for="" class="control-label col-sm-4">상위프로그램</label>
@@ -62,7 +61,7 @@
 		<div class="form-group">
 			<label for="" class="control-label col-sm-4">사용여부</label>
 			<div class="col-sm-8">
-				<select name="" id="SLT_USE_AT" class="form-control" name="SLT_USE_AT">
+				<select id="SLT_USE_AT" class="form-control" name="SLT_USE_AT">
 					<option value="Y">사용</option>
 					<option value="N">미사용</option>
 				</select>
@@ -81,14 +80,15 @@
 			</div>
 		</div>
 		<div class="pull-right">
-			<button type="reset" class="btn btn-default" id="btn_init">초기화</button>
+			<button type="button" class="btn btn-default" id="btn_init">초기화</button>
 			<button type="button" class="btn btn-default" id="btn_insert">등록</button>
 			<button type="button" class="btn btn-default" id="btn_update">수정</button>
 			<button type="button" class="btn btn-default" id="btn_delete">삭제</button>
 		</div>
 	</form>
 </div>
-<script type="text/javascript" src="<c:url value='/script/program/program.js'/>"></script>
+<script type="text/javascript" src="./script/program/program.js"></script>
+<script type="text/javascript" src="./script/common/hhj_defaultContent.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 

@@ -1,6 +1,101 @@
 $(function(){
 });
 
+/**
+ *  날짜포맷변환 
+ *  ex) 
+ *  길이가 8자리인 경우 xxxxxxxx = > xxxx.xx.xx 
+ *  길이가 14자리인 경우 xxxxxxxxxxxxxx = > xxxx.xx.xx xx:xx:xx
+ */
+function dateToFormat(parm)
+{
+	var return_val = "";
+	var parm_leng = parm.length;
+	
+	if(parm_leng == 8)
+	{
+		return_val = parm.substr(0,4) + "-" + parm.substr(4,2) + "-" + parm.substr(6,2); 
+	}
+	else if(parm_leng == 14)
+	{
+		return_val = parm.substr(0,4) + "-" + parm.substr(4,2) + "-" + parm.substr(6,2) + " " + parm.substr(8,2) + ":" + parm.substr(10,2) + ":" + parm.substr(12,2);	
+	}
+	
+	return return_val;
+}
+
+/**
+* @param obj  : this (고정)
+* @param type : int =>  정수(소수 입력 안 됨) / -int => -정수(소수 입력 안 됨) / float => 실수(소수 입력 가능) / -float => -실수 (소수 입력 가능)
+* @param tlen : tlen => 총 자리수 (정수 입력 시 tlen에서 flen 뺀 결과가 정수자리수)
+* @param flen : 소수 자리수 (~까지) 
+* @param comma : Y => 세자리마다 콤마(,) 자동입력 N => 콤마 미적용
+* @return
+* <input type="" onkeyup="check_number(this,'int',5,2,'Y');" />
+*/
+function check_number(obj, type, tlen, flen, comma){
+	var returnVal = String(obj.value);
+	var regexp = /[^-\.0-9]/g;
+	var repexp = "";
+	var len = 2;
+	var ilen = 0;
+
+	if(flen != undefined){
+		len = flen;
+	}
+	
+	ilen = tlen - flen;
+
+	returnVal = returnVal.replace(regexp, repexp);
+	
+	if(returnVal.split(".").length > 1){
+		returnVal = returnVal.split(".")[0].substr(0,ilen) + "." + returnVal.split(".")[1].substr(0, len);
+	}else{
+		returnVal = returnVal.substring(0,ilen);
+	}
+	
+	switch(type){
+		case "int" : regexp = /[^0-9]/g; break;
+		case "float" : regexp = /^(-?)([0-9]*)(\.?)([^0-9]*)([0-9]*)([^0-9]*)/; break;
+		case "-int" : regexp = /^(-?)([0-9]*)([^0-9]*)([0-9]*)([^0-9]*)/; break;
+		case "-float" : regexp = /^(-?)([0-9]*)(\.?)([^0-9]*)([0-9]*)([^0-9]*)/; break;
+		default : regexp = /[^0-9]/g; break;
+	}
+
+	switch(type){
+		case "int" : repexp = ""; break;
+		case "float" : repexp = "$2$3$5"; break;
+		case "-int" : repexp = "$1$2$4"; break;
+		case "-float" : repexp = "$1$2$3$5"; break;
+		default : repexp = /[^0-9]/g; break; 
+	}
+	
+	returnVal = returnVal.replace(regexp, repexp);
+
+	
+	if(comma == "Y"){
+		var str = "" + returnVal.replace(/,/gi,'');
+		var regx = new RegExp(/(-?\d+)(\d{3})/);
+		var bExists = str.indexOf(".",0);
+		var strArr = str.split('.');
+		 
+		while(regx.test(strArr[0])){
+	 		strArr[0] = strArr[0].replace(regx,"$1,$2");
+	 	}
+	 
+	 	if (bExists > -1){
+			obj.value = strArr[0] + "." + strArr[1];
+		}else{
+	 		obj.value = strArr[0];
+	 	}
+			
+	}else{
+		obj.value =  returnVal;
+	}
+}	
+
+
+ 
 /********************************************************************************
  * 버튼상태 설정
  * btn_no: 버튼 아이디 

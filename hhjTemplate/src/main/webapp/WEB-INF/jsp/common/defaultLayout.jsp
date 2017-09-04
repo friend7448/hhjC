@@ -11,7 +11,7 @@
 <link type="text/css" rel="stylesheet" href="./jquery-ui-1.12.1.custom/jquery-ui.min.css" />
 <!-- <link type="text/css" rel="stylesheet" href="./jqGrid_JS_5.2.1/css/ui.jqgrid.css" /> -->
 <link type="text/css" rel="stylesheet" href="./jqGrid_JS_5.2.1/css/ui.jqgrid-bootstrap.css" />
-<link type="text/css" rel="stylesheet" href="./jqGrid_JS_5.2.1/css/ui.multiselect.css" />
+<!-- <link type="text/css" rel="stylesheet" href="./jqGrid_JS_5.2.1/css/ui.multiselect.css" /> -->
 <link type="text/css" rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <link type="text/css" rel="stylesheet" href="./css/overlap.css">
 <link type="text/css" rel="stylesheet" href="./css/hhj.css">
@@ -21,12 +21,8 @@
 <script type="text/javascript" src="./jqGrid_JS_5.2.1/i18n/grid.locale-kr.js"></script>
 <script type="text/javascript" src="./jqGrid_JS_5.2.1/jquery.jqGrid.js"></script>
 <script type="text/javascript" src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-
-<%-- <script type="text/javascript" src="<c:url value='/script/common/default.js'/>"></script> --%>
-<script type="text/javascript" src="<c:url value='/script/common/hhj_default.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/script/common/paging.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/script/common/paginate.js'/>"></script>
+<script type="text/javascript" src="./script/common/hhj_default.js"></script>
+<script type="text/javascript" src="./script/common/paginate.js"></script>
 <style>
 .container-fluid.header {
 	background-color: #555;

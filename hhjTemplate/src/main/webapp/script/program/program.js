@@ -1,7 +1,20 @@
+// 검색 조건
+var search_set = 
+	{
+		url : "./common/doSelect.do", //추가
+		postData : {
+			ACTION : 'program.doSelect',
+			MENU_ID : jQuery('#TXT_SEARCH_MENU_ID').val(), 		// 프로그램 ID
+			MENU_NAME : jQuery('#TXT_SEARCH_MENU_NAME').val()	// 프로그램명
+		},
+	};
+
 $(document).ready(function() {
 	jQuery("#tbody").jqGrid({
 		styleUI : "Bootstrap",
 		datatype : "json",
+		url : search_set.url,
+		postData : search_set.postData,
 		mtype : "POST", 
 		colNames : [ 'NO','프로그램ID','상위프로그램ID','프로그램명','프로그램 주소','정렬순서','사용여부'],
 		jsonReader : {
@@ -24,52 +37,30 @@ $(document).ready(function() {
 		             {name : 'USE_YN',		index : 'USE_YN',	    width : 80,    	sortable : false, 	align : 'center',	hidden : false}
 		],
 //		pager : '#tbodyPager',
-		rowNum : 2,
+		rowNum : 10,
 		rowList:[10,20,30],
 		height: 370,
 		sortable:true,
-		sortname:'AA',
-		sortorder:"desc",
+//		sortname:'AA',
+//		sortorder:"desc",
 		gridview: true,
 //		caption : '프로그램정보', //제목
 //		autowidth : true,
 		rownumbers: true,
 	    rownumWidth : 40,
-	    
 		viewrecords : true,
 		loadComplete: function(data) {
 			initPage("tbody", "paginate", data);
 		},
-//		onPaging: function (action) {
-//			paging(action);
-//		},
 		onSelectRow: function (nId) {
 			detail(nId);
 		}
 	});
+	hhj_resizeJqGridWidth('tbody', 'grid_container', $('#grid_container').width());
 
-	doMenuSearch();
 	btnBind();
-	
-	resizeJqGridWidth('tbody', 'grid_container', $('#grid_container').width(), true);
+	initTableDetail();
 });
-
-/*
- * @param string grid_id 사이즈를 변경할 그리드의 아이디
- * @param string div_id 그리드의 사이즈의 기준을 제시할 div 의 아이디
- * @param string width 그리드의 초기화 width 사이즈
-  * @param boolean tf 그리드의 리사이즈 여부(true/false)
- */
- function resizeJqGridWidth(grid_id, div_id, width, tf){
-    // window에 resize 이벤트를 바인딩 한다. 
-    $(window).bind('resize', function() {
-    var resizeWidth = width; //jQuery-ui의 padding 설정 및 border-width값때문에 넘치는 걸 빼줌.
-    // 그리드의 width 초기화
-    $('#' + grid_id).setGridWidth(width, true);
-	// 그리드의 width를 div 에 맞춰서 적용
-    $('#' + grid_id).setGridWidth($('#' + div_id).width() , true); //Resized to new width as per window
-     }).trigger('resize');
- }
 
 //버튼
 function btnBind()
@@ -95,8 +86,9 @@ function initTableDetail()
 	jQuery("#TXT_MENU_ID").val("");           	// 프로그램 ID
 	jQuery("#TXT_MENU_NAME").val("");         	// 프로그램명
 	jQuery("#TXT_PROGRM_URL").val("");             	// 프로그램 URL
-	jQuery("#TXT_SORT_ORDER").val("99");        	// 프로그램 순서
-	jQuery("#SLT_USE_AT").val("Y");        			// 사용여부
+	jQuery("#TXT_SORT_ORDER").val("999");        	// 프로그램 순서
+	jQuery('#SLT_USE_AT option:eq(0)').attr('selected', 'selected')
+
 	jQuery("#TXT_UPDUSR_SN").val("0");                	// 수정자 ID
 	jQuery("#TXT_UPDT_DT").val("");              	// 수정일시
 	
@@ -105,18 +97,14 @@ function initTableDetail()
 	btnStatus(0,1,1);
 }
 
-// 리스트 조회
+//리스트 조회
 function doMenuSearch()
 {
 	jQuery("#tbody").clearGridData();		
 	jQuery("#tbody").jqGrid('setGridParam', {
-		url : "./common/doSelect.do",
 		page : 1,
-		postData : {
-			ACTION : 'program.doSelect',
-			MENU_ID : jQuery('#TXT_SEARCH_MENU_ID').val(), 		// 프로그램 ID
-			MENU_NAME : jQuery('#TXT_SEARCH_MENU_NAME').val()	// 프로그램명
-		}
+		url : search_set.url,
+		postData : search_set.postData,
 	}
 	).trigger("reloadGrid");
 	
