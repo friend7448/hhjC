@@ -79,7 +79,8 @@
 	overflow: hidden;
 	white-space: nowrap;
 }
-.ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {}
+/* .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {} */ 
+.ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {text-align: center; } /* hhj 변경 */ 
 .ui-th-rtl, .ui-jqgrid .ui-jqgrid-htable th.ui-th-rtl {text-align: center; }
 .ui-first-th-ltr { }
 .ui-first-th-rtl { }

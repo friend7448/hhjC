@@ -6,5 +6,6 @@
 <!-- namespace를 사용(namespace_name.query_ id)  -->
 	<settings useStatementNamespaces="true"/>
 	<sqlMap resource="hhj/sqlmap/query/mysql/portal/program_SQL.xml"/>
+	<sqlMap resource="hhj/sqlmap/query/mysql/portal/user_SQL.xml"/>
 
 </sqlMapConfig>

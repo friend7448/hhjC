@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="user">
+	<!--사용자 정보 리스트 건수 조회-->
+    <select id="doSelectCnt" parameterClass="java.util.HashMap" resultClass="int">
+		SELECT COUNT(*)
+		FROM SM_USER
+        WHERE 1 = 1
+	       	<isNotEqual property="SEARCH_USER_NAME" compareValue="">
+	       		AND USER_NAME LIKE CONCAT('%', #SEARCH_USER_NAME#, '%')
+			</isNotEqual>
+	           <isNotEqual property="SEARCH_USER_ID" compareValue="">
+	           	AND USER_ID LIKE CONCAT('%', #SEARCH_USER_ID#, '%')
+			</isNotEqual>
+    </select>
+    
+    <!--사용자 정보 리스트 조회-->
+    <select id="doSelect" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT A.*
+		FROM(
+				SELECT 
+					USER_SN,
+				    USER_ID,
+				    USER_NAME,
+				    USER_PW,
+				    CELL,
+				    EMAIL,
+				    UPDT_DT,
+				    UPDUSR_SN,
+					@ROWNUM := @ROWNUM + 1 AS RNUM
+				FROM SM_USER,
+					(SELECT @ROWNUM := 0) R
+		        WHERE 1 = 1
+		        	<isNotEqual property="SEARCH_USER_NAME" compareValue="">
+		        		AND USER_NAME LIKE CONCAT('%', #SEARCH_USER_NAME#, '%')
+					</isNotEqual>
+		            <isNotEqual property="SEARCH_USER_ID" compareValue="">
+		            	AND USER_ID LIKE CONCAT('%', #SEARCH_USER_ID#, '%')
+					</isNotEqual>
+				ORDER BY USER_SN DESC
+		) A	
+		<![CDATA[
+    	WHERE A.RNUM  >= #START_ROW# 
+    		AND A.RNUM <= #END_ROW#
+		]]>
+    </select>
+    
+    <!-- 사용자 상세조회-->
+    <select id="doSelectDetail" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+        SELECT 
+        	a.USER_ID, 
+            a.USER_NAME, 
+            a.USER_PW,
+            a.CELL, 
+            a.EMAIL, 
+            a.UPDUSR_SN,
+            a.UPDT_DT
+         FROM SM_USER a 
+         WHERE a.USER_ID = #USER_ID#
+    </select> 
+    
+    <!--사용자 등록-->
+    <insert id="doInsert" parameterClass="java.util.HashMap">
+ 		<![CDATA[
+            INSERT INTO SM_USER
+                     (USER_ID,
+                      USER_NAME,
+                      USER_PW,
+                      CELL,
+                      EMAIL,
+                      UPDUSR_SN,
+                      UPDT_DT)
+             VALUES  (#TXT_USER_ID#,
+                      #TXT_USER_NAME#,
+                      #TXT_USER_PW#,
+                      #TXT_CELL#,
+                      #TXT_EMAIL#,
+                      #TXT_UPDUSR_SN#,
+                      DATE_FORMAT(now(),'%m%d%Y%H%i%s'))
+        ]]>
+        <selectKey keyProperty="USER_ID" resultClass="int">
+			SELECT	COUNT(*) + 1
+				FROM 	SM_USER
+		</selectKey>
+    </insert>
+    
+    <!-- 사용자 수정-->
+    <update id="doUpdate" parameterClass="java.util.HashMap" >
+            UPDATE SM_USER
+            SET    USER_NAME = #TXT_USER_NAME#,
+                   USER_PW = #TXT_USER_PW#, 
+                   CELL = #TXT_CELL#, 
+                   EMAIL = #TXT_EMAIL#,
+                   UPDUSR_SN = #TXT_UPDUSR_SN#,
+                   UPDT_DT = SYSDATE() + 0
+            WHERE USER_ID = #TXT_USER_ID#
+    </update>
+    
+
+	<!-- 사용자 삭제-->
+    <delete id="doDelete" parameterClass="java.util.HashMap" >
+        <![CDATA[
+            DELETE FROM	SM_USER
+             WHERE USER_ID = #TXT_USER_ID#
+        ]]>				  
+    </delete>  
+    
+    <select id="doCheckUserId"  parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT USER_ID AS CNT
+  		FROM SM_USER
+ 		WHERE USER_ID = #USER_ID#
+</select>
+</sqlMap>

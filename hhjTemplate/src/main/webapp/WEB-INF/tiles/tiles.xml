@@ -12,9 +12,9 @@
 		<put-attribute name="footer"
 			value="/WEB-INF/jsp/common/footer.jsp" />
 	</definition> <!-- Home Page -->
-	<definition name="/program/program" extends="base-definition">
+	<definition name="/*/*" extends="base-definition">
 <!-- 		<put-attribute name="title" value="tiles test!" /> -->
-		<put-attribute name="body" value="/WEB-INF/jsp/program/program.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
 	</definition> 
 	<!-- BoarList Page -->
 <!-- 	<definition name="boardList" extends="base-definition"> -->

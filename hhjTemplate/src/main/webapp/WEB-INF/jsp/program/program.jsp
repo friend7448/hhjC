@@ -24,8 +24,8 @@
 <div class="container-fluid hhj-content-detail">
 	<form action="" class="form-horizontal" id="frmDetail" name="frmDetail" method="post" onsubmit="return false;">
 		<div class="form-group">
-			<label for="" class="control-label col-sm-4">상위프로그램</label>
-			<div class="col-sm-8">
+			<label for="" class="control-label col-sm-2">상위프로그램</label>
+			<div class="col-sm-4">
 				<select class="form-control" id="SLT_UP_MENU_ID" name="SLT_UP_MENU_ID">
 					<option value="" selected="selected">선택</option>
 					<c:forEach var="result" items="${selectUpPrg}" varStatus="status">
@@ -33,34 +33,28 @@
 					</c:forEach>
 				</select>
 			</div>
-		</div>
-		<div class="form-group">
-			<label for="" class="control-label col-sm-4">프로그램ID</label>
-			<div class="col-sm-8">
+			<label for="" class="control-label col-sm-2">프로그램ID</label>
+			<div class="col-sm-4">
 				<input type="text" class="form-control" id="TXT_MENU_ID" name="TXT_MENU_ID" maxlength="5" />
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="" class="control-label col-sm-4">프로그램명</label>
-			<div class="col-sm-8">
+			<label for="" class="control-label col-sm-2">프로그램명</label>
+			<div class="col-sm-4">
 				<input type="text" class="form-control" id="TXT_MENU_NAME" name="TXT_MENU_NAME" maxlength="100" />
 			</div>
-		</div>
-		<div class="form-group">
-			<label for="" class="control-label col-sm-4">프로그램URL</label>
-			<div class="col-sm-8">
+			<label for="" class="control-label col-sm-2">프로그램URL</label>
+			<div class="col-sm-4">
 				<input type="text" class="form-control" id="TXT_PROGRM_URL" name="TXT_PROGRM_URL" maxlength="100" />
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="" class="control-label col-sm-4">프로그램순서</label>
-			<div class="col-sm-8">
+			<label for="" class="control-label col-sm-2">프로그램순서</label>
+			<div class="col-sm-4">
 				<input type="text" class="form-control" id="TXT_SORT_ORDER" name="TXT_SORT_ORDER" maxlength="3" onkeyup="check_number(this,'int',3,0,'N');" />
 			</div>
-		</div>
-		<div class="form-group">
-			<label for="" class="control-label col-sm-4">사용여부</label>
-			<div class="col-sm-8">
+			<label for="" class="control-label col-sm-2">사용여부</label>
+			<div class="col-sm-4">
 				<select id="SLT_USE_AT" class="form-control" name="SLT_USE_AT">
 					<option value="Y">사용</option>
 					<option value="N">미사용</option>
@@ -68,14 +62,12 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="" class="control-label col-sm-4">최종수정자ID</label>
-			<div class="col-sm-8">
+			<label for="" class="control-label col-sm-2">최종수정자ID</label>
+			<div class="col-sm-4">
 				<input type="text" class="form-control" id="TXT_UPDUSR_SN" name="TXT_UPDUSR_SN" readonly="readonly" />
 			</div>
-		</div>
-		<div class="form-group">
-			<label for="" class="control-label col-sm-4">최종수정일시</label>
-			<div class="col-sm-8">
+			<label for="" class="control-label col-sm-2">최종수정일시</label>
+			<div class="col-sm-4">
 				<input type="text" class="form-control" id="TXT_UPDT_DT" name="TXT_UPDT_DT" readonly="readonly" />
 			</div>
 		</div>
