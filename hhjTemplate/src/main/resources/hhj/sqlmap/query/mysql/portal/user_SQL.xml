@@ -50,6 +50,7 @@
     <!-- 사용자 상세조회-->
     <select id="doSelectDetail" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
         SELECT 
+        	a.USER_SN,
         	a.USER_ID, 
             a.USER_NAME, 
             a.USER_PW,
@@ -58,7 +59,7 @@
             a.UPDUSR_SN,
             a.UPDT_DT
          FROM SM_USER a 
-         WHERE a.USER_ID = #USER_ID#
+         WHERE a.USER_SN = #TXT_HIDDEN_USER_SN#
     </select> 
     
     <!--사용자 등록-->
@@ -95,7 +96,7 @@
                    EMAIL = #TXT_EMAIL#,
                    UPDUSR_SN = #TXT_UPDUSR_SN#,
                    UPDT_DT = SYSDATE() + 0
-            WHERE USER_ID = #TXT_USER_ID#
+            WHERE USER_SN = #TXT_HIDDEN_USER_SN#
     </update>
     
 
@@ -103,13 +104,13 @@
     <delete id="doDelete" parameterClass="java.util.HashMap" >
         <![CDATA[
             DELETE FROM	SM_USER
-             WHERE USER_ID = #TXT_USER_ID#
+             WHERE USER_SN = #TXT_HIDDEN_USER_SN#
         ]]>				  
     </delete>  
     
     <select id="doCheckUserId"  parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
 		SELECT USER_ID AS CNT
   		FROM SM_USER
- 		WHERE USER_ID = #USER_ID#
+ 		WHERE USER_ID = #TXT_USER_ID#
 </select>
 </sqlMap>

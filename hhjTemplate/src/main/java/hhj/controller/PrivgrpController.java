@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import hhj.service.hhjService;
 
 @Controller
-public class UserController {
+public class PrivgrpController {
 	@Resource(name = "hhjService")
 	private hhjService service;
 
 	Logger log = Logger.getLogger(this.getClass());
 
-	@RequestMapping("/user/user.do")
+	@RequestMapping("/privgrp/privgrp.do")
 	public String ProgramView(@RequestParam Map<String, Object> param, Model model) {
-		log.debug("hhj - 사용자관리화면 view");
+		log.debug("hhj - 권한그룹관리화면 view");
 
-		return "/user/user";
+		return "/privgrp/privgrp";
 	}
 }

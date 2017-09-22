@@ -3,15 +3,15 @@ var search_set =
 	{
 		url : "./common/doSelect.do", //추가
 		postData : {
-			ACTION : 'program.doSelect',
-			TXT_SEARCH_MENU_ID : '', 		// 프로그램 ID
-			TXT_SEARCH_MENU_NAME : ''	// 프로그램명
+			ACTION : 'privgrp.doSelect',
+			TXT_SEARCH_PRIVGRP_NAME : '',
+			SLT_SEARCH_USE_YN : '' 		
 		},
 	};
 
 function setSearchValue() {
-	search_set.postData.TXT_SEARCH_MENU_ID = jQuery('#TXT_SEARCH_MENU_ID').val();
-	search_set.postData.TXT_SEARCH_MENU_NAME = jQuery('#TXT_SEARCH_MENU_NAME').val();
+		search_set.postData.TXT_SEARCH_PRIVGRP_NAME = jQuery('#TXT_SEARCH_PRIVGRP_NAME').val();
+		search_set.postData.SLT_SEARCH_USE_YN = jQuery('#SLT_SEARCH_USE_YN').val();
 }
 
 $(document).ready(function() {
@@ -23,7 +23,7 @@ $(document).ready(function() {
 		url : search_set.url,
 		postData : search_set.postData,
 		mtype : "POST", 
-		colNames : [ 'NO','프로그램ID','상위프로그램ID','프로그램명','프로그램 주소','정렬순서','사용여부'],
+		colNames : [ 'NO','SN', '권한그룹명','사용여부','우선순위'],
 		jsonReader : {
 			page : 'page',
 			total : 'total',
@@ -35,13 +35,11 @@ $(document).ready(function() {
 			cell : '',
 			id : 'RNUM'
 		},
-		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 0, 		sortable : true,	align : 'center', 	hidden : true},
-		             {name : 'MENU_ID',		index : 'MENU_ID',		width : 100, 	sortable : true,	align : 'center', 	hidden : false},
-		             {name : 'UP_MENU_ID',	index : 'UP_MENU_ID',   width : 100,    sortable : true, 	align : 'center', 	hidden : false},
-		             {name : 'MENU_NAME',	index : 'MENU_NAME',    width : 220,	sortable : true, 	align : 'left', 	hidden : false},
-		             {name : 'PROGRM_URL',	index : 'PROGRM_URL',   width : 220,	sortable : true, 	align : 'left', 	hidden : false},
-		             {name : 'SORT_ORDER',	index : 'SORT_ORDER',   width : 80,		sortable : true, 	align : 'center',	hidden : false},
-		             {name : 'USE_YN',		index : 'USE_YN',	    width : 80,    	sortable : true, 	align : 'center',	hidden : false}
+		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 80, 	sortable : false,	align : 'center', 	hidden : true},
+		             {name : 'PRIVGRP_SN',	index : 'PRIVGRP_SN',	width : 90,    sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'PRIVGRP_NAME',index : 'PRIVGRP_NAME',	width : 90,    sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'USE_YN',		index : 'USE_YN',  		width : 50,		sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'PRIORT',		index : 'PRIORT', 		width : 50,		sortable : false, 	align : 'center', 	hidden : false}
 		],
 //		pager : '#tbodyPager',
 		rowNum : 10,
@@ -83,22 +81,22 @@ function btnBind()
 function doInit()
 {
 	initTableDetail();
-	jQuery("#TXT_MENU_ID").focus();
+	jQuery("#TXT_PRIVGRP_NAME").focus();
 }
 
 // 초기화 상세
 function initTableDetail()
 {
-	jQuery("#SLT_UP_MENU_ID").val("");  	// 상위프로그램명
-	jQuery("#TXT_MENU_ID").val("");           	// 프로그램 ID
-	jQuery("#TXT_MENU_NAME").val("");         	// 프로그램명
-	jQuery("#TXT_PROGRM_URL").val("");             	// 프로그램 URL
-	jQuery("#TXT_SORT_ORDER").val("999");        	// 프로그램 순서
-	jQuery('#SLT_USE_AT option:eq(0)').attr('selected', 'selected')
-	jQuery("#TXT_UPDUSR_SN").val("0");                	// 수정자 ID
-	jQuery("#TXT_UPDT_DT").val("");              	// 수정일시
+	jQuery("#TXT_HIDDEN_PRIVGRP_SN").val("");
 	
-	jQuery("#TXT_MENU_ID").prop('readonly', false);
+	jQuery("#TXT_PRIVGRP_NAME").val("");  		// 사용자ID
+	jQuery("#TXT_PRIVGRP_DESC").val("");       // 이름
+	jQuery("#TXT_PRIORT").val("0");         // 비번
+	jQuery("#SLT_USE_YN").val("Y");            // 전번
+	jQuery("#TXT_UPDUSR_SN").val("0");      // 수정자 ID
+	jQuery("#TXT_UPDT_DT").val("");         // 수정일시
+	
+	jQuery("#TXT_PRIVGRP_NAME").prop('readonly', false);
 	
 	btnStatus(0,1,1);
 }
@@ -122,14 +120,14 @@ function doMenuSearch()
 // 리스트 상세정보 조회
 function detail(nId)
 {
-	var TXT_MENU_ID = jQuery("#tbody").getCell(nId,'MENU_ID');
-
+	var TXT_HIDDEN_PRIVGRP_SN = jQuery("#tbody").getCell(nId,'PRIVGRP_SN');
+	
     $.ajax({
         type: "POST",
         url: "./common/doSelectDetail.do",
         data: {
-        	ACTION : 'program.doSelectDetail',
-        	TXT_MENU_ID : TXT_MENU_ID
+        	ACTION : 'privgrp.doSelectDetail',
+        	TXT_HIDDEN_PRIVGRP_SN : TXT_HIDDEN_PRIVGRP_SN
         },
         dataType: 'json',
         error: function(){
@@ -145,35 +143,34 @@ function doDetailCallback(jData)
 	var response = jData.response[0];
 
 	initTableDetail();
-
-	jQuery("#SLT_UP_MENU_ID").val(response.UP_MENU_ID); 
- 	jQuery("#TXT_MENU_ID").val(response.MENU_ID);
- 	jQuery("#TXT_MENU_NAME").val(response.MENU_NAME);
-	jQuery("#TXT_PROGRM_URL").val(response.PROGRM_URL);
-	jQuery("#TXT_SORT_ORDER").val(response.SORT_ORDER);
-	jQuery("#SLT_USE_AT").val(response.USE_YN);
+ 	jQuery("#TXT_HIDDEN_PRIVGRP_SN").val(response.PRIVGRP_SN);
+	jQuery("#TXT_PRIVGRP_NAME").val(response.PRIVGRP_NAME);
+	jQuery("#TXT_PRIVGRP_DESC").val(response.PRIVGRP_DESC);
+	jQuery("#TXT_PRIORT").val(response.PRIORT);
+	jQuery("#SLT_USE_YN").val(response.USE_YN);
 	jQuery("#TXT_UPDUSR_SN").val(response.UPDUSR_SN);
 	jQuery("#TXT_UPDT_DT").val(dateToFormat(response.UPDT_DT));
 	
-	jQuery("#TXT_MENU_ID").prop('readonly', true); 
+	jQuery("#TXT_PRIVGRP_NAME").prop('readonly', true); 
 	
 	btnStatus(1,0,0);
 }
 
 // 등록, 수정, 삭제 시 파라메타 값 체크
 function IUDcheckValue() {
-	if(jQuery("#TXT_MENU_ID").val().length == 0)
+	if(jQuery("#TXT_PRIVGRP_NAME").val().length == 0)
 	{
-		alert("프로그램ID를 입력하십시오.");
-		jQuery("#TXT_MENU_ID").focus();
+		alert("권한그룹명을 입력하십시오.");
+		jQuery("#TXT_PRIVGRP_NAME").focus();
 		return false;
 	}
-	else if(jQuery("#TXT_MENU_NAME").val().length == 0)
+	else if(jQuery("#TXT_PRIORT").val().length == 0)
 	{
-		alert("프로그램명을 입력하십시오.");
-		jQuery("#TXT_MENU_NAME").focus();
+		alert("우선순위를 입력하십시오.");
+		jQuery("#TXT_PRIORT").focus();
 		return false;
 	}
+
 	return true;
 }
 
@@ -196,7 +193,7 @@ function doInsert()
 {
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=program.doInsert';
+	var actionData = '&ACTION=privgrp.doInsert';
 	var url = './common/doInsert.do';
 	var uid = 'I';
 	
@@ -208,7 +205,7 @@ function doUpdate()
 {	
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=program.doUpdate';
+	var actionData = '&ACTION=privgrp.doUpdate';
 	var url = './common/doUpdate.do';
 	var uid = 'U';
 	
@@ -220,7 +217,7 @@ function doDelete()
 {
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=program.doDelete';
+	var actionData = '&ACTION=privgrp.doDelete';
 	var url = './common/doDelete.do';
 	var uid = 'D';
 	
@@ -250,3 +247,5 @@ function doIUDCallback(jData, iud) {
 		else alert(msg + "이 실패했습니다.");
 	}
 }
+
+

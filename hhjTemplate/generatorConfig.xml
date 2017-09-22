@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+<classPathEntry location="d:/mysql-connector-java-5.1.31.jar" />
+  <context id="context1">
+    <jdbcConnection connectionURL="jdbc:mysql://localhost:3306/portaldb" driverClass="com.mysql.jdbc.Driver" password="111111" userId="root" />
+    <javaModelGenerator targetPackage="mybatis.generator.model" targetProject="hhjTemplate" />
+    <sqlMapGenerator targetPackage="mybatis.generator.xml" targetProject="hhjTemplate" />
+    <javaClientGenerator targetPackage="mybatis.generator.mapper" targetProject="hhjTemplate" type="XMLMAPPER" />
+    <table schema="portaldb" tableName="is_menu"></table>
+    <table schema="portaldb" tableName="sm_privgrp"></table>
+<!--       <columnOverride column="???" property="???" /> -->
+  </context>
+</generatorConfiguration>

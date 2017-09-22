@@ -7,5 +7,6 @@
 	<settings useStatementNamespaces="true"/>
 	<sqlMap resource="hhj/sqlmap/query/mysql/portal/program_SQL.xml"/>
 	<sqlMap resource="hhj/sqlmap/query/mysql/portal/user_SQL.xml"/>
+	<sqlMap resource="hhj/sqlmap/query/mysql/portal/privgrp_SQL.xml"/>
 
 </sqlMapConfig>

@@ -25,12 +25,14 @@
 <div class="container-fluid hhj-content-detail">
 	<form action="" class="form-horizontal" id="frmDetail" name="frmDetail" method="post" onsubmit="return false;">
 		<div class="form-group">
+			<input type="hidden" id="TXT_HIDDEN_USER_SN" name="TXT_HIDDEN_USER_SN"/>
+			<input type="hidden" id="TXT_HIDDEN_USER_ID" name="TXT_HIDDEN_USER_ID"/>
 			<label for="" class="control-label col-sm-2">사용자ID</label>
 			<div class="col-sm-3">
 				<input type="text" class="form-control" id="TXT_USER_ID" name="TXT_USER_ID" />
 			</div>
 			<div class="col-sm-1">
-				<input type="hidden" id="HIDDEN_USER_ID" name="HIDDEN_USER_ID"/>
+				
 				<button class="btn btn-default pull-right" id="btn_checkRepetition" onClick="checkRepetition(); return false;">중복체크</button>
 			</div>
 			<label for="" class="control-label col-sm-2">사용자명</label>

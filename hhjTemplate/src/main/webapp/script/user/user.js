@@ -4,12 +4,25 @@ var search_set =
 		url : "./common/doSelect.do", //추가
 		postData : {
 			ACTION : 'user.doSelect',
-			SEARCH_USER_ID : jQuery('#TXT_SEARCH').val(),
+			SEARCH_USER_ID : '',
 			SEARCH_USER_NAME : '' 		
 		},
 	};
 
+function setSearchValue() {
+	if($("#SLT_SEARCH").val() == 1) {
+		search_set.postData.SEARCH_USER_ID = jQuery('#TXT_SEARCH').val();
+		search_set.postData.SEARCH_USER_NAME = '';
+	}
+	else if($("#SLT_SEARCH").val() == 2) {
+		search_set.postData.SEARCH_USER_ID = '';
+		search_set.postData.SEARCH_USER_NAME = jQuery('#TXT_SEARCH').val();
+	}
+}
+
 $(document).ready(function() {
+	setSearchValue();
+	
 	jQuery("#tbody").jqGrid({
 		styleUI : "Bootstrap",
 		datatype : "json",
@@ -91,7 +104,8 @@ function initTableDetail()
 	
 	jQuery("#TXT_USER_ID").prop('readonly', false);
 	
-	jQuery("#HIDDEN_USER_ID").val(""); //사용자 ID 중복체크용
+	jQuery("#TXT_HIDDEN_USER_ID").val(""); //사용자 ID 중복체크용
+	jQuery("#TXT_HIDDEN_USER_SN").val(""); //사용자 ID 중복체크용
 	
 	btnStatus(0,1,1);
 }
@@ -115,14 +129,14 @@ function doMenuSearch()
 // 리스트 상세정보 조회
 function detail(nId)
 {
-	var USER_ID = jQuery("#tbody").getCell(nId,'USER_ID');
+	var TXT_HIDDEN_USER_SN = jQuery("#tbody").getCell(nId,'USER_SN');
 
     $.ajax({
         type: "POST",
         url: "./common/doSelectDetail.do",
         data: {
         	ACTION : 'user.doSelectDetail',
-        	USER_ID : USER_ID
+        	TXT_HIDDEN_USER_SN : TXT_HIDDEN_USER_SN
         },
         dataType: 'json',
         error: function(){
@@ -139,6 +153,7 @@ function doDetailCallback(jData)
 
 	initTableDetail();
 
+	jQuery("#TXT_HIDDEN_USER_SN").val(response.USER_SN); 
 	jQuery("#TXT_USER_ID").val(response.USER_ID); 
  	jQuery("#TXT_USER_NAME").val(response.USER_NAME);
 	jQuery("#TXT_USER_PW").val(response.USER_PW);
@@ -192,7 +207,7 @@ function IUDdoAjax(actionData, url, uid) {
 // 등록
 function doInsert()
 {
-	if(jQuery("#HIDDEN_USER_ID").val() != "Y") {
+	if(jQuery("#TXT_HIDDEN_USER_ID").val() != "Y") {
 		alert("사용자ID 중복체크 하세요.");
 		jQuery("#btn_checkRepetition").focus();
 		return;
@@ -254,25 +269,14 @@ function doIUDCallback(jData, iud) {
 	}
 }
 
-function setSearchValue() {
-	if($("#SLT_SEARCH").val() == 1) {
-		search_set.postData.SEARCH_USER_ID = jQuery('#TXT_SEARCH').val();
-		search_set.postData.SEARCH_USER_NAME = '';
-	}
-	else if($("#SLT_SEARCH").val() == 2) {
-		search_set.postData.SEARCH_USER_ID = '';
-		search_set.postData.SEARCH_USER_NAME = jQuery('#TXT_SEARCH').val();
-	}
-}
-
 /**
  * @returns {Boolean}
  * 함수기능 : 사용자 ID 중복체크
  */
 function checkRepetition(){
-	var USER_ID = $("#TXT_USER_ID").val();
+	var TXT_USER_ID = $("#TXT_USER_ID").val();
 	
-	if(USER_ID == ""){
+	if(TXT_USER_ID == ""){
 		alert("사용자 아이디를 입력해주세요");
 		$("#TXT_USER_ID").val("");
 		$("#TXT_USER_ID").focus();
@@ -284,7 +288,7 @@ function checkRepetition(){
         url: "./common/doSelectDetail.do",
         data: {
         	ACTION : 'user.doCheckUserId',
-        	USER_ID : USER_ID
+        	TXT_USER_ID : TXT_USER_ID
         },
         dataType: 'json',
         error: function(){
@@ -293,11 +297,11 @@ function checkRepetition(){
         success: function(jdata){
         	if(jdata.response.length == 0) {
         		alert("사용 가능합니다.");
-        		jQuery("#HIDDEN_USER_ID").val("Y");
+        		jQuery("#TXT_HIDDEN_USER_ID").val("Y");
         	}
         	else {
         		alert("사용중인 ID 입니다.");
-        		jQuery("#HIDDEN_USER_ID").val("");
+        		jQuery("#TXT_HIDDEN_USER_ID").val("");
         	}
         }
     });

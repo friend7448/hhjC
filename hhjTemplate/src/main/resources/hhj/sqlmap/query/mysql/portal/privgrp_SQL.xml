@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="privgrp">
+	<!--권한그룹 리스트 건수 조회-->
+    <select id="doSelectCnt" parameterClass="java.util.HashMap" resultClass="int">
+		SELECT COUNT(*)
+	    FROM SM_PRIVGRP
+        WHERE
+        	PRIVGRP_NAME LIKE CONCAT('%', #TXT_SEARCH_PRIVGRP_NAME#, '%')
+           	AND USE_YN LIKE CONCAT('%', #SLT_SEARCH_USE_YN#, '%')
+    </select>
+    
+    <!--권한그룹 리스트 조회-->
+    <select id="doSelect" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT A.*
+		FROM(
+				SELECT
+					PRIVGRP_SN, 
+					PRIVGRP_NAME, 
+					PRIVGRP_DESC, 
+					IFNULL(PRIORT, '0') AS PRIORT, 
+					IF(USE_YN='Y', '사용', '미사용') AS USE_YN, 
+					UPDT_DT, 
+					UPDUSR_SN,
+					@ROWNUM := @ROWNUM + 1 AS RNUM
+				FROM SM_PRIVGRP,
+					(SELECT @ROWNUM := 0) R
+		        WHERE
+		        	PRIVGRP_NAME LIKE CONCAT('%', #TXT_SEARCH_PRIVGRP_NAME#, '%')
+		        	<isNotEqual property="SLT_SEARCH_USE_YN" compareValue="">
+		        		AND USE_YN LIKE CONCAT('%', #SLT_SEARCH_USE_YN#, '%')
+					</isNotEqual>
+		           	
+				ORDER BY PRIORT ASC
+		) A	
+		<![CDATA[
+    	WHERE A.RNUM  >= #START_ROW# 
+    		AND A.RNUM <= #END_ROW#
+		]]>
+    </select>
+    
+    <!--권한그룹 상세조회-->
+    <select id="doSelectDetail" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+        SELECT
+        	PRIVGRP_SN, 
+        	PRIVGRP_NAME, 
+        	PRIVGRP_DESC, 
+        	PRIORT, 
+        	USE_YN, 
+        	UPDT_DT, 
+        	UPDUSR_SN
+        FROM SM_PRIVGRP
+    	WHERE PRIVGRP_SN = #TXT_HIDDEN_PRIVGRP_SN#
+    </select> 
+    
+    <!-- 권한그룹 등록-->
+    <insert id="doInsert" parameterClass="java.util.HashMap">
+ 		<![CDATA[
+ 			INSERT INTO SM_PRIVGRP 
+ 				(PRIVGRP_NAME, 
+ 				PRIVGRP_DESC, 
+      			PRIORT, 
+      			USE_YN, 
+      			UPDT_DT, 
+      			UPDUSR_SN 
+      			)
+    		VALUES 
+    			(#TXT_PRIVGRP_NAME#, 
+    			#TXT_PRIVGRP_DESC#, 
+      			#TXT_PRIORT#, 
+      			#SLT_USE_YN#, 
+      			DATE_FORMAT(now(),'%m%d%Y%H%i%s'),
+      			#TXT_UPDUSR_SN#      			
+      			)
+        ]]>
+        <selectKey keyProperty="PRIVGRP_SN" resultClass="int">
+			SELECT	COUNT(*) + 1
+				FROM 	SM_PRIVGRP
+		</selectKey>
+    </insert>
+    
+    <!--권한그룹 수정-->
+    <update id="doUpdate" parameterClass="java.util.HashMap" >
+   		UPDATE SM_PRIVGRP
+	    SET 	PRIVGRP_NAME = #TXT_PRIVGRP_NAME#,
+	      		PRIVGRP_DESC = #TXT_PRIVGRP_DESC#,
+	      		PRIORT = #TXT_PRIORT#,
+	      		USE_YN = #SLT_USE_YN#,
+	      		UPDT_DT = SYSDATE() + 0,
+	      		UPDUSR_SN = #TXT_UPDUSR_SN#
+	    WHERE PRIVGRP_SN = #TXT_HIDDEN_PRIVGRP_SN#
+    </update>
+    
+
+	<!--권한그룹 삭제-->
+    <delete id="doDelete" parameterClass="java.util.HashMap" >
+        <![CDATA[
+			DELETE FROM SM_PRIVGRP
+			WHERE PRIVGRP_SN = #TXT_HIDDEN_PRIVGRP_SN#
+		]]>
+    </delete>  
+	
+	
+</sqlMap>

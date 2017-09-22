@@ -17,8 +17,8 @@
     <select id="doSelectCnt" parameterClass="java.util.HashMap" resultClass="int">
 		SELECT COUNT(*)
 	    FROM IS_MENU
-	    WHERE MENU_ID LIKE CONCAT('%', #MENU_ID#, '%')
-			AND MENU_NAME LIKE CONCAT('%', #MENU_NAME#, '%')
+	    WHERE MENU_ID LIKE CONCAT('%', #TXT_SEARCH_MENU_ID#, '%')
+			AND MENU_NAME LIKE CONCAT('%', #TXT_SEARCH_MENU_NAME#, '%')
     </select>
     
     <!--프로그램 정보 리스트 조회-->
@@ -38,8 +38,8 @@
 				FROM IS_MENU,
 					(SELECT @ROWNUM := 0) R
 		        WHERE
-		        	MENU_ID LIKE CONCAT('%', #MENU_ID#, '%')
-		           	AND MENU_NAME LIKE CONCAT('%', #MENU_NAME#, '%')
+		        	MENU_ID LIKE CONCAT('%', #TXT_SEARCH_MENU_ID#, '%')
+		           	AND MENU_NAME LIKE CONCAT('%', #TXT_SEARCH_MENU_NAME#, '%')
 				ORDER BY UP_MENU_ID ASC, SORT_ORDER ASC
 		) A	
 		<![CDATA[
@@ -60,7 +60,7 @@
             a.UPDUSR_SN,
             a.UPDT_DT
          FROM IS_MENU a 
-         WHERE a.MENU_ID = #MENU_ID#
+         WHERE a.MENU_ID = #TXT_MENU_ID#
     </select> 
     
     <!--메뉴 등록-->
