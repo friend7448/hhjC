@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="signin">
+    <!-- 로그인 체크 -->
+    <select id="doLogin" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT 
+			A.USER_SN,
+			A.USER_ID,
+			A.USER_NAME,
+			A.USER_PW,
+			A.CELL,
+			A.EMAIL,
+			A.UPDT_DT,
+			A.UPDUSR_SN,
+			B.PRIVGRP_SN,
+			C.PRIVGRP_NAME,
+			C.PRIVGRP_DESC,
+			C.PRIORT,
+			C.USE_YN
+		FROM SM_USER A, SM_USERPRIV B, SM_PRIVGRP C
+		WHERE A.USER_SN = B.USER_SN
+			AND B.PRIVGRP_SN = C.PRIVGRP_SN
+          	AND A.USER_ID = #TXT_USER_ID#
+          	AND A.USER_PW = #TXT_USER_PW# 
+    </select>
+</sqlMap>

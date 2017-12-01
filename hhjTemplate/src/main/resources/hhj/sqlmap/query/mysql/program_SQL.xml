@@ -82,7 +82,7 @@
                       #TXT_SORT_ORDER#,
                       #SLT_USE_AT#,
                       #TXT_UPDUSR_SN#,
-                      DATE_FORMAT(now(),'%m%d%Y%H%i%s'))
+                      SYSDATE() + 0)
         ]]>
         <selectKey keyProperty="MENU_ID" resultClass="int">
 			SELECT	COUNT(*) + 1

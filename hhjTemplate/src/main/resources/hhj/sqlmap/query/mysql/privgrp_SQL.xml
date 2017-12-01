@@ -71,7 +71,7 @@
     			#TXT_PRIVGRP_DESC#, 
       			#TXT_PRIORT#, 
       			#SLT_USE_YN#, 
-      			DATE_FORMAT(now(),'%m%d%Y%H%i%s'),
+      			SYSDATE() + 0,
       			#TXT_UPDUSR_SN#      			
       			)
         ]]>
@@ -94,13 +94,89 @@
     </update>
     
 
-	<!--권한그룹 삭제-->
+	<!--권한그룹 삭제(미사용)-->
     <delete id="doDelete" parameterClass="java.util.HashMap" >
         <![CDATA[
-			DELETE FROM SM_PRIVGRP
-			WHERE PRIVGRP_SN = #TXT_HIDDEN_PRIVGRP_SN#
+        	UPDATE SM_PRIVGRP
+		    SET		USE_YN = "N",
+		      		UPDT_DT = SYSDATE() + 0,
+		      		UPDUSR_SN = #TXT_UPDUSR_SN#
+		    WHERE PRIVGRP_SN = #TXT_HIDDEN_PRIVGRP_SN#
 		]]>
-    </delete>  
-	
-	
+    </delete>
+    
+    <!-- 권한그룹별 프로그램별 권한 리스트 건수 조회-->
+    <select id="doSelect2Cnt" parameterClass="java.util.HashMap" resultClass="int">
+		SELECT 	count(*)
+		FROM 	IS_MENU A 
+				LEFT JOIN
+					(SELECT SM_PRIVGRP.PRIVGRP_SN, SM_PRIVGRP.PRIVGRP_NAME, SM_PRIVGRP.PRIVGRP_DESC, SM_PRIVGRP.PRIORT, SM_PRIVGRP.USE_YN,
+						SM_PRIVGRP_PRIV.PRIV_SN, SM_PRIVGRP_PRIV.MENU_ID, SM_PRIVGRP_PRIV.INQIRE_YN, SM_PRIVGRP_PRIV.WRITE_YN
+					FROM SM_PRIVGRP, SM_PRIVGRP_PRIV
+					WHERE SM_PRIVGRP.PRIVGRP_SN = #PRIVGRP_SN#
+						AND SM_PRIVGRP_PRIV.PRIVGRP_SN = #PRIVGRP_SN#) B
+				ON A.MENU_ID = B.MENU_ID
+    </select>
+    
+    <!-- 권한그룹별 프로그램별 권한 리스트 조회-->
+    <select id="doSelect2" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT 	A.MENU_ID, 
+				A.MENU_NAME, 
+				A.UP_MENU_ID, 
+				A.PROGRM_URL, 
+				A.SORT_ORDER,
+				B.PRIVGRP_SN, 
+				B.PRIVGRP_NAME, 
+				B.PRIVGRP_DESC,  
+				B.PRIORT, 
+				B.USE_YN,
+				B.PRIV_SN, 
+				IFNULL(B.INQIRE_YN, 'N') AS INQIRE_YN,
+				IFNULL(B.WRITE_YN, 'N') AS WRITE_YN
+		FROM 	IS_MENU A 
+				LEFT JOIN
+					(SELECT SM_PRIVGRP.PRIVGRP_SN, SM_PRIVGRP.PRIVGRP_NAME, SM_PRIVGRP.PRIVGRP_DESC, SM_PRIVGRP.PRIORT, SM_PRIVGRP.USE_YN,
+						SM_PRIVGRP_PRIV.PRIV_SN, SM_PRIVGRP_PRIV.MENU_ID, SM_PRIVGRP_PRIV.INQIRE_YN, SM_PRIVGRP_PRIV.WRITE_YN
+					FROM SM_PRIVGRP, SM_PRIVGRP_PRIV
+					WHERE SM_PRIVGRP.PRIVGRP_SN = #PRIVGRP_SN#
+						AND SM_PRIVGRP_PRIV.PRIVGRP_SN = #PRIVGRP_SN#) B
+				ON A.MENU_ID = B.MENU_ID
+		ORDER BY UP_MENU_ID ASC, SORT_ORDER ASC
+    </select>  
+    
+    <!--권한그룹 권한 삭제-->
+    <delete id="doDelete2" parameterClass="java.util.HashMap" >
+        <![CDATA[
+			DELETE FROM SM_PRIVGRP_PRIV
+			WHERE PRIVGRP_SN = #PRIVGRP_SN#
+		]]>
+    </delete>
+    
+    <!-- 권한그룹 권한 등록-->
+    <insert id="doInsert2" parameterClass="java.util.HashMap">
+ 		<![CDATA[
+ 			INSERT INTO SM_PRIVGRP_PRIV 
+   				(PRIVGRP_SN, 
+   				PRIV_SN, 
+   				MENU_ID, 
+      			UPDT_DT, 
+      			UPDUSR_SN, 
+      			INQIRE_YN, 
+      			WRITE_YN
+      			)
+    		VALUES 
+    			(#PRIVGRP_SN#, 
+   				#PRIV_SN#, 
+   				#MENU_ID#, 
+      			SYSDATE() + 0,
+      			#UPDUSR_SN#, 
+      			#INQIRE_YN#, 
+      			#WRITE_YN#
+      			)
+        ]]>
+        <selectKey keyProperty="PRIVGRP_SN" resultClass="int">
+			SELECT	COUNT(*) + 1
+				FROM 	SM_PRIVGRP_PRIV
+		</selectKey>
+    </insert>
 </sqlMap>
