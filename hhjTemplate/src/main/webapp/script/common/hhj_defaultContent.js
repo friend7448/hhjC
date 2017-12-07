@@ -4,6 +4,7 @@
  * @param string width 그리드의 초기화 width 사이즈
  */
 function hhj_resizeJqGridWidth(grid_id, div_id, width){
+//	alert(width);
     // window에 resize 이벤트를 바인딩 한다. 
     $(window).bind('resize', function() {
     var resizeWidth = width; //jQuery-ui의 padding 설정 및 border-width값때문에 넘치는 걸 빼줌.

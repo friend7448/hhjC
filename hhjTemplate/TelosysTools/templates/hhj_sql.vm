@@ -1,0 +1,73 @@
+
+#foreach( $entityReferencing in $model.allEntites )
+## $entityReferencing.databaseTable
+#foreach ( $fk in $entity.databaseForeignKeys)
+#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")
+<select id="doSelect$model.getEntityByTableName("${fk.referencedTableName}")" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT A.*
+		FROM (
+			SELECT
+#foreach($field in $entityReferencing.attributes)
+database name =
+#if( $foreach.count == 1)
+				$field.databaseName
+#else 
+				,$field.databaseName
+#end
+#end ## foreach				
+				,@ROWNUM := @ROWNUM + 1 AS RNUM
+			FROM	${fk.referencedTableName}
+					,(SELECT @ROWNUM := 0) R
+			<include refid="where_clause" />
+		) A
+		<![CDATA[
+    	WHERE	A.RNUM  >= #START_ROW# 
+    		AND	A.RNUM <= #END_ROW#
+		]]>
+	</select>
+
+#foreach($field in $entityReferencing.attributes)
+$field.name
+#end
+#end
+#end
+#end
+
+
+
+
+
+
+
+
+
+#foreach ( $fk in $entity.databaseForeignKeys)
+aa = ${fk.referencedTableName}
+
+#set ( $referencedEntity = $model.getEntityByTableName("${fk.referencedTableName}") )
+$referencedEntity 
+#end
+
+---
+
+#foreach( $entityReferencing in $model.allEntites )
+#foreach( $fkExternal in $entityReferencing.databaseForeignKeys )
+#if("$entity.databaseTable" == "$fkExternal.tableName")
+$fkExternal.referencedTableName
+#end
+## entity.databaseTable = $entity.databaseTable, fkExternal.tableName = $fkExternal.tableName, fkExternal.referencedTableName = $fkExternal.referencedTableName 
+#end
+#end
+
+#set($countExternalReference="")
+allEntites = $model.allEntites
+#foreach( $entityReferencing in $model.allEntites )
+	#foreach( $fkExternal in $entityReferencing.databaseForeignKeys )
+		#if("$fkExternal.tableName" == "$entity.databaseTable")
+			$fkExternal.referencedTableName
+## #set($countExternalReference[ = $fkExternal.referencedTableName)
+		#end
+	#end	
+#end
+
+[$countExternalReference]

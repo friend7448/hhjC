@@ -24,21 +24,6 @@ public class ProgramController {
 	public String ProgramView(@RequestParam Map<String, Object> param, Model model) {
 		log.debug("hhj - 프로그램관리화면 view");
 
-		// ======================= 권한조회 ===============================
-		// String user_id = (String)session.getAttribute("USER_ID");
-		// if(user_id == null || user_id.equals(""))
-		// return "redirect:/";
-		//
-		// defaultGridDAO dao = new defaultGridDAO();
-		// Map map_auth = new HashMap();
-		// map_auth.put("menu_seq",NowMODL_id);
-		// map_auth.put("user_id",user_id);
-		//
-		// Map result_auth = (Map)selectByPk("Auth.UserAuth_R001", map_auth);
-		// model.addAttribute("userAuth",result_auth);
-		// ===================================================================
-		// model.addAttribute("selectUpPrg", list("Admin_04.selectUpPrg",map));
-
 		// 상위프로그램 조회
 		List list = null;
 		try {
@@ -50,6 +35,7 @@ public class ProgramController {
 		}
 
 		model.addAttribute("selectUpPrg", list);
+		
 		return "/program/program";
 	}
 }

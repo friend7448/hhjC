@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
-<tiles-definitions> <!-- base-definition -->
-	<definition name="base-definition"
-		template="/WEB-INF/jsp/common/defaultLayout.jsp">
+<tiles-definitions> 
+
+	<definition name="empty-definition"
+		template="/WEB-INF/jsp/common/layout-empty.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="content" value="" />
+	</definition> 
+	<definition name="/signin/*" extends="empty-definition">
+		<put-attribute name="content" value="/WEB-INF/jsp/signin/{1}.jsp" />
+	</definition> 
+	
+	<definition name="main-definition"
+		template="/WEB-INF/jsp/common/layout-main.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/common/header.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer"
+			value="/WEB-INF/jsp/common/footer.jsp" />
+	</definition> 
+	<definition name="/main/*" extends="main-definition">
+		<put-attribute name="body" value="/WEB-INF/jsp/main/{1}.jsp" />
+	</definition> 
+	
+	<definition name="content-definition"
+		template="/WEB-INF/jsp/common/Layout-content.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header"
 			value="/WEB-INF/jsp/common/header.jsp" />
@@ -11,20 +34,12 @@
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer"
 			value="/WEB-INF/jsp/common/footer.jsp" />
-	</definition> <!-- Home Page -->
-	<definition name="/*/*" extends="base-definition">
-<!-- 		<put-attribute name="title" value="tiles test!" /> -->
+	</definition> 
+	<definition name="/*/*" extends="content-definition">
 		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
 	</definition> 
-	<!-- BoarList Page -->
-<!-- 	<definition name="boardList" extends="base-definition"> -->
-<!-- 		<put-attribute name="title" value="List" /> -->
-<!-- 		<put-attribute name="body" value="/WEB-INF/views/boardList.jsp" /> -->
-<!-- 	</definition> BoardView Page -->
-<!-- 	<definition name="boardView" extends="base-definition"> -->
-<!-- 		<put-attribute name="title" value="View" /> -->
-<!-- 		<put-attribute name="body" value="/WEB-INF/views/boardView.jsp" /> -->
-<!-- 	</definition> -->
+	
+	
 </tiles-definitions>
 
   

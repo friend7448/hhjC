@@ -5,8 +5,10 @@
 <sqlMapConfig>
 <!-- namespace를 사용(namespace_name.query_ id)  -->
 	<settings useStatementNamespaces="true"/>
-	<sqlMap resource="hhj/sqlmap/query/mysql/portal/program_SQL.xml"/>
-	<sqlMap resource="hhj/sqlmap/query/mysql/portal/user_SQL.xml"/>
-	<sqlMap resource="hhj/sqlmap/query/mysql/portal/privgrp_SQL.xml"/>
+	<sqlMap resource="hhj/sqlmap/query/mysql/program_SQL.xml"/>
+	<sqlMap resource="hhj/sqlmap/query/mysql/user_SQL.xml"/>
+	<sqlMap resource="hhj/sqlmap/query/mysql/privgrp_SQL.xml"/>
+	<sqlMap resource="hhj/sqlmap/query/mysql/signin_SQL.xml"/>
+	<sqlMap resource="hhj/sqlmap/query/mysql/layout_SQL.xml"/>
 
 </sqlMapConfig>

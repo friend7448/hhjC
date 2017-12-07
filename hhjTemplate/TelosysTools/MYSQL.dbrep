@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Telosys Database Repository --><root>
+<tableList databaseId="0" databaseName="MYSQL" databaseProductName="MySQL" generation="2017-12-04 17:07:04">
+<table catalog="portaldb" databaseType="TABLE" javaBean="IsMenu" name="is_menu" schema="">
+<column dbComment="메뉴아이디" dbDefaultValue="" dbName="MENU_ID" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="20" dbTypeName="VARCHAR" inputType="text" javaName="menuId" javaType="java.lang.String" jdbcTypeCode="12" label="Menu id" maxLength="20" notEmpty="true" notNull="true" selected="true"/>
+<column dbComment="메뉴명" dbDefaultValue="" dbName="MENU_NAME" dbNotNull="true" dbPosition="2" dbSize="100" dbTypeName="VARCHAR" inputType="text" javaName="menuName" javaType="java.lang.String" jdbcTypeCode="12" label="Menu name" maxLength="100" notEmpty="true" notNull="true" selected="true"/>
+<column dbComment="상위 아이디" dbDefaultValue="" dbName="UP_MENU_ID" dbNotNull="false" dbPosition="3" dbSize="20" dbTypeName="VARCHAR" inputType="text" javaName="upMenuId" javaType="java.lang.String" jdbcTypeCode="12" label="Up menu id" maxLength="20" notNull="false" selected="true"/>
+<column dbComment="url" dbDefaultValue="" dbName="PROGRM_URL" dbNotNull="false" dbPosition="4" dbSize="300" dbTypeName="VARCHAR" inputType="text" javaName="progrmUrl" javaType="java.lang.String" jdbcTypeCode="12" label="Progrm url" maxLength="300" notNull="false" selected="true"/>
+<column dbComment="순서" dbDefaultValue="999" dbName="SORT_ORDER" dbNotNull="true" dbPosition="5" dbSize="10" dbTypeName="INT" inputType="number" javaName="sortOrder" javaType="java.lang.Integer" jdbcTypeCode="4" label="Sort order" notNull="true" selected="true"/>
+<column dbComment="사용여부" dbDefaultValue="Y" dbName="USE_YN" dbNotNull="true" dbPosition="6" dbSize="1" dbTypeName="CHAR" inputType="text" javaName="useYn" javaType="java.lang.String" jdbcTypeCode="1" label="Use yn" maxLength="1" notEmpty="true" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="UPDT_DT" dbNotNull="false" dbPosition="7" dbSize="14" dbTypeName="VARCHAR" inputType="text" javaName="updtDt" javaType="java.lang.String" jdbcTypeCode="12" label="Updt dt" maxLength="14" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="0" dbName="UPDUSR_SN" dbNotNull="false" dbPosition="8" dbSize="10" dbTypeName="INT" inputType="number" javaName="updusrSn" javaType="java.lang.Integer" jdbcTypeCode="4" label="Updusr sn" notNull="false" selected="true"/>
+<link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="FK_IS_MENU_SM_PRIVGRP_PRIV" id="LINK_FK_FK_IS_MENU_SM_PRIVGRP_PRIV_I" inverseSideOf="LINK_FK_FK_IS_MENU_SM_PRIVGRP_PRIV_O" javaName="listOfSmPrivgrpPriv" javaType="java.util.List" joinTableName="" mappedBy="isMenu" optional="UNDEFINED" owningSide="false" sourceTableName="is_menu" targetEntity="SmPrivgrpPriv" targetTableName="sm_privgrp_priv" used="true"/>
+</table>
+<table catalog="portaldb" databaseType="TABLE" javaBean="SmPrivgrp" name="sm_privgrp" schema="">
+<column dbAutoIncremented="true" dbComment="" dbDefaultValue="" dbName="PRIVGRP_SN" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="privgrpSn" javaType="java.lang.Integer" jdbcTypeCode="4" label="Privgrp sn" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="PRIVGRP_NAME" dbNotNull="true" dbPosition="2" dbSize="100" dbTypeName="VARCHAR" inputType="text" javaName="privgrpName" javaType="java.lang.String" jdbcTypeCode="12" label="Privgrp name" maxLength="100" notEmpty="true" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="PRIVGRP_DESC" dbNotNull="false" dbPosition="3" dbSize="300" dbTypeName="VARCHAR" inputType="text" javaName="privgrpDesc" javaType="java.lang.String" jdbcTypeCode="12" label="Privgrp desc" maxLength="300" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="0" dbName="PRIORT" dbNotNull="true" dbPosition="4" dbSize="10" dbTypeName="INT" inputType="number" javaName="priort" javaType="java.lang.Integer" jdbcTypeCode="4" label="Priort" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="Y" dbName="USE_YN" dbNotNull="true" dbPosition="5" dbSize="1" dbTypeName="CHAR" inputType="text" javaName="useYn" javaType="java.lang.String" jdbcTypeCode="1" label="Use yn" maxLength="1" notEmpty="true" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="UPDT_DT" dbNotNull="false" dbPosition="6" dbSize="14" dbTypeName="VARCHAR" inputType="text" javaName="updtDt" javaType="java.lang.String" jdbcTypeCode="12" label="Updt dt" maxLength="14" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="UPDUSR_SN" dbNotNull="false" dbPosition="7" dbSize="10" dbTypeName="INT" inputType="number" javaName="updusrSn" javaType="java.lang.Integer" jdbcTypeCode="4" label="Updusr sn" notNull="false" selected="true"/>
+<link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="FK_SM_PRIVGRP_SM_USERRIV" id="LINK_FK_FK_SM_PRIVGRP_SM_USERRIV_I" inverseSideOf="LINK_FK_FK_SM_PRIVGRP_SM_USERRIV_O" javaName="listOfSmUserpriv" javaType="java.util.List" joinTableName="" mappedBy="smPrivgrp" optional="UNDEFINED" owningSide="false" sourceTableName="sm_privgrp" targetEntity="SmUserpriv" targetTableName="sm_userpriv" used="true"/>
+<link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="FK_SM_PRIVGRP_SM_PRIVGRP_PRIV" id="LINK_FK_FK_SM_PRIVGRP_SM_PRIVGRP_PRIV_I" inverseSideOf="LINK_FK_FK_SM_PRIVGRP_SM_PRIVGRP_PRIV_O" javaName="listOfSmPrivgrpPriv" javaType="java.util.List" joinTableName="" mappedBy="smPrivgrp" optional="UNDEFINED" owningSide="false" sourceTableName="sm_privgrp" targetEntity="SmPrivgrpPriv" targetTableName="sm_privgrp_priv" used="true"/>
+</table>
+<table catalog="portaldb" databaseType="TABLE" javaBean="SmPrivgrpPriv" name="sm_privgrp_priv" schema="">
+<column dbComment="" dbDefaultValue="" dbForeignKey="true" dbName="PRIVGRP_SN" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="privgrpSn" javaType="java.lang.Integer" jdbcTypeCode="4" label="Privgrp sn" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="PRIV_SN" dbNotNull="true" dbPosition="2" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="privSn" javaType="java.lang.Integer" jdbcTypeCode="4" label="Priv sn" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbForeignKey="true" dbName="MENU_ID" dbNotNull="false" dbPosition="3" dbSize="20" dbTypeName="VARCHAR" inputType="text" javaName="menuId" javaType="java.lang.String" jdbcTypeCode="12" label="Menu id" maxLength="20" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="UPDT_DT" dbNotNull="false" dbPosition="4" dbSize="14" dbTypeName="VARCHAR" inputType="text" javaName="updtDt" javaType="java.lang.String" jdbcTypeCode="12" label="Updt dt" maxLength="14" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="UPDUSR_SN" dbNotNull="false" dbPosition="5" dbSize="10" dbTypeName="INT" inputType="number" javaName="updusrSn" javaType="java.lang.Integer" jdbcTypeCode="4" label="Updusr sn" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="INQIRE_YN" dbNotNull="false" dbPosition="6" dbSize="1" dbTypeName="CHAR" inputType="text" javaName="inqireYn" javaType="java.lang.String" jdbcTypeCode="1" label="Inqire yn" maxLength="1" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="WRITE_YN" dbNotNull="false" dbPosition="7" dbSize="1" dbTypeName="CHAR" inputType="text" javaName="writeYn" javaType="java.lang.String" jdbcTypeCode="1" label="Write yn" maxLength="1" notNull="false" selected="true"/>
+<fk name="FK_IS_MENU_SM_PRIVGRP_PRIV">
+<fkcol colname="MENU_ID" colref="MENU_ID" deferrable="7" deleterule="0" sequence="1" tablename="sm_privgrp_priv" tableref="is_menu" updaterule="0"/>
+</fk>
+<fk name="FK_SM_PRIVGRP_SM_PRIVGRP_PRIV">
+<fkcol colname="PRIVGRP_SN" colref="PRIVGRP_SN" deferrable="7" deleterule="0" sequence="1" tablename="sm_privgrp_priv" tableref="sm_privgrp" updaterule="0"/>
+</fk>
+<link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="FK_IS_MENU_SM_PRIVGRP_PRIV" id="LINK_FK_FK_IS_MENU_SM_PRIVGRP_PRIV_O" inverseSideOf="" javaName="isMenu" javaType="IsMenu" joinTableName="" mappedBy="" optional="UNDEFINED" owningSide="true" sourceTableName="sm_privgrp_priv" targetEntity="IsMenu" targetTableName="is_menu" used="true">
+<joinColumns>
+<joinColumn insertable="false" name="MENU_ID" nullable="true" referencedColumnName="MENU_ID" unique="false" updatable="false"/>
+</joinColumns>
+</link>
+<link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="FK_SM_PRIVGRP_SM_PRIVGRP_PRIV" id="LINK_FK_FK_SM_PRIVGRP_SM_PRIVGRP_PRIV_O" inverseSideOf="" javaName="smPrivgrp" javaType="SmPrivgrp" joinTableName="" mappedBy="" optional="UNDEFINED" owningSide="true" sourceTableName="sm_privgrp_priv" targetEntity="SmPrivgrp" targetTableName="sm_privgrp" used="true">
+<joinColumns>
+<joinColumn insertable="false" name="PRIVGRP_SN" nullable="true" referencedColumnName="PRIVGRP_SN" unique="false" updatable="false"/>
+</joinColumns>
+</link>
+</table>
+<table catalog="portaldb" databaseType="TABLE" javaBean="SmUser" name="sm_user" schema="">
+<column dbAutoIncremented="true" dbComment="" dbDefaultValue="" dbName="USER_SN" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="userSn" javaType="java.lang.Integer" jdbcTypeCode="4" label="User sn" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="USER_ID" dbNotNull="true" dbPosition="2" dbSize="250" dbTypeName="VARCHAR" inputType="text" javaName="userId" javaType="java.lang.String" jdbcTypeCode="12" label="User id" maxLength="250" notEmpty="true" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="USER_NAME" dbNotNull="true" dbPosition="3" dbSize="100" dbTypeName="VARCHAR" inputType="text" javaName="userName" javaType="java.lang.String" jdbcTypeCode="12" label="User name" maxLength="100" notEmpty="true" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="USER_PW" dbNotNull="true" dbPosition="4" dbSize="250" dbTypeName="VARCHAR" inputType="text" javaName="userPw" javaType="java.lang.String" jdbcTypeCode="12" label="User pw" maxLength="250" notEmpty="true" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="CELL" dbNotNull="false" dbPosition="5" dbSize="100" dbTypeName="VARCHAR" inputType="text" javaName="cell" javaType="java.lang.String" jdbcTypeCode="12" label="Cell" maxLength="100" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="EMAIL" dbNotNull="false" dbPosition="6" dbSize="100" dbTypeName="VARCHAR" inputType="text" javaName="email" javaType="java.lang.String" jdbcTypeCode="12" label="Email" maxLength="100" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="UPDT_DT" dbNotNull="false" dbPosition="7" dbSize="14" dbTypeName="VARCHAR" inputType="text" javaName="updtDt" javaType="java.lang.String" jdbcTypeCode="12" label="Updt dt" maxLength="14" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="UPDUSR_SN" dbNotNull="false" dbPosition="8" dbSize="10" dbTypeName="INT" inputType="number" javaName="updusrSn" javaType="java.lang.Integer" jdbcTypeCode="4" label="Updusr sn" notNull="false" selected="true"/>
+<link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="FK_SM_USER_SM_USERPRIV" id="LINK_FK_FK_SM_USER_SM_USERPRIV_I" inverseSideOf="LINK_FK_FK_SM_USER_SM_USERPRIV_O" javaName="listOfSmUserpriv" javaType="java.util.List" joinTableName="" mappedBy="smUser" optional="UNDEFINED" owningSide="false" sourceTableName="sm_user" targetEntity="SmUserpriv" targetTableName="sm_userpriv" used="true"/>
+</table>
+<table catalog="portaldb" databaseType="TABLE" javaBean="SmUserpriv" name="sm_userpriv" schema="">
+<column dbComment="" dbDefaultValue="" dbForeignKey="true" dbName="USER_SN" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="userSn" javaType="java.lang.Integer" jdbcTypeCode="4" label="User sn" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbForeignKey="true" dbName="PRIVGRP_SN" dbNotNull="true" dbPosition="2" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="privgrpSn" javaType="java.lang.Integer" jdbcTypeCode="4" label="Privgrp sn" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="UPDT_DT" dbNotNull="false" dbPosition="3" dbSize="14" dbTypeName="VARCHAR" inputType="text" javaName="updtDt" javaType="java.lang.String" jdbcTypeCode="12" label="Updt dt" maxLength="14" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="UPDUSR_SN" dbNotNull="false" dbPosition="4" dbSize="10" dbTypeName="INT" inputType="number" javaName="updusrSn" javaType="java.lang.Integer" jdbcTypeCode="4" label="Updusr sn" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="PRIV_REQUST_STTUS_CD" dbNotNull="false" dbPosition="5" dbSize="10" dbTypeName="VARCHAR" inputType="text" javaName="privRequstSttusCd" javaType="java.lang.String" jdbcTypeCode="12" label="Priv requst sttus cd" maxLength="10" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="PRIV_REQUST_RETURN_RESN" dbNotNull="false" dbPosition="6" dbSize="300" dbTypeName="VARCHAR" inputType="text" javaName="privRequstReturnResn" javaType="java.lang.String" jdbcTypeCode="12" label="Priv requst return resn" maxLength="300" notNull="false" selected="true"/>
+<fk name="FK_SM_PRIVGRP_SM_USERRIV">
+<fkcol colname="PRIVGRP_SN" colref="PRIVGRP_SN" deferrable="7" deleterule="0" sequence="1" tablename="sm_userpriv" tableref="sm_privgrp" updaterule="0"/>
+</fk>
+<fk name="FK_SM_USER_SM_USERPRIV">
+<fkcol colname="USER_SN" colref="USER_SN" deferrable="7" deleterule="0" sequence="1" tablename="sm_userpriv" tableref="sm_user" updaterule="0"/>
+</fk>
+<link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="FK_SM_PRIVGRP_SM_USERRIV" id="LINK_FK_FK_SM_PRIVGRP_SM_USERRIV_O" inverseSideOf="" javaName="smPrivgrp" javaType="SmPrivgrp" joinTableName="" mappedBy="" optional="UNDEFINED" owningSide="true" sourceTableName="sm_userpriv" targetEntity="SmPrivgrp" targetTableName="sm_privgrp" used="true">
+<joinColumns>
+<joinColumn insertable="false" name="PRIVGRP_SN" nullable="true" referencedColumnName="PRIVGRP_SN" unique="false" updatable="false"/>
+</joinColumns>
+</link>
+<link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="FK_SM_USER_SM_USERPRIV" id="LINK_FK_FK_SM_USER_SM_USERPRIV_O" inverseSideOf="" javaName="smUser" javaType="SmUser" joinTableName="" mappedBy="" optional="UNDEFINED" owningSide="true" sourceTableName="sm_userpriv" targetEntity="SmUser" targetTableName="sm_user" used="true">
+<joinColumns>
+<joinColumn insertable="false" name="USER_SN" nullable="true" referencedColumnName="USER_SN" unique="false" updatable="false"/>
+</joinColumns>
+</link>
+</table>
+</tableList>
+</root>

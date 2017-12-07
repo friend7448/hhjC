@@ -11,7 +11,7 @@
 			<div class="col-sm-3">
 				<select name="SLT_SEARCH_USE_YN" id="SLT_SEARCH_USE_YN" class="form-control">
 					<option value="" selected="selected">전체</option>
-					<option value="Y" >사용</option>
+					<option value="Y">사용</option>
 					<option value="N">미사용</option>
 				</select>
 			</div>
@@ -23,6 +23,7 @@
 </div>
 <div class="row">
 	<div class="col-sm-6">
+		<h4 style="text-align: left">권한 그룹 정보</h4>
 		<div class="container-fluid" id="grid_container">
 			<table id="tbody"></table>
 			<div id="paginate"></div>
@@ -30,8 +31,7 @@
 		<div class="hhj-content-detail">
 			<form action="" class="form-horizontal" id="frmDetail" name="frmDetail" method="post" onsubmit="return false;">
 				<div class="form-group">
-					<input type="hidden" class="form-control" id="TXT_HIDDEN_PRIVGRP_SN" name="TXT_HIDDEN_PRIVGRP_SN" />
-					<label for="" class="control-label col-sm-2">권한그룹명</label>
+					<input type="hidden" class="form-control" id="TXT_HIDDEN_PRIVGRP_SN" name="TXT_HIDDEN_PRIVGRP_SN" /> <label for="" class="control-label col-sm-2">권한그룹명</label>
 					<div class="col-sm-6">
 						<input type="text" class="form-control" id="TXT_PRIVGRP_NAME" name="TXT_PRIVGRP_NAME" />
 					</div>
@@ -64,23 +64,36 @@
 					</div>
 				</div>
 				<div class="pull-right">
-					<button type="button" class="btn btn-default" id="btn_init">초기화</button>
-					<button type="button" class="btn btn-default" id="btn_insert">등록</button>
-					<button type="button" class="btn btn-default" id="btn_update">수정</button>
-					<button type="button" class="btn btn-default" id="btn_delete">삭제</button>
+					<c:if test="${program_auth[0].WRITE_YN == 'Y'}">
+						<button type="button" class="btn btn-default" id="btn_init">초기화</button>
+						<button type="button" class="btn btn-default" id="btn_insert">등록</button>
+						<button type="button" class="btn btn-default" id="btn_update">수정</button>
+						<button type="button" class="btn btn-default" id="btn_delete">삭제</button>
+					</c:if>
 				</div>
 			</form>
 		</div>
 	</div>
 	<div class="col-sm-6">
-		<div class="container-fluid" id="grid_container">
-			<table id="tbody2"></table>
-			<div id="paginate2"></div>
+		<h4 style="text-align: left">프로그램 권한 정보</h4>
+		<div class="container-fluid" id="grid_container2">
+			<form action="" id="frm2" name="frm2" method="post" onsubmit="return false;">
+				<table id="tbody2"></table>
+				<div id="paginate2"></div>
+			</form>
+		</div>
+		<div class="hhj-content-detail">
+			<div class="pull-right">
+				<c:if test="${program_auth[0].WRITE_YN == 'Y'}">
+					<button type="button" class="btn btn-default" id="btn_update2">수정</button>
+				</c:if>
+			</div>
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="./script/privgrp/privgrp.js"></script>
-<script type="text/javascript" src="./script/common/hhj_defaultContent.js"></script>
+<script type="text/javascript" src="../script/privgrp/privgrp.js"></script>
+<script type="text/javascript" src="../script/privgrp/privgrp2.js"></script>
+<script type="text/javascript" src="../script/common/hhj_defaultContent.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 

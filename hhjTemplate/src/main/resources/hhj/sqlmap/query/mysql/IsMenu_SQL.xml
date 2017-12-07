@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="is_menu">
+	<sql id="where_clause">
+		WHERE	1 = 1
+			<isNotEmpty property="S_MENU_ID">
+			<![CDATA[
+			AND	MENU_ID LIKE CONCAT('%', #S_MENU_ID#, '%')
+			]]>
+			</isNotEmpty>
+			<isNotEmpty property="S_MENU_NAME">
+			<![CDATA[
+			AND	MENU_NAME LIKE CONCAT('%', #S_MENU_NAME#, '%')
+			]]>
+			</isNotEmpty>
+			<isNotEmpty property="S_UP_MENU_ID">
+			<![CDATA[
+			AND	UP_MENU_ID LIKE CONCAT('%', #S_UP_MENU_ID#, '%')
+			]]>
+			</isNotEmpty>
+			<isNotEmpty property="S_PROGRM_URL">
+			<![CDATA[
+			AND	PROGRM_URL LIKE CONCAT('%', #S_PROGRM_URL#, '%')
+			]]>
+			</isNotEmpty>
+			<isNotEmpty property="S_SORT_ORDER">
+			<![CDATA[
+			AND	SORT_ORDER LIKE CONCAT('%', #S_SORT_ORDER#, '%')
+			]]>
+			</isNotEmpty>
+			<isNotEmpty property="S_USE_YN">
+			<![CDATA[
+			AND	USE_YN LIKE CONCAT('%', #S_USE_YN#, '%')
+			]]>
+			</isNotEmpty>
+			<isNotEmpty property="S_UPDT_DT">
+			<![CDATA[
+			AND	UPDT_DT LIKE CONCAT('%', #S_UPDT_DT#, '%')
+			]]>
+			</isNotEmpty>
+			<isNotEmpty property="S_UPDUSR_SN">
+			<![CDATA[
+			AND	UPDUSR_SN LIKE CONCAT('%', #S_UPDUSR_SN#, '%')
+			]]>
+			</isNotEmpty>
+	</sql>
+
+	<select id="doSelect" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT A.*
+		FROM (
+			SELECT
+				MENU_ID
+				,MENU_NAME
+				,UP_MENU_ID
+				,PROGRM_URL
+				,SORT_ORDER
+				,USE_YN
+				,UPDT_DT
+				,UPDUSR_SN
+ 				,@ROWNUM := @ROWNUM + 1 AS RNUM
+			FROM	is_menu
+					,(SELECT @ROWNUM := 0) R
+			<include refid="where_clause" />
+		) A
+		<![CDATA[
+    	WHERE	A.RNUM  >= #START_ROW# 
+    		AND	A.RNUM <= #END_ROW#
+		]]>
+	</select>
+
+	<select id="doSelectCnt" parameterClass="java.util.HashMap" resultClass="int">
+		SELECT	COUNT(*)
+	    FROM	IS_MENU
+		<include refid="where_clause" />
+	</select>
+
+	<select id="doSelectDetail" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT
+				MENU_ID
+				,MENU_NAME
+				,UP_MENU_ID
+				,PROGRM_URL
+				,SORT_ORDER
+				,USE_YN
+				,UPDT_DT
+				,UPDUSR_SN
+		FROM	is_menu
+		WHERE	
+				MENU_ID = #MENU_ID#
+	</select>
+
+	<!--selectkey result?? -->
+	<insert id="doInsert" parameterClass="java.util.HashMap">
+		<![CDATA[
+		INSERT INTO is_menu (
+			MENU_ID
+ 			,MENU_NAME
+ 			,UP_MENU_ID
+ 			,PROGRM_URL
+ 			,SORT_ORDER
+ 			,USE_YN
+ 			,UPDT_DT
+ 			,UPDUSR_SN
+ 		)
+		VALUES (
+			#MENU_ID#
+  			,#MENU_NAME#
+   			,#UP_MENU_ID#
+   			,#PROGRM_URL#
+   			,#SORT_ORDER#
+   			,#USE_YN#
+   			,SYSDATE() + 0
+   			,#UPDUSR_SN#
+   		)
+		]]>
+		<selectKey keyProperty="test" resultClass="int">
+			SELECT	COUNT(*) + 1
+			FROM 	is_menu
+		</selectKey>
+	</insert>
+	
+	<update id="doUpdate" parameterClass="java.util.HashMap" >
+		UPDATE	is_menu
+		SET
+				MENU_NAME = #MENU_NAME#
+				,UP_MENU_ID = #UP_MENU_ID#
+				,PROGRM_URL = #PROGRM_URL#
+				,SORT_ORDER = #SORT_ORDER#
+				,USE_YN = #USE_YN#
+				,SYSDATE() + 0
+				,UPDUSR_SN = #UPDUSR_SN#
+		WHERE	
+				MENU_ID = #MENU_ID#
+	</update>
+
+	<delete id="doDelete" parameterClass="java.util.HashMap" >
+		<![CDATA[
+		DELETE
+		FROM	is_menu
+		WHERE	
+				MENU_ID = #MENU_ID#
+		]]>
+	</delete>
+</sqlMap>

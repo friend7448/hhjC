@@ -24,5 +24,15 @@ public interface hhjService {
 	Map<String, String> selectByPk(String queryId, Map<String, Object> param) throws Exception;
 	
 	List list(String queryId, Map<String, Object> param) throws Exception;
+	
+//	int updatePrivGrpPriv(Map<String, Object> map, List<Map<String, Object>> list) throws Exception;
+//	
+//	int insertUserNPriv(Map<String, Object> param) throws Exception;
+//	
+//	int updateUserNPriv(Map<String, Object> param) throws Exception;
+//	
+//	int deleteUserNPriv(Map<String, Object> param) throws Exception;
+	
+	
 }
   

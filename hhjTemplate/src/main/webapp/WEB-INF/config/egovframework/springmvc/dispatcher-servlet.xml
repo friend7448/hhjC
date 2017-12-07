@@ -42,10 +42,19 @@
     </bean>
     
     <bean id="authenticInterceptor" class="hhj.common.AuthenticInterceptor">
-    	<!-- 인증 체크가 필요 없는 URL 리스트  -->
+    	<!-- 인증 체크 할 URL 리스트  -->
       <property name="urls">
       	<list>
-      		<value>/hhj/login2</value>
+<!--       		<value>/signin/signin</value> -->
+<!--       		<value>/signin/doLogin</value> -->
+      		<value>/main/main</value>
+      		<value>/privgrp/privgrp</value>
+      		<value>/program/program</value>
+      		<value>/user/user</value>
+      		<value>/IsMenu/IsMenu</value>
+      		<value>/a/</value>
+      		<value>/b/</value>
+      		<value>/c/</value>
       	</list>
       </property>
 	</bean>
@@ -83,9 +92,9 @@
 		</property>
 	</bean>
 
-    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="2"
-	    p:viewClass="org.springframework.web.servlet.view.JstlView"
-	    p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
+<!--     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="2" -->
+<!-- 	    p:viewClass="org.springframework.web.servlet.view.JstlView" -->
+<!-- 	    p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/> -->
 
     <!-- For Pagination Tag -->
     <bean id="imageRenderer" class="egovframework.example.cmmn.web.EgovImgPaginationRenderer"/>

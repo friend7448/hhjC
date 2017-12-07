@@ -11,8 +11,8 @@
 			<div class="col-sm-3">
 				<input type="text" class="form-control" id="TXT_SEARCH_MENU_NAME" name="TXT_SEARCH_MENU_NAME" placeholder="프로그램명" />
 			</div>
-			<div class="pull-right hhj-search-btn"> 
-			<button id="btn_search" class="btn btn-default">검색</button>
+			<div class="pull-right hhj-search-btn">
+				<button id="btn_search" class="btn btn-default">검색</button>
 			</div>
 		</div>
 	</form>
@@ -72,15 +72,17 @@
 			</div>
 		</div>
 		<div class="pull-right">
-			<button type="button" class="btn btn-default" id="btn_init">초기화</button>
-			<button type="button" class="btn btn-default" id="btn_insert">등록</button>
-			<button type="button" class="btn btn-default" id="btn_update">수정</button>
-			<button type="button" class="btn btn-default" id="btn_delete">삭제</button>
+			<c:if test="${program_auth[0].WRITE_YN == 'Y'}">
+				<button type="button" class="btn btn-default" id="btn_init">초기화</button>
+				<button type="button" class="btn btn-default" id="btn_insert">등록</button>
+				<button type="button" class="btn btn-default" id="btn_update">수정</button>
+				<button type="button" class="btn btn-default" id="btn_delete">삭제</button>
+			</c:if>
 		</div>
 	</form>
 </div>
-<script type="text/javascript" src="./script/program/program.js"></script>
-<script type="text/javascript" src="./script/common/hhj_defaultContent.js"></script>
+<script type="text/javascript" src="../script/program/program.js"></script>
+<script type="text/javascript" src="../script/common/hhj_defaultContent.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 

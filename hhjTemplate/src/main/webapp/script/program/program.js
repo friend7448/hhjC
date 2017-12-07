@@ -1,7 +1,7 @@
 // 검색 조건
 var search_set = 
 	{
-		url : "./common/doSelect.do", //추가
+		url : "../common/doSelect.do", //추가
 		postData : {
 			ACTION : 'program.doSelect',
 			TXT_SEARCH_MENU_ID : '', 		// 프로그램 ID
@@ -126,7 +126,7 @@ function detail(nId)
 
     $.ajax({
         type: "POST",
-        url: "./common/doSelectDetail.do",
+        url: "../common/doSelectDetail.do",
         data: {
         	ACTION : 'program.doSelectDetail',
         	TXT_MENU_ID : TXT_MENU_ID
@@ -197,7 +197,7 @@ function doInsert()
 	if(!IUDcheckValue()) return;
 	
 	var actionData = '&ACTION=program.doInsert';
-	var url = './common/doInsert.do';
+	var url = '../common/doInsert.do';
 	var uid = 'I';
 	
 	IUDdoAjax(actionData, url, uid);
@@ -209,7 +209,7 @@ function doUpdate()
 	if(!IUDcheckValue()) return;
 	
 	var actionData = '&ACTION=program.doUpdate';
-	var url = './common/doUpdate.do';
+	var url = '../common/doUpdate.do';
 	var uid = 'U';
 	
 	IUDdoAjax(actionData, url, uid);
@@ -221,7 +221,7 @@ function doDelete()
 	if(!IUDcheckValue()) return;
 	
 	var actionData = '&ACTION=program.doDelete';
-	var url = './common/doDelete.do';
+	var url = '../common/doDelete.do';
 	var uid = 'D';
 	
 	IUDdoAjax(actionData, url, uid);

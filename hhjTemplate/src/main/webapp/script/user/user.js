@@ -1,11 +1,12 @@
 // 검색 조건
 var search_set = 
 	{
-		url : "./common/doSelect.do", //추가
+		url : "../common/doSelect.do", //추가
 		postData : {
 			ACTION : 'user.doSelect',
 			SEARCH_USER_ID : '',
-			SEARCH_USER_NAME : '' 		
+			SEARCH_USER_NAME : '',
+			SEARCH_PRIVGRP_SN : ''
 		},
 	};
 
@@ -18,6 +19,8 @@ function setSearchValue() {
 		search_set.postData.SEARCH_USER_ID = '';
 		search_set.postData.SEARCH_USER_NAME = jQuery('#TXT_SEARCH').val();
 	}
+	
+	search_set.postData.SEARCH_PRIVGRP_SN = jQuery('#SLT_SEARCH_PRIVGRP_SN').val();
 }
 
 $(document).ready(function() {
@@ -29,7 +32,7 @@ $(document).ready(function() {
 		url : search_set.url,
 		postData : search_set.postData,
 		mtype : "POST", 
-		colNames : [ 'NO','SN','사용자ID','사용자명','연락처','이메일'],
+		colNames : [ 'NO','SN', '사용자 권한',  '사용자ID','사용자명','연락처','이메일'],
 		jsonReader : {
 			page : 'page',
 			total : 'total',
@@ -43,6 +46,7 @@ $(document).ready(function() {
 		},
 		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 80, 	sortable : false,	align : 'center', 	hidden : true},
 		             {name : 'USER_SN',		index : 'USER_SN',		width : 100, 	sortable : false,	align : 'center', 	hidden : true},
+		             {name : 'PRIVGRP_NAME',index : 'PRIVGRP_NAME',	width : 50, 	sortable : false,	align : 'center', 	hidden : false},
 		             {name : 'USER_ID',		index : 'USER_ID',		width : 50,    sortable : false, 	align : 'center', 	hidden : false},
 		             {name : 'USER_NAME',	index : 'USER_NAME',    width : 50,		sortable : false, 	align : 'center', 	hidden : false},
 		             {name : 'CELL',		index : 'CELL', 		width : 80,		sortable : false, 	align : 'center', 	hidden : false},
@@ -101,12 +105,13 @@ function initTableDetail()
 	jQuery("#TXT_EMAIL").val("");        	// 이메일
 	jQuery("#TXT_UPDUSR_SN").val("0");      // 수정자 ID
 	jQuery("#TXT_UPDT_DT").val("");         // 수정일시
+	jQuery("#SLT_PRIVGRP_SN").val("");  	// 사용자 권한
 	
 	jQuery("#TXT_USER_ID").prop('readonly', false);
 	
 	jQuery("#TXT_HIDDEN_USER_ID").val(""); //사용자 ID 중복체크용
 	jQuery("#TXT_HIDDEN_USER_SN").val(""); //사용자 ID 중복체크용
-	
+		
 	btnStatus(0,1,1);
 }
 
@@ -133,7 +138,7 @@ function detail(nId)
 
     $.ajax({
         type: "POST",
-        url: "./common/doSelectDetail.do",
+        url: "../user/doSelectDetail.do",
         data: {
         	ACTION : 'user.doSelectDetail',
         	TXT_HIDDEN_USER_SN : TXT_HIDDEN_USER_SN
@@ -149,7 +154,7 @@ function detail(nId)
 // 상세정보 조회 결과
 function doDetailCallback(jData)
 {
-	var response = jData.response[0];
+	var response = jData.response;
 
 	initTableDetail();
 
@@ -161,6 +166,7 @@ function doDetailCallback(jData)
 	jQuery("#TXT_EMAIL").val(response.EMAIL);
 	jQuery("#TXT_UPDUSR_SN").val(response.UPDUSR_SN);
 	jQuery("#TXT_UPDT_DT").val(dateToFormat(response.UPDT_DT));
+	jQuery("#SLT_PRIVGRP_SN").val(response.PRIVGRP_SN);
 	
 	jQuery("#TXT_USER_ID").prop('readonly', true); 
 	
@@ -187,6 +193,13 @@ function IUDcheckValue() {
 		jQuery("#TXT_USER_PW").focus();
 		return false;
 	}
+	else if(jQuery("#SLT_PRIV_GRP").val() == '')
+	{
+		alert("권한그룹을 선택하십시오.");
+		jQuery("#SLT_PRIV_GRP").focus();
+		return false;
+	}
+	
 	return true;
 }
 
@@ -214,8 +227,8 @@ function doInsert()
 	}
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=user.doInsert';
-	var url = './common/doInsert.do';
+	var actionData = '';
+	var url = '../user/doInsert.do';
 	var uid = 'I';
 	
 	IUDdoAjax(actionData, url, uid);
@@ -226,8 +239,8 @@ function doUpdate()
 {	
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=user.doUpdate';
-	var url = './common/doUpdate.do';
+	var actionData = '';
+	var url = '../user/doUpdate.do';
 	var uid = 'U';
 	
 	IUDdoAjax(actionData, url, uid);
@@ -238,8 +251,8 @@ function doDelete()
 {
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=user.doDelete';
-	var url = './common/doDelete.do';
+	var actionData = '';
+	var url = '../user/doDelete.do';
 	var uid = 'D';
 	
 	IUDdoAjax(actionData, url, uid);
@@ -285,7 +298,7 @@ function checkRepetition(){
 
     $.ajax({
         type: "POST",
-        url: "./common/doSelectDetail.do",
+        url: "../common/doSelectDetail.do",
         data: {
         	ACTION : 'user.doCheckUserId',
         	TXT_USER_ID : TXT_USER_ID

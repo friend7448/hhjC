@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +30,12 @@ public class CommonContriller {
 	private hhjService service;
 
 	Logger log = Logger.getLogger(this.getClass());
-
+	
+	@RequestMapping(value = "/{a}/{b}.do")
+	public String home(@PathVariable String a, @PathVariable String b) throws Exception {
+		return "/" + a + "/" + b;
+	}
+	
 	@RequestMapping("/common/doSelect.do")
 	public @ResponseBody Map<String, Object> doSelect(@RequestParam Map<String, Object> param) {
 		log.debug("Select param = " + param);

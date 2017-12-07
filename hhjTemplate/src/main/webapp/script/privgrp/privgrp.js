@@ -1,7 +1,7 @@
 // 검색 조건
 var search_set = 
 	{
-		url : "./common/doSelect.do", //추가
+		url : "../common/doSelect.do", //추가
 		postData : {
 			ACTION : 'privgrp.doSelect',
 			TXT_SEARCH_PRIVGRP_NAME : '',
@@ -59,6 +59,7 @@ $(document).ready(function() {
 		},
 		onSelectRow: function (nId) {
 			detail(nId);
+			doJqgridSearch2(nId);
 		}
 	});
 	hhj_resizeJqGridWidth('tbody', 'grid_container', $('#grid_container').width());
@@ -96,8 +97,6 @@ function initTableDetail()
 	jQuery("#TXT_UPDUSR_SN").val("0");      // 수정자 ID
 	jQuery("#TXT_UPDT_DT").val("");         // 수정일시
 	
-	jQuery("#TXT_PRIVGRP_NAME").prop('readonly', false);
-	
 	btnStatus(0,1,1);
 }
 
@@ -124,7 +123,7 @@ function detail(nId)
 	
     $.ajax({
         type: "POST",
-        url: "./common/doSelectDetail.do",
+        url: "../common/doSelectDetail.do",
         data: {
         	ACTION : 'privgrp.doSelectDetail',
         	TXT_HIDDEN_PRIVGRP_SN : TXT_HIDDEN_PRIVGRP_SN
@@ -150,8 +149,6 @@ function doDetailCallback(jData)
 	jQuery("#SLT_USE_YN").val(response.USE_YN);
 	jQuery("#TXT_UPDUSR_SN").val(response.UPDUSR_SN);
 	jQuery("#TXT_UPDT_DT").val(dateToFormat(response.UPDT_DT));
-	
-	jQuery("#TXT_PRIVGRP_NAME").prop('readonly', true); 
 	
 	btnStatus(1,0,0);
 }
@@ -194,7 +191,7 @@ function doInsert()
 	if(!IUDcheckValue()) return;
 	
 	var actionData = '&ACTION=privgrp.doInsert';
-	var url = './common/doInsert.do';
+	var url = '../common/doInsert.do';
 	var uid = 'I';
 	
 	IUDdoAjax(actionData, url, uid);
@@ -206,7 +203,7 @@ function doUpdate()
 	if(!IUDcheckValue()) return;
 	
 	var actionData = '&ACTION=privgrp.doUpdate';
-	var url = './common/doUpdate.do';
+	var url = '../common/doUpdate.do';
 	var uid = 'U';
 	
 	IUDdoAjax(actionData, url, uid);
@@ -218,7 +215,7 @@ function doDelete()
 	if(!IUDcheckValue()) return;
 	
 	var actionData = '&ACTION=privgrp.doDelete';
-	var url = './common/doDelete.do';
+	var url = '../common/doDelete.do';
 	var uid = 'D';
 	
 	IUDdoAjax(actionData, url, uid);
@@ -247,5 +244,4 @@ function doIUDCallback(jData, iud) {
 		else alert(msg + "이 실패했습니다.");
 	}
 }
-
 

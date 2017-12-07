@@ -9,6 +9,8 @@
     <javaClientGenerator targetPackage="mybatis.generator.mapper" targetProject="hhjTemplate" type="XMLMAPPER" />
     <table schema="portaldb" tableName="is_menu"></table>
     <table schema="portaldb" tableName="sm_privgrp"></table>
+    <table schema="portaldb" tableName="sm_privgrp_priv"></table>
+    <table schema="portaldb" tableName="sm_userpriv"></table>
 <!--       <columnOverride column="???" property="???" /> -->
   </context>
 </generatorConfiguration>

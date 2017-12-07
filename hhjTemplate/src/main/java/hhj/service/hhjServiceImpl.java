@@ -1,5 +1,6 @@
 package hhj.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,4 +68,61 @@ public class hhjServiceImpl extends EgovAbstractServiceImpl  implements hhjServi
 		// TODO Auto-generated method stub
 		return (Map<String, String>) hhjDAO.select(queryId, param);
 	}
+
+	/** 
+	* @Method Name : updatePrivGrpPriv 
+	* @변경이력      : 
+	* @Method 설명     : 권한그룹별 권한 적용
+	* @param map
+	* @param list
+	* @return 
+	*/
+//	@Override
+//	public int updatePrivGrpPriv(Map<String, Object> map, List<Map<String, Object>> list) throws Exception { 
+//		// TODO Auto-generated method stub
+//		hhjDAO.delete("privgrp.doDelete2", map);
+//		
+//		Map<String, Object> row = new HashMap<String, Object>();
+//		String privgrp_sn =  (String) map.get("PRIVGRP_SN");
+//
+//		if(list != null) {
+//			for (int i=0; i < list.size(); i++) {
+//				row = list.get(i);
+//				row.put("PRIVGRP_SN", privgrp_sn);
+//				row.put("PRIV_SN", i);
+//				if(row.get("WRITE_YN").equals("Y")) {
+//					row.put("INQIRE_YN", "Y");
+//				}
+//				hhjDAO.insert("privgrp.doInsert2", row);
+//				row.clear();
+//			}
+//		}
+//		return 1;
+//	}
+//
+//	@Override
+//	public int insertUserNPriv(Map<String, Object> param) throws Exception {
+//		// TODO Auto-generated method stub
+//		int USER_SN = (int) hhjDAO.insert("user.doInsert", param);
+//		param.put("USER_SN", USER_SN);
+//		hhjDAO.insert("user.doInsert2", param);
+//		return 1;
+//	}
+//
+//	@Override
+//	public int updateUserNPriv(Map<String, Object> param) throws Exception {
+//		// TODO Auto-generated method stub
+//		hhjDAO.update("user.doUpdate", param);
+//		hhjDAO.update("user.doUpdate2", param);
+//		return 1;
+//	}
+//
+//	@Override
+//	public int deleteUserNPriv(Map<String, Object> param) throws Exception {
+//		// TODO Auto-generated method stub
+//		hhjDAO.delete("user.doDelete2", param);
+//		hhjDAO.delete("user.doDelete", param);
+//		return 1;
+//	}
+	
 }

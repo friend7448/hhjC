@@ -6,21 +6,36 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="java.sql" level="DEBUG" additivity="false">
-            <AppenderRef ref="console" />
-        </Logger>
-        <Logger name="egovframework" level="DEBUG" additivity="false">
+<!--         <Logger name="java.sql" level="DEBUG" additivity="false"> -->
+<!--             <AppenderRef ref="console" /> -->
+<!--         </Logger> -->
+<!--         <Logger name="egovframework" level="WARN" additivity="false"> -->
+<!--             <AppenderRef ref="console" /> -->
+<!--         </Logger> -->
+        <Logger name="hhj" level="DEBUG" additivity="false">
             <AppenderRef ref="console" />
         </Logger>
           <!-- log SQL with timing information, post execution -->
-        <Logger name="jdbc.sqltiming" level="DEBUG" additivity="false">
-            <AppenderRef ref="console" />
-        </Logger>
-        <Logger name="org.springframework" level="DEBUG" additivity="false">
-            <AppenderRef ref="console" />
-        </Logger>
-        <Root level="DEBUG">
+<!--         <Logger name="jdbc.sqltiming" level="INFO" additivity="false"> -->
+<!--             <AppenderRef ref="console" /> -->
+<!--         </Logger> -->
+<!--         <Logger name="org.springframework" level="WARN" additivity="false"> -->
+<!--             <AppenderRef ref="console" /> -->
+<!--         </Logger> -->
+        <Root level="ERROR">
             <AppenderRef ref="console" />
         </Root>
     </Loggers>
 </Configuration>
+
+<!-- 
+logging 레벨은 TRACE < DEBUG < INFO < WARN < ERROR and FATAL 이며,
+      1) FATAL : 가장 크리티컬한 에러가 났을 때 사용.
+      2) ERROR : 일반 에러가 났을 경우 사용.
+      3) WARN : 에러는 아니지만 주의할 필요있을 때 사용.
+      4) INFO : 일반 정보를 나타날 때 사용.
+      5) DEBUG : 일반 정보를 상세히 나타낼 때 사용.
+      6) TRACE : 가장 레벨이 낮은 단계, 보통 DEBUG로 많이 하며 TRACE는 본적이...;
+      debug 레벨로 했다면 INFO~FATAL까지 모두 logging이 되어집니다.
+      운영모드라면 INFO레벨로 하면 됩니다. 
+ -->

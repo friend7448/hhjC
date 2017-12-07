@@ -1,5 +1,6 @@
 package hhj.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -13,16 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import hhj.service.hhjService;
 
 @Controller
-public class PrivgrpController {
+public class TestController {
 	@Resource(name = "hhjService")
 	private hhjService service;
 
 	Logger log = Logger.getLogger(this.getClass());
 
-	@RequestMapping("/privgrp/privgrp.do")
-	public String ProgramView(@RequestParam Map<String, Object> param, Model model) {
-		log.debug("hhj - 권한그룹관리화면 view");
+	@RequestMapping("/test/test.do")
+	public String test(@RequestParam Map<String, Object> param, Model model) {
+		log.debug("hhj - test");
 
-		return "/privgrp/privgrp";
+		
+		return "/test/test";
 	}
 }

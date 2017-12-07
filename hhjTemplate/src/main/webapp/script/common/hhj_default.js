@@ -2,10 +2,8 @@ $(function(){
 });
 
 /**
- *  날짜포맷변환 
- *  ex) 
- *  길이가 8자리인 경우 xxxxxxxx = > xxxx.xx.xx 
- *  길이가 14자리인 경우 xxxxxxxxxxxxxx = > xxxx.xx.xx xx:xx:xx
+ * 날짜포맷변환 ex) 길이가 8자리인 경우 xxxxxxxx = > xxxx.xx.xx 길이가 14자리인 경우 xxxxxxxxxxxxxx = >
+ * xxxx.xx.xx xx:xx:xx
  */
 function dateToFormat(parm)
 {
@@ -25,14 +23,19 @@ function dateToFormat(parm)
 }
 
 /**
-* @param obj  : this (고정)
-* @param type : int =>  정수(소수 입력 안 됨) / -int => -정수(소수 입력 안 됨) / float => 실수(소수 입력 가능) / -float => -실수 (소수 입력 가능)
-* @param tlen : tlen => 총 자리수 (정수 입력 시 tlen에서 flen 뺀 결과가 정수자리수)
-* @param flen : 소수 자리수 (~까지) 
-* @param comma : Y => 세자리마다 콤마(,) 자동입력 N => 콤마 미적용
-* @return
-* <input type="" onkeyup="check_number(this,'int',5,2,'Y');" />
-*/
+ * @param obj :
+ *            this (고정)
+ * @param type :
+ *            int => 정수(소수 입력 안 됨) / -int => -정수(소수 입력 안 됨) / float => 실수(소수 입력
+ *            가능) / -float => -실수 (소수 입력 가능)
+ * @param tlen :
+ *            tlen => 총 자리수 (정수 입력 시 tlen에서 flen 뺀 결과가 정수자리수)
+ * @param flen :
+ *            소수 자리수 (~까지)
+ * @param comma :
+ *            Y => 세자리마다 콤마(,) 자동입력 N => 콤마 미적용
+ * @return <input type="" onkeyup="check_number(this,'int',5,2,'Y');" />
+ */
 function check_number(obj, type, tlen, flen, comma){
 	var returnVal = String(obj.value);
 	var regexp = /[^-\.0-9]/g;
@@ -96,11 +99,9 @@ function check_number(obj, type, tlen, flen, comma){
 
 
  
-/********************************************************************************
- * 버튼상태 설정
- * btn_no: 버튼 아이디 
- * btn_insert, btn_update, btn_delete 파라미터: 1:비활성화, 0:활성화
- *********************************************************************************/
+/*******************************************************************************
+ * 버튼상태 설정 btn_no: 버튼 아이디 btn_insert, btn_update, btn_delete 파라미터: 1:비활성화, 0:활성화
+ ******************************************************************************/
 function btnStatus(btn_insert,btn_update,btn_delete)
 {
 	if(btn_insert == '1') 
@@ -131,7 +132,7 @@ function btnStatus(btn_insert,btn_update,btn_delete)
 	}
 }
 
-//ajaxSubmit 등록, 수정, 삭제 등 트랜젝션 발생 시 사용
+// ajaxSubmit 등록, 수정, 삭제 등 트랜젝션 발생 시 사용
 function ajaxSubmit(ajax_set, c_firm) {
         
     if (c_firm != null && c_firm != "") {
@@ -158,7 +159,7 @@ function ajaxSubmit(ajax_set, c_firm) {
     });
 }
 
-//등록, 수정, 삭제 등 트랜젝션 발생 시 사용
+// 등록, 수정, 삭제 등 트랜젝션 발생 시 사용
 function ajax(ajax_set, c_firm) {
     if (c_firm != null && c_firm != "") {
     	submit_ingView(true);
@@ -191,17 +192,17 @@ function ajax(ajax_set, c_firm) {
     });
 }
 
-//저장등 do_submitIUD 발생시 진행중 표시 화면
+// 저장등 do_submitIUD 발생시 진행중 표시 화면
 // hhj - 추후에 이미지 경로 잡고 체크!
 function submit_ingView(flag){
-    
-    if (flag) {
-        var h = $("body").height();
-        $("#wini_submit_ing").css({height:h});
-        $("#wini_submit_ing").show();
-        $("#wini_window_mask_cont").show();
-    } else {
-        $("#wini_submit_ing").hide();
-        $("#wini_window_mask_cont").hide();
-    }
+//    
+//    if (flag) {
+//        var h = $("body").height();
+//        $("#wini_submit_ing").css({height:h});
+//        $("#wini_submit_ing").show();
+//        $("#wini_window_mask_cont").show();
+//    } else {
+//        $("#wini_submit_ing").hide();
+//        $("#wini_window_mask_cont").hide();
+//    }
 }
