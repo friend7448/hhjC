@@ -38,7 +38,7 @@
 
 	<select id="doSelectCnt" parameterClass="java.util.HashMap" resultClass="int">
 		SELECT	COUNT(*)
-	    FROM	IS_MENU
+	    FROM	${entity.databaseTable}
 		<include refid="where_clause" />
 	</select>
 
@@ -110,13 +110,13 @@
 #foreach( $field in $entity.nonKeyAttributes )
 #if( $foreach.count == 1 )
 #if( $field.databaseName == "UPDT_DT" )
-				SYSDATE() + 0
+				$field.databaseName = SYSDATE() + 0
 #else 
 				$field.databaseName = #$field.databaseName#
 #end
 #else
 #if( $field.databaseName == "UPDT_DT" )
-				,SYSDATE() + 0
+				,$field.databaseName = SYSDATE() + 0
 #else 
 				,$field.databaseName = #$field.databaseName#
 #end

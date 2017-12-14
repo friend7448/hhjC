@@ -42,7 +42,8 @@
     <!-- 화면의 사용자 권한 조회-->
     <select id="doSelectProgramAuth" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		SELECT 	A.INQIRE_YN, 
-				A.WRITE_YN
+				A.WRITE_YN,
+				B.MENU_NAME
 		FROM 	SM_PRIVGRP_PRIV A, 
 				IS_MENU B
 		WHERE 	A.PRIVGRP_SN = #PRIVGRP_SN#

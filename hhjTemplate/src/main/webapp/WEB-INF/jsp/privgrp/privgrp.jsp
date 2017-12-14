@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="container-fluid hhj-content-header">
+	<h3 style="text-align: left; margin: 5px"><strong>${menu_name}</strong></h3>
+	<hr style="margin-top: 5px;"/>
 	<form action="" class="form-horizontal" onsubmit="return false;">
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="TXT_SEARCH_PRIVGRP_NAME">권한그룹명</label>
@@ -16,27 +18,30 @@
 				</select>
 			</div>
 			<div class="pull-right hhj-search-btn">
-				<button id="btn_search" class="btn btn-default">검색</button>
+				<button type="button" class="btn btn-info" id="btn_search">
+					<span class="glyphicon glyphicon-search"></span> 검색
+				</button>
 			</div>
 		</div>
 	</form>
 </div>
 <div class="row">
 	<div class="col-sm-6">
-		<h4 style="text-align: left">권한 그룹 정보</h4>
 		<div class="container-fluid" id="grid_container">
+			<h4 style="text-align: left">권한 그룹 정보</h4>
 			<table id="tbody"></table>
 			<div id="paginate"></div>
 		</div>
-		<div class="hhj-content-detail">
+		<div class="container-fluid hhj-content-detail">
 			<form action="" class="form-horizontal" id="frmDetail" name="frmDetail" method="post" onsubmit="return false;">
 				<div class="form-group">
-					<input type="hidden" class="form-control" id="TXT_HIDDEN_PRIVGRP_SN" name="TXT_HIDDEN_PRIVGRP_SN" /> <label for="" class="control-label col-sm-2">권한그룹명</label>
-					<div class="col-sm-6">
+					<input type="hidden" class="form-control" id="TXT_HIDDEN_PRIVGRP_SN" name="TXT_HIDDEN_PRIVGRP_SN" /> 
+					<label for="" class="control-label col-sm-2">권한그룹명</label>
+					<div class="col-sm-4">
 						<input type="text" class="form-control" id="TXT_PRIVGRP_NAME" name="TXT_PRIVGRP_NAME" />
 					</div>
 					<label for="" class="control-label col-sm-2">사용여부</label>
-					<div class="col-sm-2">
+					<div class="col-sm-4">
 						<select name="SLT_USE_YN" id="SLT_USE_YN" class="form-control">
 							<option value="Y" selected="selected">사용</option>
 							<option value="N">미사용</option>
@@ -45,11 +50,11 @@
 				</div>
 				<div class="form-group">
 					<label for="" class="control-label col-sm-2">그룹설명</label>
-					<div class="col-sm-6">
+					<div class="col-sm-4">
 						<input type="text" class="form-control" id="TXT_PRIVGRP_DESC" name="TXT_PRIVGRP_DESC" />
 					</div>
 					<label for="" class="control-label col-sm-2">우선순위</label>
-					<div class="col-sm-2">
+					<div class="col-sm-4">
 						<input type="text" class="form-control" id="TXT_PRIORT" name="TXT_PRIORT" />
 					</div>
 				</div>
@@ -75,14 +80,14 @@
 		</div>
 	</div>
 	<div class="col-sm-6">
-		<h4 style="text-align: left">프로그램 권한 정보</h4>
 		<div class="container-fluid" id="grid_container2">
+			<h4 style="text-align: left">프로그램 권한 정보</h4>
 			<form action="" id="frm2" name="frm2" method="post" onsubmit="return false;">
 				<table id="tbody2"></table>
 				<div id="paginate2"></div>
 			</form>
 		</div>
-		<div class="hhj-content-detail">
+		<div class="container-fluid hhj-content-detail">
 			<div class="pull-right">
 				<c:if test="${program_auth[0].WRITE_YN == 'Y'}">
 					<button type="button" class="btn btn-default" id="btn_update2">수정</button>

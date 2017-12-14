@@ -68,6 +68,7 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 				int userSn = (int) session.getAttribute("USER_SN");
 				String userName = (String) session.getAttribute("USER_NAME");
 				int privgrpSn = (int) session.getAttribute("PRIVGRP_SN");
+				String menuName = "";
 
 				Map<String, Object> param1 = new HashMap<String, Object>();
 				param1.put("USER_SN", userSn);
@@ -85,9 +86,14 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 					menu = service.list("layout.doSelectProgram", param1);
 
 					param1.put("PROGRM_URL", request.getServletPath());
-
+					
 					left_menu = service.list("layout.doSelectProgram", param1);
 					program_auth = service.list("layout.doSelectProgramAuth", param1);
+					
+					if(program_auth.size() > 0) {
+						Map<String, Object> map = (Map<String, Object>) program_auth.get(0);
+						menuName = (String) map.get("MENU_NAME");
+					}
 					
 					log.debug("up_menu list = " + up_menu);
 					log.debug("menu list = " + menu);
@@ -99,6 +105,8 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 					e.printStackTrace();
 				}
 
+				request.setAttribute("url", request.getServletPath());
+				request.setAttribute("menu_name", menuName);
 				request.setAttribute("up_menu", up_menu);
 				request.setAttribute("menu", menu);
 				request.setAttribute("left_menu", left_menu);

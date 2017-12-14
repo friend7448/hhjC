@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="${entity.databaseTable}">
+## foreignkey - where_clause
+#foreach( $entityReferencing in $model.allEntites )
+#foreach ( $fk in $entity.databaseForeignKeys)
+#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")
+## 테이블의 FK컬럼 - 마스터테이블의 컬럼
+#foreach( $fkcol in $fk.columns )
+#set($col = $fkcol.columnName)
+#set($refcol = $fkcol.referencedColumnName)
+#end ## #foreach( $fkcol in $fk.columns )
+	<sql id="where_clause$model.getEntityByTableName("${fk.referencedTableName}")">
+		WHERE
+## 마스터테이블 컬럼
+#foreach($field in $entityReferencing.attributes)
+## hhj.database = $field.databaseName
+#if( $refcol == $field.databaseName)
+			${fk.tableName}.$col = ${fk.referencedTableName}.$refcol	
+#else
+			<isNotEmpty property="S_$field.databaseName">
+			<![CDATA[
+			AND	${fk.referencedTableName}.$field.databaseName LIKE CONCAT('%', #S_$field.databaseName#, '%')
+			]]>
+			</isNotEmpty>
+#end ## #if( $refcol == $field.databaseName)
+#end ## #foreach($field in $entityReferencing.attributes)
+## 참조 테이블 컬럼
+#foreach($field in $entity.attributes)
+			<isNotEmpty property="S_$field.databaseName">
+			<![CDATA[
+			AND	${fk.tableName}.$field.databaseName LIKE CONCAT('%', #S_$field.databaseName#, '%')
+			]]>
+			</isNotEmpty>
+#end ## foreach
+	</sql>
+#end 
+#end 
+#end ## model.allEntites
+
+## foreignkey - select
+#foreach( $entityReferencing in $model.allEntites )
+#foreach ( $fk in $entity.databaseForeignKeys)
+#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")
+	<select id="doSelect$model.getEntityByTableName("${fk.referencedTableName}")" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT A.*
+		FROM (
+			SELECT
+				@ROWNUM := @ROWNUM + 1 AS RNUM
+## 참조 테이블의 참조 컬럼 찾기
+#foreach( $fkcol in $fk.columns )
+#set($refcol = $fkcol.referencedColumnName)
+#end
+## 참조 테이블의 컬럼
+#foreach($field in $entityReferencing.attributes)
+#if( $refcol != $field.databaseName)
+				,$field.databaseName
+#end
+#end ## foreach
+#foreach($field in $entity.attributes)
+				,$field.databaseName
+#end ## foreach
+			FROM	${fk.referencedTableName}
+					,${fk.tableName}
+					,(SELECT @ROWNUM := 0) R
+			<include refid="where_clause$model.getEntityByTableName("${fk.referencedTableName}")" />
+		) A
+		<![CDATA[
+    	WHERE	A.RNUM  >= #START_ROW# 
+    		AND	A.RNUM <= #END_ROW#
+		]]>
+	</select>
+#end
+#end
+#end
+
+## foreignkey - select cnt
+#foreach( $entityReferencing in $model.allEntites )
+#foreach ( $fk in $entity.databaseForeignKeys)
+#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")
+	<select id="doSelectCnt$model.getEntityByTableName("${fk.referencedTableName}")" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT COUNT(*)
+		FROM	${fk.referencedTableName}
+				,${fk.tableName}
+		<include refid="where_clause$model.getEntityByTableName("${fk.referencedTableName}")" />
+	</select>
+#end
+#end
+#end	
+
+	<sql id="where_clause">
+		WHERE	1 = 1
+#foreach( $field in $entity.attributes )
+#if($field.isReferencingAnotherEntity())
+			AND	$field.databaseName = #S_$field.databaseName#
+#else 
+			<isNotEmpty property="S_$field.databaseName">
+			<![CDATA[
+			AND	$field.databaseName LIKE CONCAT('%', #S_$field.databaseName#, '%')
+			]]>
+			</isNotEmpty>
+#end
+#end
+	</sql>
+
+	<select id="doSelect$entity.name" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT A.*
+		FROM (
+			SELECT
+#foreach( $field in $entity.attributes )
+#if( $foreach.count == 1)
+				$field.databaseName
+#else 
+				,$field.databaseName
+#end
+#end ## foreach				
+				,@ROWNUM := @ROWNUM + 1 AS RNUM
+			FROM	${entity.databaseTable}
+					,(SELECT @ROWNUM := 0) R
+			<include refid="where_clause" />
+		) A
+		<![CDATA[
+    	WHERE	A.RNUM  >= #START_ROW# 
+    		AND	A.RNUM <= #END_ROW#
+		]]>
+	</select>
+
+	<select id="doSelectCnt${entity.name}" parameterClass="java.util.HashMap" resultClass="int">
+		SELECT	COUNT(*)
+	    FROM	IS_MENU
+		<include refid="where_clause" />
+	</select>
+
+	<select id="doSelectDetail${entity.name}" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+		SELECT
+#foreach( $field in $entity.attributes )
+#if( $foreach.count == 1)
+				$field.databaseName
+#else
+				,$field.databaseName
+#end
+#end
+		FROM	${entity.databaseTable}
+		WHERE	
+#foreach( $field in $entity.KeyAttributes )
+#if( $foreach.count == 1)
+				$field.databaseName = #$field.databaseName#
+#else 
+			AND	$field.databaseName = #$field.databaseName#
+#end
+#end
+	</select>
+
+#set ( $cnt = 0 )
+	<!--selectkey result?? -->
+	<insert id="doInsert${entity.name}" parameterClass="java.util.HashMap">
+		<![CDATA[
+		INSERT INTO ${entity.databaseTable} (
+#foreach( $field in $entity.attributes )
+#if( !$field.isAutoIncremented())
+#if( $cnt == 0 )
+			$field.databaseName
+#set ( $cnt = 1 )
+#else
+			,$field.databaseName
+#end
+#end ## autoincrement
+#end		)
+		VALUES (
+#set ( $cnt = 0 )
+#foreach( $field in $entity.attributes )
+#if( !$field.isAutoIncremented())
+#if( $cnt == 0 )
+#if( $field.databaseName == "UPDT_DT" )
+			SYSDATE() + 0
+#else 
+			#$field.databaseName#
+#end
+#set ( $cnt = 1 )
+#else
+#if( $field.databaseName == "UPDT_DT" )
+			,SYSDATE() + 0
+#else
+			,#$field.databaseName#
+#end ## updt_dt
+#end ## cnt == 0
+#end ## auto
+#end		)
+		]]>
+		<selectKey keyProperty="test" resultClass="int">
+			SELECT	COUNT(*) + 1
+			FROM 	${entity.databaseTable}
+		</selectKey>
+	</insert>
+	
+	<update id="doUpdate${entity.name}" parameterClass="java.util.HashMap" >
+		UPDATE	${entity.databaseTable}
+		SET
+#foreach( $field in $entity.nonKeyAttributes )
+#if( $foreach.count == 1 )
+#if( $field.databaseName == "UPDT_DT" )
+				$field.databaseName = SYSDATE() + 0
+#else 
+				$field.databaseName = #$field.databaseName#
+#end
+#else
+#if( $field.databaseName == "UPDT_DT" )
+				,$field.databaseName = SYSDATE() + 0
+#else 
+				,$field.databaseName = #$field.databaseName#
+#end
+#end
+#end
+		WHERE	
+#foreach( $field in $entity.KeyAttributes )
+#if( $foreach.count == 1 )
+				$field.databaseName = #$field.databaseName#
+#else
+			AND	$field.databaseName = #$field.databaseName#
+#end
+#end
+	</update>
+
+	<delete id="doDelete${entity.name}" parameterClass="java.util.HashMap" >
+		<![CDATA[
+		DELETE
+		FROM	${entity.databaseTable}
+		WHERE	
+#foreach( $field in $entity.KeyAttributes )
+#if( $foreach.count == 1 )
+				$field.databaseName = #$field.databaseName#
+#else
+			AND	$field.databaseName = #$field.databaseName#
+#end
+#end
+		]]>
+	</delete>
+
+</sqlMap>

@@ -1,22 +1,63 @@
+#set ( $referencedEntity = "" )
+
 // search param
+#foreach( $entityReferencing in $model.allEntites )
+#foreach ( $fk in $entity.databaseForeignKeys)
+#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")
+#set ( $referencedEntity = $model.getEntityByTableName("${fk.referencedTableName}") )
 var search_set = 
 	{
 		url : "../common/doSelect.do",
 		postData : {
-			ACTION : '${entity.databaseTable}.doSelect'
-#foreach( $field in $entity.attributes )
+			ACTION : '${entity.databaseTable}.doSelect$referencedEntity'
+## 테이블의 FK컬럼 - 마스터테이블의 컬럼
+#foreach( $fkcol in $fk.columns )
+#set($col = $fkcol.columnName)
+#set($refcol = $fkcol.referencedColumnName)
+#end ## foreach
+## 마스터테이블 컬럼
+#foreach($field in $entityReferencing.attributes)
+## hhj.database = $field.databaseName
+#if( ($refcol != $field.databaseName) && !$field.isAutoIncremented())
+			,S_$field.databaseName : ''
+#end 
+#end ## foreach
+## 참조 테이블 컬럼
+#foreach($field in $entity.attributes)
 #if( !$field.isAutoIncremented())
 			,S_$field.databaseName : ''
 #end
-#end
+#end ## foreach
+#end 
+#end 
+#end ## model.allEntites
 		},
 	};
 
 
 function setSearchValue() {
-#foreach( $field in $entity.attributes )
+#foreach( $entityReferencing in $model.allEntites )
+#foreach ( $fk in $entity.databaseForeignKeys)
+#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")
+## 테이블의 FK컬럼 - 마스터테이블의 컬럼
+#foreach( $fkcol in $fk.columns )
+#set($col = $fkcol.columnName)
+#set($refcol = $fkcol.referencedColumnName)
+#end ## foreach
+## 마스터테이블 컬럼
+#foreach($field in $entityReferencing.attributes)
+## hhj.database = $field.databaseName
+#if( ($refcol != $field.databaseName) && !$field.isAutoIncremented())
+	search_set.postData.S_$field.databaseName = jQuery('#S_$field.databaseName').val();
+#end 
+#end ## foreach
+## 참조 테이블 컬럼
+#foreach($field in $entity.attributes)
 #if( !$field.isAutoIncremented())
 	search_set.postData.S_$field.databaseName = jQuery('#S_$field.databaseName').val();
+#end
+#end## foreach
+#end
 #end
 #end
 }
@@ -30,7 +71,7 @@ $(document).ready(function() {
 		url : search_set.url,
 		postData : search_set.postData,
 		mtype : "POST", 
-		colNames : [ 'NO'#foreach( $field in $entity.attributes ),'$field.databaseName'#end],
+		colNames : [ 'NO'#foreach( $entityReferencing in $model.allEntites )#foreach ( $fk in $entity.databaseForeignKeys)#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")#foreach( $fkcol in $fk.columns )#set($col = $fkcol.columnName)#set($refcol = $fkcol.referencedColumnName)#end#foreach($field in $entityReferencing.attributes)#if( $refcol != $field.databaseName),'$field.databaseName'#end#end#foreach($field in $entity.attributes),'$field.databaseName'#end#end#end#end],
 		jsonReader : {
 			page : 'page',
 			total : 'total',
@@ -43,9 +84,27 @@ $(document).ready(function() {
 			id : 'RNUM'
 		},
 		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 0, 		sortable : true,	align : 'center', 	hidden : true}
-#foreach( $field in $entity.attributes )
-					,{name : '$field.databaseName',		index : '$field.databaseName',		width : 0,		align : 'center',		hidden : false}  
-#end		             
+#foreach( $entityReferencing in $model.allEntites )
+#foreach ( $fk in $entity.databaseForeignKeys)
+#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")
+#foreach( $fkcol in $fk.columns )
+#set($col = $fkcol.columnName)
+#set($refcol = $fkcol.referencedColumnName)
+#end ## foreach
+## 마스터테이블 컬럼
+#foreach($field in $entityReferencing.attributes)
+## hhj.database = $field.databaseName
+#if( $refcol != $field.databaseName)
+					,{name : '$field.databaseName',		index : '$field.databaseName',		width : 0,		align : 'center',		hidden : false}
+#end
+#end
+## 참조 테이블 컬럼
+#foreach($field in $entity.attributes)
+					,{name : '$field.databaseName',		index : '$field.databaseName',		width : 0,		align : 'center',		hidden : false}
+#end ## foreach
+#end 
+#end 
+#end ## model.allEntites
 		],
 //		pager : '#tbodyPager',
 		rowNum : 10,
@@ -134,7 +193,7 @@ function detail(nId)
         type: "POST",
         url: "../common/doSelectDetail.do",
         data: {
-        	ACTION : '${entity.databaseTable}.doSelectDetail'
+        	ACTION : '${entity.databaseTable}.doSelectDetail$referencedEntity'
         	, $field.databaseName : $field.databaseName
         },
         dataType: 'json',
@@ -168,7 +227,7 @@ function doDetailCallback(jData)
 // not null check
 function IUDcheckValue() {
 #foreach( $field in $entity.attributes )
-#if($field.isDatabaseNotNull())
+#if($field.isDatabaseNotNull() && !$field.isAutoIncremented())
 #if( $cnt > 0 )
 	else if(jQuery("#$field.databaseName").val().length == 0)
 #end
@@ -206,7 +265,7 @@ function doInsert()
 {
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=${entity.databaseTable}.doInsert';
+	var actionData = '&ACTION=${entity.databaseTable}.doInsert$referencedEntity';
 	var url = '../common/doInsert.do';
 	var uid = 'I';
 	
@@ -218,7 +277,7 @@ function doUpdate()
 {	
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=${entity.databaseTable}.doUpdate';
+	var actionData = '&ACTION=${entity.databaseTable}.doUpdate$referencedEntity';
 	var url = '../common/doUpdate.do';
 	var uid = 'U';
 	
@@ -230,7 +289,7 @@ function doDelete()
 {
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=${entity.databaseTable}.doDelete';
+	var actionData = '&ACTION=${entity.databaseTable}.doDelete$referencedEntity';
 	var url = '../common/doDelete.do';
 	var uid = 'D';
 	

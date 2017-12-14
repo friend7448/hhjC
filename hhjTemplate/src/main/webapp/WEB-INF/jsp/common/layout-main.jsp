@@ -25,8 +25,8 @@
 <script type="text/javascript" src="../script/common/paginate.js"></script>
 <style>
 .container-fluid.header {
-	background-color: #555;
-	color: white;
+	background-color: #fff;
+	color: #000;
 	padding: 15px;
 }
 
