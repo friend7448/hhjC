@@ -70,12 +70,17 @@
  		color: #fff; /* 마우스 오버시 글 색 */
 		text-decoration: none;
 	}
+	
+	.up_menu_active {
+		background: #080808; /* 선택된 상위 메뉴 표시 */
+	}
 }
 </style>
 
 <div class="container-fluid">
 	<div class="form-group">
-		<span style="background-color: red">로고</span>
+		<span style="background-color: red" ><a href="../main/main.do">로고</a>
+		</span>
 		<div class="pull-right">
 			<span class="glyphicon glyphicon-user"> ${user_name} 님</span> 
 			<a href="<c:url value='/signin/signout.do'/>" class="btn btn-default"
@@ -86,20 +91,28 @@
 	</div>
 </div>
 
+<c:set var="up_menu_name" value="${menus_name[0].UP_MENU_NAME}" />
 <div class="body-nav">
 	<nav>
 		<div class="container-fluid">
 			<ul class="nav-justified">
 				<c:forEach items="${up_menu}" var="menu1">
-					<li><a class="">${menu1.MENU_NAME}</a>
-						<ul>
-							<c:forEach items="${menu}" var="menu2">
-								<c:if test="${menu1.MENU_ID eq menu2.UP_MENU_ID}">
-									<li><a
-										href="<c:url value='${menu2.PROGRM_URL}'/>">${menu2.MENU_NAME}</a></li>
-								</c:if>
-							</c:forEach>
-						</ul></li>
+					<c:choose>
+						<c:when test="${menu1.MENU_NAME eq up_menu_name}">
+							<li class="up_menu_active"><a class="">${menu1.MENU_NAME}</a>		
+						</c:when>
+						<c:otherwise>
+							<li><a class="">${menu1.MENU_NAME}</a>
+						</c:otherwise>
+					</c:choose>
+								<ul>
+									<c:forEach items="${menu}" var="menu2">
+										<c:if test="${menu1.MENU_ID eq menu2.UP_MENU_ID}">
+											<li><a href="<c:url value='${menu2.PROGRM_URL}'/>">${menu2.MENU_NAME}</a></li>
+										</c:if>
+									</c:forEach>
+								</ul>
+							</li>
 				</c:forEach>
 			</ul>
 		</div>

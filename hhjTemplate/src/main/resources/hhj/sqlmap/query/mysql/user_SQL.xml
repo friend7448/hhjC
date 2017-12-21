@@ -66,12 +66,16 @@
 					<isNotEqual property="SEARCH_PRIVGRP_SN" compareValue="">
 		            	AND C.PRIVGRP_SN = #SEARCH_PRIVGRP_SN#
 					</isNotEqual>
-				ORDER BY USER_SN DESC
 		) A	
 		<![CDATA[
     	WHERE A.RNUM  >= #START_ROW# 
     		AND A.RNUM <= #END_ROW#
 		]]>
+		<isNotEmpty property="sidx">
+			<![CDATA[
+			ORDER BY $sidx$ $sord$
+			]]>
+		</isNotEmpty>
     </select>
     
     <!-- 사용자 상세조회-->

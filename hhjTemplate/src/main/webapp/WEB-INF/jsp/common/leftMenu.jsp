@@ -33,7 +33,7 @@
 		</c:if>
 </c:forEach>	
 
-<c:set var="menu_name" value="${menu_name}" />
+<c:set var="menu_name" value="${menus_name[0].MENU_NAME}" />
 <ul class="nav nav-pills nav-stacked">
 	<c:forEach items="${left_menu}" var="left_menu">
 		<c:choose>

@@ -22,7 +22,7 @@
 		FROM SM_USER A, SM_USERPRIV B, SM_PRIVGRP C
 		WHERE A.USER_SN = B.USER_SN
 			AND B.PRIVGRP_SN = C.PRIVGRP_SN
-          	AND A.USER_ID = #TXT_USER_ID#
-          	AND A.USER_PW = #TXT_USER_PW# 
+          	AND A.USER_ID = #USER_ID#
+          	AND A.USER_PW = #USER_PW# 
     </select>
 </sqlMap>

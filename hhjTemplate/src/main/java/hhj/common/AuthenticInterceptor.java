@@ -68,7 +68,6 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 				int userSn = (int) session.getAttribute("USER_SN");
 				String userName = (String) session.getAttribute("USER_NAME");
 				int privgrpSn = (int) session.getAttribute("PRIVGRP_SN");
-				String menuName = "";
 
 				Map<String, Object> param1 = new HashMap<String, Object>();
 				param1.put("USER_SN", userSn);
@@ -78,6 +77,7 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 				List up_menu = null; // 상위 메뉴(헤더 - 메뉴 보이게)
 				List menu = null; // 하위 메뉴(헤더 - 메뉴 보이게)
 				List left_menu = null; // 왼쪽 메뉴
+				List menusName = null; // 상위메뉴, 하위메뉴 명치
 				List program_auth = null; // 읽기/쓰기 권한(컨텐츠 - curd 버튼 관련)
 
 				try {
@@ -89,15 +89,13 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 					
 					left_menu = service.list("layout.doSelectProgram", param1);
 					program_auth = service.list("layout.doSelectProgramAuth", param1);
-					
-					if(program_auth.size() > 0) {
-						Map<String, Object> map = (Map<String, Object>) program_auth.get(0);
-						menuName = (String) map.get("MENU_NAME");
-					}
+
+					menusName = service.list("layout.doSelectProgramName", param1);
 					
 					log.debug("up_menu list = " + up_menu);
 					log.debug("menu list = " + menu);
 					log.debug("left_menu list = " + left_menu);
+					log.debug("menusName list = " + menusName);
 					log.debug("program_auth list = " + program_auth);
 
 				} catch (Exception e) {
@@ -105,11 +103,10 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 					e.printStackTrace();
 				}
 
-				request.setAttribute("url", request.getServletPath());
-				request.setAttribute("menu_name", menuName);
 				request.setAttribute("up_menu", up_menu);
 				request.setAttribute("menu", menu);
 				request.setAttribute("left_menu", left_menu);
+				request.setAttribute("menus_name", menusName);
 				request.setAttribute("program_auth", program_auth);
 				request.setAttribute("user_name", userName);
 			}

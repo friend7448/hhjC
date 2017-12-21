@@ -5,36 +5,25 @@ $(document).ready(function() {
 	jQuery("#btn_signin").bind("click",doLogin);   // 검색
 });
 
-//엔터키 설정
-function checkEnter(event)
-{
-	var e = event || window.event;
-
-	if (e.keyCode == 13) 
-		doLogin();
-}
-
-
 //입력항목 검사
 function checkInputText()
 {
-	if (jQuery("#TXT_USER_ID").val().length == 0) 
+	if (jQuery("#USER_ID").val().length == 0) 
 	{
 		alert("아이디를 입력해주시기 바랍니다.");
-		jQuery("#TXT_USER_ID").focus();
+		jQuery("#USER_ID").focus();
 		return false;
 	}
 
-	if (jQuery("#TXT_USER_PW").val().length == 0) 
+	if (jQuery("#USER_PW").val().length == 0) 
 	{
 		alert("비밀번호를 입력해주시기 바랍니다.");
-		jQuery("#TXT_USER_PW").focus();
+		jQuery("#USER_PW").focus();
 		return false;
 	}
 
 	return true;
 }
-
 
 // 로그인정보 조회
 function doLogin()
@@ -46,8 +35,8 @@ function doLogin()
 	        url: "./signin/doLogin.do",
 	        data: {
 	        	ACTION : 'signin.doLogin',
-	        	TXT_USER_ID : jQuery("#TXT_USER_ID").val(),
-	        	TXT_USER_PW : jQuery("#TXT_USER_PW").val() 
+	        	USER_ID : jQuery("#USER_ID").val(),
+	        	USER_PW : jQuery("#USER_PW").val() 
 	        },
 	        dataType: 'json',
 	        error: function(){
@@ -64,11 +53,11 @@ function doLogin()
 				else 
 				{
 					alert(jData.msg);
-					jQuery("#TXT_USER_PW").val("");
-					jQuery("#TXT_USER_ID").focus();
+					jQuery("#USER_PW").val("");
+					jQuery("#USER_ID").focus();
 					
-					if (jQuery('#CKB_SAVE_ID').prop("checked") == false)
-						jQuery("#TXT_USER_ID").val("");
+					if (jQuery('#SAVE_ID').prop("checked") == false)
+						jQuery("#USER_ID").val("");
 				}
         	}
 	 });
@@ -78,10 +67,10 @@ function doLogin()
 function doSaveCookie()
 {
 	var expdate = new Date();
-	var user_id = jQuery("#TXT_USER_ID").val();
+	var user_id = jQuery("#USER_ID").val();
 	
 	// 기본적으로 30일동안 기억하게 함. 일수를 조절하려면 * 30에서 숫자를 조절하면 됨
-	if (jQuery('#CKB_SAVE_ID').prop("checked") == true)
+	if (jQuery('#SAVE_ID').prop("checked") == true)
 	{
 		expdate.setTime(expdate.getTime() + 1000 * 3600 * 24 * 30); // 30일
 	} 
@@ -102,18 +91,17 @@ function setCookie(name, value, expires)
 //
 function getCookieId()
 {
-	
 	var cookieUserId = getCookie("saveId");
 	
 	if(cookieUserId.length != 0)
 	{
-		jQuery('#TXT_USER_ID').val(cookieUserId);
-		jQuery('#TXT_USER_PW').val("");
-		jQuery('#CKB_SAVE_ID').prop("checked", true);
+		jQuery('#USER_ID').val(cookieUserId);
+		jQuery('#USER_PW').val("");
+		jQuery('#SAVE_ID').prop("checked", true);
 	}
 	else
 	{
-		jQuery('#CKB_SAVE_ID').prop("checked", false);
+		jQuery('#SAVE_ID').prop("checked", false);
 	}
 }
 

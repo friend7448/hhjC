@@ -1,17 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div class="container-fluid hhj-content-header">
-	<h3 style="text-align: left; margin: 5px"><strong>${menu_name}</strong></h3>
-	<hr style="margin-top: 5px;"/>
+<div class="container-fluid">
 	<form action="" class="form-horizontal" onsubmit="return false;">
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="TXT_SEARCH_MENU_ID">프로그램ID</label>
 			<div class="col-sm-3">
-				<input type="text" class="form-control" id="TXT_SEARCH_MENU_ID" name="TXT_SEARCH_MENU_ID" placeholder="프로그램ID" />
+				<input type="text" class="form-control" id="TXT_SEARCH_MENU_ID" name="TXT_SEARCH_MENU_ID" placeholder="프로그램ID" onkeydown="checkEnter(this.event);"/>
 			</div>
 			<label class="control-label col-sm-2" for="TXT_SEARCH_MENU_NAME">프로그램명</label>
 			<div class="col-sm-3">
-				<input type="text" class="form-control" id="TXT_SEARCH_MENU_NAME" name="TXT_SEARCH_MENU_NAME" placeholder="프로그램명" />
+				<input type="text" class="form-control" id="TXT_SEARCH_MENU_NAME" name="TXT_SEARCH_MENU_NAME" placeholder="프로그램명" onkeydown="checkEnter(this.event);"/>
 			</div>
 			<div class="pull-right hhj-search-btn">
 				<button type="button" class="btn btn-info" id="btn_search">

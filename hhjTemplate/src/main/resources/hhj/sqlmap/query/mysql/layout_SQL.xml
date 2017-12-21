@@ -39,11 +39,24 @@
 		ORDER BY B.SORT_ORDER
     </select>
     
+    
+    
+    <!-- 상위메뉴, 메뉴 정보 조회 -->
+    <select id="doSelectProgramName" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		SELECT	A.MENU_NAME AS UP_MENU_NAME,
+				B.UP_MENU_ID,
+				B.MENU_NAME,
+				B.MENU_ID
+    	FROM 	IS_MENU A,
+    			IS_MENU B
+    	WHERE 	A.MENU_ID = B.UP_MENU_ID
+    	AND 	B.PROGRM_URL LIKE CONCAT('%', #PROGRM_URL#, '%')
+    </select>
+    
     <!-- 화면의 사용자 권한 조회-->
     <select id="doSelectProgramAuth" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		SELECT 	A.INQIRE_YN, 
-				A.WRITE_YN,
-				B.MENU_NAME
+				A.WRITE_YN
 		FROM 	SM_PRIVGRP_PRIV A, 
 				IS_MENU B
 		WHERE 	A.PRIVGRP_SN = #PRIVGRP_SN#

@@ -31,6 +31,8 @@
 			value="/WEB-INF/jsp/common/header.jsp" />
 		<put-attribute name="leftMenu"
 			value="/WEB-INF/jsp/common/leftMenu.jsp" />
+		<put-attribute name="body-top"
+			value="/WEB-INF/jsp/common/body-top.jsp" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer"
 			value="/WEB-INF/jsp/common/footer.jsp" />

@@ -35,29 +35,27 @@ $(document).ready(function() {
 			cell : '',
 			id : 'RNUM'
 		},
-		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 0, 		sortable : true,	align : 'center', 	hidden : true},
-		             {name : 'MENU_ID',		index : 'MENU_ID',		width : 100, 	sortable : true,	align : 'center', 	hidden : false},
-		             {name : 'UP_MENU_ID',	index : 'UP_MENU_ID',   width : 100,    sortable : true, 	align : 'center', 	hidden : false},
-		             {name : 'MENU_NAME',	index : 'MENU_NAME',    width : 220,	sortable : true, 	align : 'left', 	hidden : false},
-		             {name : 'PROGRM_URL',	index : 'PROGRM_URL',   width : 220,	sortable : true, 	align : 'left', 	hidden : false},
-		             {name : 'SORT_ORDER',	index : 'SORT_ORDER',   width : 80,		sortable : true, 	align : 'center',	hidden : false},
-		             {name : 'USE_YN',		index : 'USE_YN',	    width : 80,    	sortable : true, 	align : 'center',	hidden : false}
+		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 0, 		sortable : false,	align : 'center', 	hidden : true},
+		             {name : 'MENU_ID',		index : 'MENU_ID',		width : 100, 	sortable : false,	align : 'center', 	hidden : false},
+		             {name : 'UP_MENU_ID',	index : 'UP_MENU_ID',   width : 100,    sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'MENU_NAME',	index : 'MENU_NAME',    width : 220,	sortable : false, 	align : 'left', 	hidden : false},
+		             {name : 'PROGRM_URL',	index : 'PROGRM_URL',   width : 220,	sortable : false, 	align : 'left', 	hidden : false},
+		             {name : 'SORT_ORDER',	index : 'SORT_ORDER',   width : 80,		sortable : false, 	align : 'center',	hidden : false},
+		             {name : 'USE_YN',		index : 'USE_YN',	    width : 80,    	sortable : false, 	align : 'center',	hidden : false}
 		],
 //		pager : '#tbodyPager',
 		rowNum : 10,
 		rowList:[10,20,30],
 		height: 370,
-		sortable:true,
-//		sortname:'AA',
-//		sortorder:"desc",
+		sortable: true,
+		sortname:'MENU_ID',
+		sortorder:"asc",
 		gridview: true,
-//		caption : '프로그램정보', //제목
-//		autowidth : true,
 		rownumbers: true,
 	    rownumWidth : 40,
 		viewrecords : true,
 		loadComplete: function(data) {
-			initPage("tbody", "paginate", data);
+				initPage("tbody", "paginate", data);
 		},
 		onSelectRow: function (nId) {
 			detail(nId);
@@ -73,7 +71,7 @@ $(document).ready(function() {
 function btnBind()
 {
 	jQuery("#btn_init").bind("click",doInit);			// 초기화
-	jQuery("#btn_search").bind("click",doMenuSearch);   // 검색
+	jQuery("#btn_search").bind("click",doSearch);   // 검색
 	jQuery("#btn_insert").bind("click",doInsert);       // 등록
 	jQuery("#btn_update").bind("click",doUpdate);       // 수정
 	jQuery("#btn_delete").bind("click",doDelete);       // 삭제
@@ -104,7 +102,7 @@ function initTableDetail()
 }
 
 //리스트 조회
-function doMenuSearch()
+function doSearch()
 {
 	setSearchValue();
 	
@@ -242,7 +240,7 @@ function doIUDCallback(jData, iud) {
 		alert(msg + "되었습니다.");
 	
 		initTableDetail();
-		doMenuSearch();
+		doSearch();
 	}
 	else if (result == "FAIL")
 	{

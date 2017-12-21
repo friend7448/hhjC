@@ -44,24 +44,22 @@ $(document).ready(function() {
 			cell : '',
 			id : 'RNUM'
 		},
-		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 80, 	sortable : false,	align : 'center', 	hidden : true},
-		             {name : 'USER_SN',		index : 'USER_SN',		width : 100, 	sortable : false,	align : 'center', 	hidden : true},
-		             {name : 'PRIVGRP_NAME',index : 'PRIVGRP_NAME',	width : 50, 	sortable : false,	align : 'center', 	hidden : false},
-		             {name : 'USER_ID',		index : 'USER_ID',		width : 50,    sortable : false, 	align : 'center', 	hidden : false},
-		             {name : 'USER_NAME',	index : 'USER_NAME',    width : 50,		sortable : false, 	align : 'center', 	hidden : false},
-		             {name : 'CELL',		index : 'CELL', 		width : 80,		sortable : false, 	align : 'center', 	hidden : false},
-		             {name : 'EMAIL',		index : 'EMAIL',	    width : 80,    	sortable : false, 	align : 'center',	hidden : false}
+		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 80, 	sortable : true,	align : 'center', 	hidden : true},
+		             {name : 'USER_SN',		index : 'USER_SN',		width : 100, 	sortable : true,	align : 'center', 	hidden : true},
+		             {name : 'PRIVGRP_NAME',index : 'PRIVGRP_NAME',	width : 50, 	sortable : true,	align : 'center', 	hidden : false},
+		             {name : 'USER_ID',		index : 'USER_ID',		width : 50,    	sortable : true, 	align : 'center', 	hidden : false},
+		             {name : 'USER_NAME',	index : 'USER_NAME',    width : 50,		sortable : true, 	align : 'center', 	hidden : false},
+		             {name : 'CELL',		index : 'CELL', 		width : 80,		sortable : true, 	align : 'center', 	hidden : false},
+		             {name : 'EMAIL',		index : 'EMAIL',	    width : 80,    	sortable : true, 	align : 'center',	hidden : false}
 		],
 //		pager : '#tbodyPager',
 		rowNum : 10,
 		rowList:[10,20,30],
 		height: 370,
-		sortable:true,
-//		sortname:'AA',
-//		sortorder:"desc",
+		sortable: true,
+		sortname:'USER_NAME',
+		sortorder:"asc",
 		gridview: true,
-//		caption : '프로그램정보', //제목
-//		autowidth : true,
 		rownumbers: true,
 	    rownumWidth : 40,
 		viewrecords : true,
@@ -82,7 +80,7 @@ $(document).ready(function() {
 function btnBind()
 {
 	jQuery("#btn_init").bind("click",doInit);			// 초기화
-	jQuery("#btn_search").bind("click",doMenuSearch);   // 검색
+	jQuery("#btn_search").bind("click",doSearch);   // 검색
 	jQuery("#btn_insert").bind("click",doInsert);       // 등록
 	jQuery("#btn_update").bind("click",doUpdate);       // 수정
 	jQuery("#btn_delete").bind("click",doDelete);       // 삭제
@@ -116,7 +114,7 @@ function initTableDetail()
 }
 
 //리스트 조회
-function doMenuSearch()
+function doSearch()
 {
 	setSearchValue();
 
@@ -273,7 +271,7 @@ function doIUDCallback(jData, iud) {
 		alert(msg + "되었습니다.");
 	
 		initTableDetail();
-		doMenuSearch();
+		doSearch();
 	}
 	else if (result == "FAIL")
 	{

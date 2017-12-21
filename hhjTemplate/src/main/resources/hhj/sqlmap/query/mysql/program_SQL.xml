@@ -40,12 +40,16 @@
 		        WHERE
 		        	MENU_ID LIKE CONCAT('%', #TXT_SEARCH_MENU_ID#, '%')
 		           	AND MENU_NAME LIKE CONCAT('%', #TXT_SEARCH_MENU_NAME#, '%')
-				ORDER BY UP_MENU_ID ASC, SORT_ORDER ASC
 		) A	
 		<![CDATA[
     	WHERE A.RNUM  >= #START_ROW# 
     		AND A.RNUM <= #END_ROW#
 		]]>
+		<isNotEmpty property="sidx">
+			<![CDATA[
+			ORDER BY $sidx$ $sord$, SORT_ORDER ASC
+			]]>
+		</isNotEmpty>
     </select>
     
     <!--메뉴 상세조회-->

@@ -54,6 +54,8 @@
       		<value>/a/</value>
       		<value>/b/</value>
       		<value>/c/</value>
+      		<value>/TestPerson/TestPerson</value>
+      		<value>/TestUser/TestUser</value>
       	</list>
       </property>
 	</bean>

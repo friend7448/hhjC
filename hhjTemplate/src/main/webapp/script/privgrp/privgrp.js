@@ -72,7 +72,7 @@ $(document).ready(function() {
 function btnBind()
 {
 	jQuery("#btn_init").bind("click",doInit);			// 초기화
-	jQuery("#btn_search").bind("click",doMenuSearch);   // 검색
+	jQuery("#btn_search").bind("click",doSearch);   // 검색
 	jQuery("#btn_insert").bind("click",doInsert);       // 등록
 	jQuery("#btn_update").bind("click",doUpdate);       // 수정
 	jQuery("#btn_delete").bind("click",doDelete);       // 삭제
@@ -101,7 +101,7 @@ function initTableDetail()
 }
 
 //리스트 조회
-function doMenuSearch()
+function doSearch()
 {
 	setSearchValue();
 	
@@ -236,7 +236,7 @@ function doIUDCallback(jData, iud) {
 		alert(msg + "되었습니다.");
 	
 		initTableDetail();
-		doMenuSearch();
+		doSearch();
 	}
 	else if (result == "FAIL")
 	{

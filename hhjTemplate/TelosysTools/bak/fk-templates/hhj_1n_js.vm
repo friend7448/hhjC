@@ -73,7 +73,7 @@ $(document).ready(function() {
 		url : search_set.url,
 		postData : search_set.postData,
 		mtype : "POST", 
-		colNames : [ 'NO'#foreach( $entityReferencing in $model.allEntites )#foreach ( $fk in $entity.databaseForeignKeys)#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")#foreach( $fkcol in $fk.columns )#set($col = $fkcol.columnName)#set($refcol = $fkcol.referencedColumnName)#end#foreach($field in $entityReferencing.attributes),'$field.databaseName'#end#end#end#end],
+		colNames : [ 'NO'#foreach( $entityReferencing in $model.allEntites )#foreach ( $fk in $entity.databaseForeignKeys)#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")#foreach( $fkcol in $fk.columns )#set($col = $fkcol.columnName)#set($refcol = $fkcol.referencedColumnName)#end#foreach($field in $entityReferencing.attributes),'$field.databaseComment'#end#end#end#end],
 		jsonReader : {
 			page : 'page',
 			total : 'total',
@@ -85,7 +85,7 @@ $(document).ready(function() {
 			cell : '',
 			id : 'RNUM'
 		},
-		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 0, 		sortable : true,	align : 'center', 	hidden : true}
+		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 0, 		sortable : false,	align : 'center', 	hidden : true}
 #foreach( $entityReferencing in $model.allEntites )
 #foreach ( $fk in $entity.databaseForeignKeys)
 #if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")
@@ -164,9 +164,9 @@ function gqGrid2() {
 			cell : '',
 			id : 'RNUM'
 		},
-		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 0, 		sortable : true,	align : 'center', 	hidden : true}
+		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 0, 		sortable : false,	align : 'center', 	hidden : true}
 #foreach($field in $entity.attributes)
-					,{name : '$field.databaseName',		index : '$field.databaseName',		width : 0,		align : 'center',		hidden : false}
+					,{name : '$field.databaseName',		index : '$field.databaseName',		width : 0,	sortable : false,	align : 'center',		hidden : false}
 #end
 		],
 //		pager : '#tbodyPager',
@@ -411,7 +411,6 @@ function doIUDCallback(jData, iud) {
 	if(iud=="I") msg = "등록";
 	else if(iud=="U") msg = "수정";
 	else if(iud=="D") msg = "삭제";
-	
 	
 	if (result == "SUCC")
 	{

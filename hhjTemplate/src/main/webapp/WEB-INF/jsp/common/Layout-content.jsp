@@ -70,6 +70,7 @@ footer {
 				<tiles:insertAttribute name="leftMenu" />
 			</div>
 			<div class="col-sm-10">
+				<tiles:insertAttribute name="body-top" />
 				<tiles:insertAttribute name="body" />
 			</div>
 		</div>

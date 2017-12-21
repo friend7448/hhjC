@@ -132,6 +132,15 @@ function btnStatus(btn_insert,btn_update,btn_delete)
 	}
 }
 
+//엔터키 설정
+function checkEnter(event)
+{
+	var e = event || window.event;
+
+	if (e.keyCode == 13) 
+		doSearch();
+}
+
 // ajaxSubmit 등록, 수정, 삭제 등 트랜젝션 발생 시 사용
 function ajaxSubmit(ajax_set, c_firm) {
         

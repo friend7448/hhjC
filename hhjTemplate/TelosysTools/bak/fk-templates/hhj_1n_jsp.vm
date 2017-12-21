@@ -1,0 +1,100 @@
+##-------------------------------------------------------------------------------------------------------- 
+#set( $_ = "$" )
+##-------------------------------------------------------------------------------------------------------- 
+## Key fields = fields in Primary Key
+#set( $keyFields = $entity.keyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## Data fields = fields not in Primary Key and not in selected Links
+#set( $dataFields = $entity.nonKeyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## #set( $itemVariable = $fn.uncapitalize($entity.name) ) 
+#set( $itemVariable = $fn.uncapitalize($entity.name) )
+##--------------------------------------------------------------------------------------------------------
+#foreach( $fk in $entity.databaseForeignKeys )
+#foreach( $fkcol in $fk.columns )
+#set($refSubTableName = ${fk.tableName})
+#set($refSubColumnName = $fkcol.columnName)## 서브테이블명, FK컬럼명
+#set($refMasterTableName = ${fk.referencedTableName})
+#set($refMasterColumnName = $fkcol.referencedColumnName)##마스터테이블명, FK연결된 컬럼
+#end
+#end
+##--------------------------------------------------------------------------------------------------------
+#foreach( $entityReferencing in $model.allEntites )
+#foreach ( $fk in $entity.databaseForeignKeys)
+#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")
+#set ( $referencedEntity = $model.getEntityByTableName("${fk.referencedTableName}") )##마스터테이블 객체명
+#end
+#end
+#end
+##--------------------------------------------------------------------------------------------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<div class="container-fluid">
+	<form action="" class="form-horizontal" onsubmit="return false;">
+#foreach( $entityReferencing in $model.allEntites )
+#foreach ( $fk in $entity.databaseForeignKeys)
+#if("$entityReferencing.databaseTable" == "${fk.referencedTableName}")
+## 마스터테이블 컬럼
+#foreach($field in $entityReferencing.attributes)
+#if( !$field.isAutoIncremented())
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="S_$field.databaseName">$field.databaseComment</label>
+			<div class="col-sm-3">
+				<input type="text" class="form-control" id="S_$field.databaseName" name="S_$field.databaseName" placeholder="$field.databaseName" />
+			</div>
+		</div>
+#end 
+#end ## foreach
+#end 
+#end 
+#end ## model.allEntites
+		<div class="form-group pull-right hhj-search-btn">
+			<button type="button" class="btn btn-info" id="btn_search">
+				<span class="glyphicon glyphicon-search"></span> 검색
+			</button>
+		</div>
+	</form>
+</div>
+<div class="container-fluid" id="grid_container">
+	<h4 style="text-align: left">$refMasterTableName</h4>
+	<table id="tbody"></table>
+	<div id="paginate"></div>
+</div>
+<div class="container-fluid" id="grid_container">
+	<h4 style="text-align: left">$refSubTableName</h4>
+	<table id="tbody2"></table>
+	<div id="paginate2"></div>
+</div>
+<div class="container-fluid hhj-content-detail">
+	<form action="" class="form-horizontal" id="frmDetail" name="frmDetail" method="post" onsubmit="return false;">
+#foreach( $field in $entity.attributes )
+#if( $field.isAutoIncremented())
+		<input type="hidden" class="form-control" id="$field.databaseName" name="$field.databaseName" maxlength="$field.databaseSize" />
+#end
+#if( !$field.isAutoIncremented())
+		<div class="form-group">
+			<label for="$field.databaseName" class="control-label col-sm-2">$field.databaseComment</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="$field.databaseName" name="$field.databaseName" maxlength="$field.databaseSize"/>
+			</div>
+		</div>
+#end
+#end
+		<div class="pull-right">
+			<c:if test="${_}{program_auth[0].WRITE_YN == 'Y'}">
+				<button type="button" class="btn btn-default" id="btn_init">초기화</button>
+				<button type="button" class="btn btn-default" id="btn_insert">등록</button>
+				<button type="button" class="btn btn-default" id="btn_update">수정</button>
+				<button type="button" class="btn btn-default" id="btn_delete">삭제</button>
+			</c:if>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript" src="../script/${entity.name}/${entity.name}.js"></script>
+<script type="text/javascript" src="../script/common/hhj_defaultContent.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+	});
+</script>

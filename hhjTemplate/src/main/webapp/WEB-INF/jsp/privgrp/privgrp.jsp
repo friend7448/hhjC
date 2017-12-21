@@ -1,17 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div class="container-fluid hhj-content-header">
-	<h3 style="text-align: left; margin: 5px"><strong>${menu_name}</strong></h3>
-	<hr style="margin-top: 5px;"/>
+<div class="container-fluid">
 	<form action="" class="form-horizontal" onsubmit="return false;">
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="TXT_SEARCH_PRIVGRP_NAME">권한그룹명</label>
 			<div class="col-sm-3">
-				<input type="text" class="form-control" id="TXT_SEARCH_PRIVGRP_NAME" name="TXT_SEARCH_PRIVGRP_NAME" placeholder="권한그룹명" />
+				<input type="text" class="form-control" id="TXT_SEARCH_PRIVGRP_NAME" name="TXT_SEARCH_PRIVGRP_NAME" placeholder="권한그룹명" onkeydown="checkEnter(this.event);"/>
 			</div>
 			<label class="control-label col-sm-2" for="SLT_SEARCH_USE_YN">사용여부</label>
 			<div class="col-sm-3">
-				<select name="SLT_SEARCH_USE_YN" id="SLT_SEARCH_USE_YN" class="form-control">
+				<select name="SLT_SEARCH_USE_YN" id="SLT_SEARCH_USE_YN" class="form-control" onkeydown="checkEnter(this.event);">
 					<option value="" selected="selected">전체</option>
 					<option value="Y">사용</option>
 					<option value="N">미사용</option>
