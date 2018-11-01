@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Telosys Database Repository --><root>
-<tableList databaseId="0" databaseName="MYSQL" databaseProductName="MySQL" generation="2017-12-21 11:21:14">
+<tableList databaseId="0" databaseName="MYSQL" databaseProductName="MySQL" generation="2018-01-03 03:10:37">
 <table catalog="portaldb" databaseType="TABLE" javaBean="IsMenu" name="is_menu" schema="">
 <column dbComment="메뉴아이디" dbDefaultValue="" dbName="MENU_ID" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="20" dbTypeName="VARCHAR" inputType="text" javaName="menuId" javaType="java.lang.String" jdbcTypeCode="12" label="Menu id" maxLength="20" notEmpty="true" notNull="true" selected="true"/>
 <column dbComment="메뉴명" dbDefaultValue="" dbName="MENU_NAME" dbNotNull="true" dbPosition="2" dbSize="100" dbTypeName="VARCHAR" inputType="text" javaName="menuName" javaType="java.lang.String" jdbcTypeCode="12" label="Menu name" maxLength="100" notEmpty="true" notNull="true" selected="true"/>

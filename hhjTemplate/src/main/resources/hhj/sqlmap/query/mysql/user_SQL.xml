@@ -3,8 +3,10 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="user">
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
 	<!--권한그룹 조회 -->
-	<select id="doSelectPrivGrp" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+	<select id="doSelectPrivGrp" resultClass="egovMap" parameterClass="java.util.HashMap">
 		SELECT 	PRIVGRP_SN,
 				PRIVGRP_NAME,
 				PRIVGRP_DESC,
@@ -23,19 +25,19 @@
 		FROM SM_USER A, SM_USERPRIV B, SM_PRIVGRP C
 		WHERE A.USER_SN = B.USER_SN
 		AND B.PRIVGRP_SN = C.PRIVGRP_SN
-			<isNotEqual property="SEARCH_USER_NAME" compareValue="">
-        		AND A.USER_NAME LIKE CONCAT('%', #SEARCH_USER_NAME#, '%')
+			<isNotEqual property="srch_user_name" compareValue="">
+        		AND A.USER_NAME LIKE CONCAT('%', #srch_user_name#, '%')
 			</isNotEqual>
-            <isNotEqual property="SEARCH_USER_ID" compareValue="">
-            	AND A.USER_ID LIKE CONCAT('%', #SEARCH_USER_ID#, '%')
+            <isNotEqual property="srch_user_id" compareValue="">
+            	AND A.USER_ID LIKE CONCAT('%', #srch_user_id#, '%')
 			</isNotEqual>
-			<isNotEqual property="SEARCH_PRIVGRP_SN" compareValue="">
-            	AND C.PRIVGRP_SN = #SEARCH_PRIVGRP_SN#
+			<isNotEqual property="srch_privgrp_sn" compareValue="">
+            	AND C.PRIVGRP_SN = #srch_privgrp_sn#
 			</isNotEqual>
     </select>
     
     <!--사용자 정보 리스트 조회-->
-    <select id="doSelect" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+    <select id="doSelect" parameterClass="java.util.HashMap"  resultClass="egovMap">
 		SELECT A.*
 		FROM(
 				SELECT 
@@ -57,29 +59,29 @@
 					(SELECT @ROWNUM := 0) R
 				WHERE A.USER_SN = B.USER_SN
 				AND B.PRIVGRP_SN = C.PRIVGRP_SN
-					<isNotEqual property="SEARCH_USER_NAME" compareValue="">
-		        		AND A.USER_NAME LIKE CONCAT('%', #SEARCH_USER_NAME#, '%')
+					<isNotEqual property="srch_user_name" compareValue="">
+		        		AND A.USER_NAME LIKE CONCAT('%', #srch_user_name#, '%')
 					</isNotEqual>
-		            <isNotEqual property="SEARCH_USER_ID" compareValue="">
-		            	AND A.USER_ID LIKE CONCAT('%', #SEARCH_USER_ID#, '%')
+		            <isNotEqual property="srch_user_id" compareValue="">
+		            	AND A.USER_ID LIKE CONCAT('%', #srch_user_id#, '%')
 					</isNotEqual>
-					<isNotEqual property="SEARCH_PRIVGRP_SN" compareValue="">
-		            	AND C.PRIVGRP_SN = #SEARCH_PRIVGRP_SN#
+					<isNotEqual property="srch_privgrp_sn" compareValue="">
+		            	AND C.PRIVGRP_SN = #srch_privgrp_sn#
 					</isNotEqual>
 		) A	
 		<![CDATA[
     	WHERE A.RNUM  >= #START_ROW# 
     		AND A.RNUM <= #END_ROW#
 		]]>
-		<isNotEmpty property="sidx">
-			<![CDATA[
-			ORDER BY $sidx$ $sord$
-			]]>
-		</isNotEmpty>
+<!-- 		<isNotEmpty property="sidx"> -->
+<!-- 			<![CDATA[ -->
+<!-- 			ORDER BY $sidx$ $sord$ -->
+<!-- 			]]> -->
+<!-- 		</isNotEmpty> -->
     </select>
     
     <!-- 사용자 상세조회-->
-    <select id="doSelectDetail" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+    <select id="doSelectDetail" parameterClass="java.util.HashMap"  resultClass="egovMap">
         SELECT 
         	a.USER_SN,
         	a.USER_ID, 
@@ -87,10 +89,11 @@
             a.USER_PW,
             a.CELL, 
             a.EMAIL, 
-            a.UPDUSR_SN,
+<!--             a.UPDUSR_SN, -->
+            (SELECT USER_NAME FROM SM_USER WHERE USER_SN = A.UPDUSR_SN) AS UPDUSR_SN,
             a.UPDT_DT
          FROM SM_USER a 
-         WHERE a.USER_SN = #TXT_HIDDEN_USER_SN#
+         WHERE a.USER_SN = #user_sn#
     </select>
     
     <!--사용자 등록-->
@@ -104,38 +107,38 @@
                       EMAIL,
                       UPDUSR_SN,
                       UPDT_DT)
-             VALUES  (#TXT_USER_ID#,
-                      #TXT_USER_NAME#,
-                      #TXT_USER_PW#,
-                      #TXT_CELL#,
-                      #TXT_EMAIL#,
-                      #TXT_UPDUSR_SN#,
+             VALUES  (#user_id#,
+                      #user_name#,
+                      #user_pw#,
+                      #cell#,
+                      #email#,
+                      #updusr_sn#,
                       SYSDATE() + 0)
         ]]>
         <selectKey keyProperty="USER_SN" resultClass="int">
 			SELECT	USER_SN
 			FROM 	SM_USER
-			WHERE USER_ID = #TXT_USER_ID#
+			WHERE USER_ID = #user_id#
 		</selectKey>
     </insert>
     
     <!-- 사용자 수정-->
     <update id="doUpdate" parameterClass="java.util.HashMap" >
             UPDATE SM_USER
-            SET    USER_NAME = #TXT_USER_NAME#,
-                   USER_PW = #TXT_USER_PW#, 
-                   CELL = #TXT_CELL#, 
-                   EMAIL = #TXT_EMAIL#,
-                   UPDUSR_SN = #TXT_UPDUSR_SN#,
+            SET    USER_NAME = #user_name#,
+                   USER_PW = #user_pw#, 
+                   CELL = #cell#, 
+                   EMAIL = #email#,
+                   UPDUSR_SN = #updusr_sn#,
                    UPDT_DT = SYSDATE() + 0
-            WHERE USER_SN = #TXT_HIDDEN_USER_SN#
+            WHERE USER_SN = #user_sn#
     </update>
 
 	<!-- 사용자 삭제-->
     <delete id="doDelete" parameterClass="java.util.HashMap" >
         <![CDATA[
             DELETE FROM	SM_USER
-             WHERE USER_SN = #TXT_HIDDEN_USER_SN#
+             WHERE USER_SN = #user_sn#
         ]]>				  
     </delete>
     
@@ -147,45 +150,45 @@
  					PRIVGRP_SN, 
  					UPDT_DT,
  					UPDUSR_SN)
-    		VALUES (#USER_SN#, 
-    				#SLT_PRIVGRP_SN#,
+    		VALUES (#user_sn#, 
+    				#privgrp_sn#,
     				SYSDATE() + 0,
-    				#TXT_UPDUSR_SN#)
+    				#updusr_sn#)
         ]]>
-         <selectKey keyProperty="USER_SN" resultClass="int">
+         <selectKey keyProperty="user_sn" resultClass="int">
 			SELECT	USER_SN
 			FROM 	SM_USER
-			WHERE USER_ID = #TXT_USER_ID#
+			WHERE USER_ID = #user_id#
 		</selectKey>
     </insert>
     
     <!-- 사용자권한 수정-->
     <update id="doUpdate2" parameterClass="java.util.HashMap" >
             UPDATE SM_USERPRIV
-            SET    PRIVGRP_SN = #SLT_PRIVGRP_SN#,
-                   UPDUSR_SN = #TXT_UPDUSR_SN#,
+            SET    PRIVGRP_SN = #privgrp_sn#,
+                   UPDUSR_SN = #updusr_sn#,
                    UPDT_DT = SYSDATE() + 0
-            WHERE USER_SN = #TXT_HIDDEN_USER_SN#
+            WHERE USER_SN = #user_sn#
     </update>
     
 	<!-- 사용자권한 삭제-->
     <delete id="doDelete2" parameterClass="java.util.HashMap" >
         <![CDATA[
             DELETE FROM	SM_USERPRIV
-             WHERE USER_SN = #TXT_HIDDEN_USER_SN#
+             WHERE USER_SN = #user_sn#
         ]]>				  
     </delete>   
     
     <!-- 사용자권한 조회 -->
-    <select id="doSelect2" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+    <select id="doSelect2" parameterClass="java.util.HashMap"  resultClass="egovMap">
         SELECT 	PRIVGRP_SN
          FROM SM_USERPRIV 
-         WHERE USER_SN = #TXT_HIDDEN_USER_SN#
+         WHERE USER_SN = #user_sn#
     </select>
     
-    <select id="doCheckUserId"  parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+    <select id="doCheckUserId"  parameterClass="java.util.HashMap"  resultClass="egovMap">
 		SELECT USER_ID AS CNT
   		FROM SM_USER
- 		WHERE USER_ID = #TXT_USER_ID#
+ 		WHERE USER_ID = #user_id#
 </select>
 </sqlMap>

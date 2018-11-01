@@ -3,13 +3,13 @@ var search_set2 =
 	{
 		url : "../privgrp/doSelect2.do", 
 		postData : {
-			ACTION : 'privgrp.doSelect2',
-			PRIVGRP_SN : ''
+			action : 'privgrp.doSelect2',
+			privgrp_sn : ''
 		},
 	};
 
 $(document).ready(function() {
-	jQuery("#tbody2").jqGrid({
+	$("#tbody2").jqGrid({
 		styleUI : "Bootstrap",
 		datatype : "json",
 		url : search_set2.url,
@@ -28,17 +28,17 @@ $(document).ready(function() {
 			cell : '',
 			id : 'RNUM'
 		},
-		colModel : [ {name : 'PRIVGRP_SN',	index : 'PRIVGRP_SN',	width : 90,  	sortable : false, 	align : 'center', 	hidden : false},
-		             {name : 'MENU_ID',		index : 'MENU_ID',		width : 90,  	sortable : false, 	align : 'center', 	hidden : false},
-		             {name : 'MENU_NAME',	index : 'MENU_NAME',	width : 100,    sortable : false, 	align : 'center', 	hidden : false},
-		             {name : 'INQIRE_YN',	index : 'INQIRE_YN',  	width : 90,		sortable : false, 	align : 'center', 	hidden : false,
+		colModel : [ {name : 'privgrpSn',	index : 'privgrpSn',	width : 90,  	sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'menuId',		index : 'menuId',		width : 90,  	sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'menuName',	index : 'menuName',	width : 100,    sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'inqireYn',	index : 'inqireYn',  	width : 90,		sortable : false, 	align : 'center', 	hidden : false,
 		            	 editable: true,
 		            	 edittype:'checkbox',
 		            	 editoptions: { value:'Y:N', defaultValue: 'N'},
 		            	 formatter : 'checkbox',
 		            	 formatoptions: { disabled : false }
 		             }, 
-	            	 {name : 'WRITE_YN',	index : 'WRITE_YN',  	width : 90,		sortable : false, 	align : 'center', 	hidden : false,
+	            	 {name : 'writeYn',	index : 'writeYn',  	width : 90,		sortable : false, 	align : 'center', 	hidden : false,
 		            	 editable: true,
 		            	 edittype:'checkbox',
 		            	 editoptions: { value:'Y:N', defaultValue: 'N' },
@@ -70,29 +70,29 @@ $(document).ready(function() {
 // 권한 선택시 권한 그룹 재검색
 function doJqgridSearch2(nId)
 {
-	search_set2.postData.PRIVGRP_SN = jQuery("#tbody").getCell(nId,'PRIVGRP_SN');
+	search_set2.postData.privgrp_sn = $("#tbody").getCell(nId,'privgrpSn');
 	
-	jQuery("#tbody2").clearGridData();		
-	jQuery("#tbody2").jqGrid('setGridParam', {
+	$("#tbody2").clearGridData();		
+	$("#tbody2").jqGrid('setGridParam', {
 		page : 1,
 		url : search_set2.url,
 		postData : search_set2.postData,
 	}
 	).trigger("reloadGrid");
 	
-	jQuery('#btn_update2').css("display", "");
+	$('#btn_update2').css("display", "");
 }
 
 //버튼
 function btnBind2()
 {
-	jQuery("#btn_update2").bind("click",doUpdate2);       // 수정
+	$("#btn_update2").bind("click",doUpdate2);       // 수정
 }
 
 // 초기화 상세
 function initTableDetail2()
 {
-		jQuery('#btn_update2').css("display", "none");
+		$('#btn_update2').css("display", "none");
 }
 
 // 등록, 수정, 삭제 시 ajax 전송
@@ -103,7 +103,7 @@ function IUDdoAjax2(url, uid) {
 	
 	var ajax_set =
     {
-		data: {data:params, "PRIVGRP_SN":search_set2.postData.PRIVGRP_SN},
+		data: {data:params, "privgrp_sn":search_set2.postData.privgrp_sn},
         url:url,
         return_fn:function(jdata){doIUDCallback2(jdata, uid);}
     }
@@ -130,12 +130,12 @@ function doIUDCallback2(jData, iud) {
 	else if(iud=="D") msg = "삭제";
 	
 	
-	if (result == "SUCC")
+	if (result == "succ")
 	{
 		alert(msg + "되었습니다.");
 		//적용 후 처리는 여기서..
 	}
-	else if (result == "FAIL")
+	else if (result == "fail")
 	{
 		if(iud=="D") alert(msg + "가 실패했습니다.");
 		else alert(msg + "이 실패했습니다.");

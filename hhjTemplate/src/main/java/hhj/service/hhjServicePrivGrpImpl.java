@@ -11,21 +11,19 @@ import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
-
-/** 
-* @FileName      : hhjServicePrivGrpImpl.java 
-* @Project     : hhjTemplate 
-* @Date        : 2017. 11. 7. 
-* @작성자          : hhj 
-* @변경이력     : 
-* @프로그램 설명     : 
-*/
+/**
+ * 
+ * @author	: hhj
+ * @Date	: 2018. 11. 1.
+ * @version	: 1.0
+ * @see		: 
+ *
+ */
 @Service("hhjServicePrivGrp")
 public class hhjServicePrivGrpImpl extends EgovAbstractServiceImpl  implements hhjServicePrivGrp 
 {
 	Logger log = Logger.getLogger(this.getClass());
 	
-	/** cubridDAO */
     @Resource(name="hhjDAO")
     private hhjDAO hhjDAO;
 	
@@ -43,15 +41,15 @@ public class hhjServicePrivGrpImpl extends EgovAbstractServiceImpl  implements h
 		hhjDAO.delete("privgrp.doDelete2", map);
 		
 		Map<String, Object> row = new HashMap<String, Object>();
-		String privgrp_sn =  (String) map.get("PRIVGRP_SN");
+		String privgrp_sn =  (String) map.get("privgrp_sn");
 
 		if(list != null) {
 			for (int i=0; i < list.size(); i++) {
 				row = list.get(i);
-				row.put("PRIVGRP_SN", privgrp_sn);
-				row.put("PRIV_SN", i);
-				if(row.get("WRITE_YN").equals("Y")) {
-					row.put("INQIRE_YN", "Y");
+				row.put("privgrpSn", privgrp_sn);
+				row.put("privSn", i);
+				if(row.get("writeYn").equals("Y")) {
+					row.put("inqireYn", "Y");
 				}
 				hhjDAO.insert("privgrp.doInsert2", row);
 				row.clear();

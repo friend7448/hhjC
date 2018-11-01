@@ -3,21 +3,21 @@ var search_set =
 	{
 		url : "../common/doSelect.do", //추가
 		postData : {
-			ACTION : 'privgrp.doSelect',
-			TXT_SEARCH_PRIVGRP_NAME : '',
-			SLT_SEARCH_USE_YN : '' 		
+			action : 'privgrp.doSelect',
+			srch_privgrp_name : '',
+			srch_use_yn : '' 		
 		},
 	};
 
 function setSearchValue() {
-		search_set.postData.TXT_SEARCH_PRIVGRP_NAME = jQuery('#TXT_SEARCH_PRIVGRP_NAME').val();
-		search_set.postData.SLT_SEARCH_USE_YN = jQuery('#SLT_SEARCH_USE_YN').val();
+		search_set.postData.srch_privgrp_name = $('#srch_privgrp_name').val();
+		search_set.postData.srch_use_yn = $('#srch_use_yn').val();
 }
 
 $(document).ready(function() {
 	setSearchValue();
 	
-	jQuery("#tbody").jqGrid({
+	$("#tbody").jqGrid({
 		styleUI : "Bootstrap",
 		datatype : "json",
 		url : search_set.url,
@@ -35,16 +35,16 @@ $(document).ready(function() {
 			cell : '',
 			id : 'RNUM'
 		},
-		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 80, 	sortable : false,	align : 'center', 	hidden : true},
-		             {name : 'PRIVGRP_SN',	index : 'PRIVGRP_SN',	width : 90,    sortable : false, 	align : 'center', 	hidden : false},
-		             {name : 'PRIVGRP_NAME',index : 'PRIVGRP_NAME',	width : 90,    sortable : false, 	align : 'center', 	hidden : false},
-		             {name : 'USE_YN',		index : 'USE_YN',  		width : 50,		sortable : false, 	align : 'center', 	hidden : false},
-		             {name : 'PRIORT',		index : 'PRIORT', 		width : 50,		sortable : false, 	align : 'center', 	hidden : false}
+		colModel : [ {name : 'rnum',	   	index : 'rnum',		    width : 80, 	sortable : false,	align : 'center', 	hidden : true},
+		             {name : 'privgrpSn',	index : 'privgrpSn',	width : 90,    sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'privgrpName',	index : 'privgrpName',	width : 90,    sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'useYn',		index : 'useYn',  		width : 50,		sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'priort',		index : 'priort', 		width : 50,		sortable : false, 	align : 'center', 	hidden : false}
 		],
 //		pager : '#tbodyPager',
-		rowNum : 10,
+		rowNum : 5,
 		rowList:[10,20,30],
-		height: 370,
+		height: 175,
 		sortable:true,
 //		sortname:'AA',
 //		sortorder:"desc",
@@ -71,31 +71,31 @@ $(document).ready(function() {
 //버튼
 function btnBind()
 {
-	jQuery("#btn_init").bind("click",doInit);			// 초기화
-	jQuery("#btn_search").bind("click",doSearch);   // 검색
-	jQuery("#btn_insert").bind("click",doInsert);       // 등록
-	jQuery("#btn_update").bind("click",doUpdate);       // 수정
-	jQuery("#btn_delete").bind("click",doDelete);       // 삭제
+	$("#btn_init").bind("click",doInit);			// 초기화
+	$("#btn_search").bind("click",doSearch);	   // 검색
+	$("#btn_insert").bind("click",doInsert);       // 등록
+	$("#btn_update").bind("click",doUpdate);       // 수정
+	$("#btn_delete").bind("click",doDelete);       // 삭제
 }
 
 // 초기화
 function doInit()
 {
 	initTableDetail();
-	jQuery("#TXT_PRIVGRP_NAME").focus();
+	$("#privgrp_name").focus();
 }
 
 // 초기화 상세
 function initTableDetail()
 {
-	jQuery("#TXT_HIDDEN_PRIVGRP_SN").val("");
+	$("#privgrp_sn").val("");
 	
-	jQuery("#TXT_PRIVGRP_NAME").val("");  		// 사용자ID
-	jQuery("#TXT_PRIVGRP_DESC").val("");       // 이름
-	jQuery("#TXT_PRIORT").val("0");         // 비번
-	jQuery("#SLT_USE_YN").val("Y");            // 전번
-	jQuery("#TXT_UPDUSR_SN").val("0");      // 수정자 ID
-	jQuery("#TXT_UPDT_DT").val("");         // 수정일시
+	$("#privgrp_name").val("");  		// 사용자ID
+	$("#privgrp_desc").val("");       // 이름
+	$("#priort").val("0");         // 비번
+	$("#use_yn").val("Y");            // 전번
+	$("#updusr_sn").val("0");      // 수정자 ID
+	$("#updt_dt").val("");         // 수정일시
 	
 	btnStatus(0,1,1);
 }
@@ -105,8 +105,8 @@ function doSearch()
 {
 	setSearchValue();
 	
-	jQuery("#tbody").clearGridData();		
-	jQuery("#tbody").jqGrid('setGridParam', {
+	$("#tbody").clearGridData();		
+	$("#tbody").jqGrid('setGridParam', {
 		page : 1,
 		url : search_set.url,
 		postData : search_set.postData,
@@ -114,19 +114,22 @@ function doSearch()
 	).trigger("reloadGrid");
 	
 	initTableDetail();
+	
+	// 검색 버튼 클릭 시, 오른쪽 메뉴 퀀한 리셋
+	doJqgridSearch2(0);
 }
 
 // 리스트 상세정보 조회
 function detail(nId)
 {
-	var TXT_HIDDEN_PRIVGRP_SN = jQuery("#tbody").getCell(nId,'PRIVGRP_SN');
+	var privgrp_sn = $("#tbody").getCell(nId,'privgrpSn');
 	
     $.ajax({
         type: "POST",
         url: "../common/doSelectDetail.do",
         data: {
-        	ACTION : 'privgrp.doSelectDetail',
-        	TXT_HIDDEN_PRIVGRP_SN : TXT_HIDDEN_PRIVGRP_SN
+        	action : 'privgrp.doSelectDetail',
+        	privgrp_sn : privgrp_sn
         },
         dataType: 'json',
         error: function(){
@@ -142,29 +145,29 @@ function doDetailCallback(jData)
 	var response = jData.response[0];
 
 	initTableDetail();
- 	jQuery("#TXT_HIDDEN_PRIVGRP_SN").val(response.PRIVGRP_SN);
-	jQuery("#TXT_PRIVGRP_NAME").val(response.PRIVGRP_NAME);
-	jQuery("#TXT_PRIVGRP_DESC").val(response.PRIVGRP_DESC);
-	jQuery("#TXT_PRIORT").val(response.PRIORT);
-	jQuery("#SLT_USE_YN").val(response.USE_YN);
-	jQuery("#TXT_UPDUSR_SN").val(response.UPDUSR_SN);
-	jQuery("#TXT_UPDT_DT").val(dateToFormat(response.UPDT_DT));
+ 	$("#privgrp_sn").val(response.privgrpSn);
+	$("#privgrp_name").val(response.privgrpName);
+	$("#privgrp_desc").val(response.privgrpDesc);
+	$("#priort").val(response.priort);
+	$("#use_yn").val(response.useYn);
+	$("#updusr_sn").val(response.updusrSn);
+	$("#updt_dt").val(dateToFormat(response.updtDt));
 	
 	btnStatus(1,0,0);
 }
 
 // 등록, 수정, 삭제 시 파라메타 값 체크
 function IUDcheckValue() {
-	if(jQuery("#TXT_PRIVGRP_NAME").val().length == 0)
+	if($("#privgrp_name").val().length == 0)
 	{
 		alert("권한그룹명을 입력하십시오.");
-		jQuery("#TXT_PRIVGRP_NAME").focus();
+		$("#privgrp_name").focus();
 		return false;
 	}
-	else if(jQuery("#TXT_PRIORT").val().length == 0)
+	else if($("#priort").val().length == 0)
 	{
 		alert("우선순위를 입력하십시오.");
-		jQuery("#TXT_PRIORT").focus();
+		$("#priort").focus();
 		return false;
 	}
 
@@ -190,7 +193,7 @@ function doInsert()
 {
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=privgrp.doInsert';
+	var actionData = '&action=privgrp.doInsert';
 	var url = '../common/doInsert.do';
 	var uid = 'I';
 	
@@ -202,7 +205,7 @@ function doUpdate()
 {	
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=privgrp.doUpdate';
+	var actionData = '&action=privgrp.doUpdate';
 	var url = '../common/doUpdate.do';
 	var uid = 'U';
 	
@@ -214,7 +217,7 @@ function doDelete()
 {
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=privgrp.doDelete';
+	var actionData = '&action=privgrp.doDelete';
 	var url = '../common/doDelete.do';
 	var uid = 'D';
 	
@@ -231,14 +234,14 @@ function doIUDCallback(jData, iud) {
 	else if(iud=="D") msg = "삭제";
 	
 	
-	if (result == "SUCC")
+	if (result == "succ")
 	{
 		alert(msg + "되었습니다.");
 	
 		initTableDetail();
 		doSearch();
 	}
-	else if (result == "FAIL")
+	else if (result == "fail")
 	{
 		if(iud=="D") alert(msg + "가 실패했습니다.");
 		else alert(msg + "이 실패했습니다.");

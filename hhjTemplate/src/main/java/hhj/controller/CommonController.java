@@ -16,16 +16,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import hhj.common.jqgridPaging;
 import hhj.service.hhjService;
 
-/** 
-* @FileName      : CommonContriller.java 
-* @Project     : aa 
-* @Date        : 2017. 7. 28. 
-* @작성자          : hhj 
-* @변경이력     : 
-* @프로그램 설명     : CommonCURD 클래스 
-*/
+
+/**
+ * 
+ * @author	: hhj
+ * @Date	: 2018. 11. 1.
+ * @version	: 1.0
+ * @see		: 
+ *
+ */
 @Controller
-public class CommonContriller {
+public class CommonController {
 	@Resource(name = "hhjService")
 	private hhjService service;
 
@@ -33,24 +34,27 @@ public class CommonContriller {
 	
 	@RequestMapping(value = "/{a}/{b}.do")
 	public String home(@PathVariable String a, @PathVariable String b) throws Exception {
+		log.debug("hhj - /{a}/{b}.do");
+		
 		return "/" + a + "/" + b;
 	}
 	
 	@RequestMapping("/common/doSelect.do")
 	public @ResponseBody Map<String, Object> doSelect(@RequestParam Map<String, Object> param) {
-		log.debug("Select param = " + param);
+		log.debug("hhj - /common/doSelect.do");
+		log.debug("hhj - param : " + param.toString());
 		
 		List list = null;
 		int cnt = -1;
 
 		try {
-			cnt = service.selectCnt(param.get("ACTION") + "Cnt", param);
-			log.debug("cnt = " + cnt);
+			cnt = service.selectCnt(param.get("action") + "Cnt", param);
+			log.debug("hhj - cnt : " + cnt);
 			if(cnt > -1) {
 				param.put("totalCount", cnt);
 				param = jqgridPaging.setPaging(param);
-				list = service.list((String) param.get("ACTION"), param);
-				log.debug("list = " + list);
+				list = service.list((String) param.get("action"), param);
+				log.debug("hhj - result list : " + list);
 			}
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -65,13 +69,13 @@ public class CommonContriller {
 	
 	@RequestMapping("/common/doSelectDetail.do")
 	public @ResponseBody Map<String, Object> doSelectDetail(@RequestParam Map<String, Object> param) {
-		log.debug("SelectDetail param = " + param);
+		log.debug("hhj - /common/doSelectDetail.do");
 		
 		List list = null;
 		
 		try {
-			list = service.list((String) param.get("ACTION"), param);
-			log.debug("list = " + list);
+			list = service.list((String) param.get("action"), param);
+			log.debug("hhj - result list : " + list);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -84,20 +88,20 @@ public class CommonContriller {
 	
 	@RequestMapping("/common/doInsert.do")
 	public @ResponseBody Map<String, Object> doInsert(@RequestParam Map<String, Object> param) {
-		log.debug("Insert param = " + param);
+		log.debug("hhj - /common/doInsert.do");
 		
 		int cnt = -1;
-		String isSuccess = "FAIL";
+		String isSuccess = "fail";
 		
 		try {
-			cnt = service.insert((String) param.get("ACTION"), param);
-			log.debug("insert return = " + cnt);
+			cnt = service.insert((String) param.get("action"), param);
+			log.debug("hhj - insert return : " + cnt);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		isSuccess = cnt > -1 ? "SUCC" : "FAIL";
+		isSuccess = cnt > -1 ? "succ" : "fail";
 		param.put("isSuccess", isSuccess);
 		
 		return param;
@@ -105,19 +109,19 @@ public class CommonContriller {
 	
 	@RequestMapping("/common/doUpdate.do")
 	public @ResponseBody Map<String, Object> doUpdate(@RequestParam Map<String, Object> param) {
-		log.debug("Update param = " + param);
+		log.debug("hhj - /common/doUpdate.do");
 		
 		int cnt = 0;
-		String isSuccess = "FAIL";
+		String isSuccess = "fail";
 		
 		try {
-			cnt = service.update((String) param.get("ACTION"), param);
+			cnt = service.update((String) param.get("action"), param);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		isSuccess = cnt > 0 ? "SUCC" : "FAIL";
+		isSuccess = cnt > 0 ? "succ" : "fail";
 		param.put("isSuccess", isSuccess);
 		
 		return param;
@@ -125,19 +129,19 @@ public class CommonContriller {
 	
 	@RequestMapping("/common/doDelete.do")
 	public @ResponseBody Map<String, Object> doDelete(@RequestParam Map<String, Object> param) {
-		log.debug("Delete param = " + param);
+		log.debug("hhj - /common/doDelete.do");
 		
 		int cnt = 0;
-		String isSuccess = "FAIL";
+		String isSuccess = "fail";
 		
 		try {
-			cnt = service.delete((String) param.get("ACTION"), param);
+			cnt = service.delete((String) param.get("action"), param);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		isSuccess = cnt > 0 ? "SUCC" : "FAIL";
+		isSuccess = cnt > 0 ? "succ" : "fail";
 		param.put("isSuccess", isSuccess);
 		
 		return param;

@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import hhj.service.hhjService;
 
-/** 
-* @FileName      : mainController.java 
-* @Project     : hhjTemplate 
-* @Date        : 2017. 11. 16. 
-* @작성자          : hhj 
-* @변경이력     : 
-* @프로그램 설명     : 
-*/
+/**
+ * 
+ * @author	: hhj
+ * @Date	: 2018. 11. 1.
+ * @version	: 1.0
+ * @see		: 
+ *
+ */
 @Controller
-public class mainController {
+public class MainController {
 	@Resource(name = "hhjService")
 	private hhjService service;
 	
@@ -29,7 +29,7 @@ public class mainController {
 
 	@RequestMapping("/main/main.do")
 	public String main(@RequestParam Map<String, Object> param, Model model) {
-		log.debug("hhj - 메인화면 view");
+		log.debug("hhj - /main/main.do");
 		
 		return "/main/main";
 	}

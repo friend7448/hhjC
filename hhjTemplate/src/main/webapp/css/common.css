@@ -1,0 +1,64 @@
+/* #wrap{margin: 0px auto; min-width: 1150px; height:100%; position: relative;background: #f0f0f0;} */
+
+/*********************** header ***********************/
+#header {width:100%;background: #fff; height:43px;letter-spacing:-0.05em; overflow: hidden; position: relative !important; z-index:1000; }
+
+#topguide {width:1150px;height:43px;margin:0 auto; line-height:44px; }
+#topguide .topLogo h1,#topguide .topLogo p{float:left; }
+#topguide .topLogo h1 img{margin:13px 5px 0 0 ;}
+#topguide .topLogo p{color:#3e6795; font-size:14px;}
+#topguide ul.topLogin{float:right;  font-size:13px; }
+/* #topguide li { display:inline-block ; padding:0 10px 0 0; background:url(../images/topguide_bg.png) top 2px right no-repeat; font-family:돋움,Dotum;font-weight: bold ; letter-spacing: -2px;} */
+#topguide li { display:inline-block ; padding:0 3px 0 0; font-family:돋움,Dotum;font-weight: bold ; letter-spacing: -2px;}
+#topguide li.userlogin a{color:#7e8cba; line-height:11px; }
+#topguide li.userlogin span{color:#7e8cba; line-height:11px; }
+#topguide li.userlogin img{margin:0 5px 3px 0;}
+#topguide li.userlogin a {padding:2px 0 2px 30px;}
+#topguide li.userlogin span {padding:2px 0 2px 30px;}
+#topguide li.loginbtn a{border:1px solid #d4d4d4;padding:5px 20px 4px 20px;color:#7c7c7c}
+#topguide li.loginbtn a:active,#topguide li.loginbtn a:hover{background: #555; border:1px solid #576799;color:#fff}
+#topguide li a{color:#b9b9b9;text-decoration: none}
+
+/*********************** GNB ***********************/
+#gnbDiv {position: relative;}
+.gnbDiv {background:#555; left: 0px; top: 0px; width: 100%;overflow: hidden; position: absolute; z-index: 8000; min-width: 1150px;} /* 배경색 */
+.gnbDiv .gnbWrap {margin: 0px auto; top:0px; width: 1150px;overflow: hidden; position: relative; z-index: 10000;}
+.gnbDiv .gnbWrap .logo {float: left;margin-top:16px;margin-left:16px;color:#fff;font-size:16pt;} /* 시스템 명칭 색 */
+.gnbDiv .gnbWrap .logo a:hover {color:#fff;} /* 오버시 추가 */
+.gnbDiv .gnbWrap .gnb { float: right; z-index: 10000; }
+.gnbDiv .gnbWrap .gnb .oneDep {margin: 0px ; height: 65px; letter-spacing: -1px; font-size: 16px;  color:#9d9d9d; } /* 대메뉴 폰트 색 */
+.gnbDiv .gnbWrap .gnb ul {width: 100%;  overflow: hidden;}
+.gnbDiv .gnbWrap .gnb ul li {float: left;width:130px;}
+.gnbDiv .gnbWrap .gnb ul li a.oneDep {display: block; text-align:center; position: relative;line-height:65px;}
+.gnbDiv .gnbWrap .gnb ul li a.oneDep:hover{ text-decoration:none}
+.gnbDiv .gnbWrap .gnb ul li.on a.oneDep {color:#fff; } /* 대메뉴 선택시 폰트 색 */
+.gnbDiv .gnbWrap .gnb ul li.on {background: #080808;} /* 대메뉴 선택시 배경 색 */
+.gnbDiv .gnbWrap .gnb ul li.seven.on {padding-right: 0px;}
+.gnbDiv .gnbWrap .gnb ul li p a{padding-left:10px; text-align:left}
+.gnbDiv .gnbWrap .twoDep { display: block; visibility: visible; position: relative;background:#fff;padding-bottom:3px; }
+.gnbDiv .gnbWrap li.on .twoDep {background:#9d9d9d; border-right-color: rgb(238, 238, 238); border-left-color: rgb(238, 238, 238); border-right-width:1px; border-left-width: 1px; border-right-style: solid; border-left-style: solid;} /* 대메뉴 선택시 소메뉴 배경 색 */ 
+.gnbDiv .gnbWrap li.on .twoDep a.off:hover {background:#080808;color:#fff; vertical-align: top; text-decoration:none;} /* 소메뉴 선택시 배경, 폰트 색 */
+.gnbDiv .gnbWrap li .twoDep a.on ,.gnbDiv .gnbWrap li.on .twoDep a{ color:#fff; vertical-align: top; text-decoration:none}
+.gnbDiv .gnbWrap li .twoDep a {color: rgb(80, 80, 80); line-height:120%; display:block; padding:5px 0 ;  font-family:"나눔고딕", "nanumgothic",dotum, "돋움"; font-size:13px; letter-spacing:-0.5px;}
+.twoDbg { background:#fff; top: 65px; width: 100%; height: 223px; position: absolute; z-index: 9999;}
+.gnbDiv .gnbWrap li.on .guideBg { width:255px;left: 0px; top: 48px; display: block; position: absolute; background:rgb(247, 247, 247);}
+
+/*********************** 가변형 ***********************/
+@media all and (min-width:1400px)
+{
+    #topguide,.gnbDiv .gnbWrap,#contentsDiv .mcontents,#footer .footer {width:1400px;}
+        .gnbDiv .gnbWrap .gnb ul li {float: left;width:160px;}  
+    .gnbDiv .gnbWrap .gnb .oneDep{font-size:17px;}
+    .mcont{width:45%}
+    #contentsDiv.sub{width:97%;}
+}
+
+@media all and (min-width:1920px)
+{
+    #topguide,.gnbDiv .gnbWrap,#contentsDiv .mcontents,#footer .footer{width:1900px;}
+    .gnbDiv .gnbWrap .gnb ul li {float: left;width:230px;}  
+    .mcont{width:45%}
+    .gnbDiv .gnbWrap .gnb .oneDep{font-size:17px;}
+    #contentsDiv.sub{width:98%;}
+        
+}

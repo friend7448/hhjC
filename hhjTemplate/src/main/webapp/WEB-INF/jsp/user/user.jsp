@@ -3,23 +3,23 @@
 <div class="container-fluid">
 	<form action="" class="form-horizontal" onsubmit="return false;">
 		<div class="form-group">
-			<label class="control-label col-sm-2" for="SLT_SEARCH_PRIVGRP_SN">사용자 권한</label>
+			<label class="control-label col-sm-2" for="srch_privgrp_sn">사용자 권한</label>
 			<div class="col-sm-3">
-				<select name="SLT_SEARCH_PRIVGRP_SN" id="SLT_SEARCH_PRIVGRP_SN" class="form-control" onkeydown="checkEnter(this.event);">
+				<select name="srch_privgrp_sn" id="srch_privgrp_sn" class="form-control" onkeydown="checkEnter(this.event);">
 					<option value="" selected="selected">전체</option>
 					<c:forEach var="result" items="${selectPrivGrp}" varStatus="status">
-						<option value="<c:out value="${result.PRIVGRP_SN}"/>"><c:out value="${result.PRIVGRP_NAME}" /></option>
+						<option value="<c:out value="${result.privgrpSn}"/>"><c:out value="${result.privgrpName}" /></option>
 					</c:forEach>
 				</select>
 			</div>
 			<div class="col-sm-2">
-				<select name="" id="SLT_SEARCH" name="SLT_SEARCH" class="form-control" onkeydown="checkEnter(this.event);">
+				<select name="" id="slt_search" name="slt_search" class="form-control" onkeydown="checkEnter(this.event);">
 					<option value="1" selected="selected">사용자ID</option>
 					<option value="2">사용자명</option>
 				</select>
 			</div>
 			<div class="col-sm-3">
-				<input type="text" class="form-control" id="TXT_SEARCH" name="TXT_SEARCH" onkeydown="checkEnter(this.event);"/>
+				<input type="text" class="form-control" id="txt_search" name="txt_search" onkeydown="checkEnter(this.event);"/>
 			</div>
 			<div class="pull-right hhj-search-btn">
 				<button type="button" class="btn btn-info" id="btn_search">
@@ -35,58 +35,58 @@
 </div>
 <div class="container-fluid hhj-content-detail">
 	<form action="" class="form-horizontal" id="frmDetail" name="frmDetail" method="post" onsubmit="return false;">
+		<input type="hidden" id="user_sn" name="user_sn" /> 
+		<input type="hidden" id="hidden_user_id" name="txt_hidden_user_id" /> 
 		<div class="form-group">
-			<input type="hidden" id="TXT_HIDDEN_USER_SN" name="TXT_HIDDEN_USER_SN" /> 
-			<input type="hidden" id="TXT_HIDDEN_USER_ID" name="TXT_HIDDEN_USER_ID" /> 
-			<label for="" class="control-label col-sm-2">사용자ID</label>
+			<label for="" class="control-label col-sm-2">사용자ID<span>*</span></label>
 			<div class="col-sm-3">
-				<input type="text" class="form-control" id="TXT_USER_ID" name="TXT_USER_ID" />
+				<input type="text" class="form-control" id="user_id" name="user_id" />
 			</div>
 			<div class="col-sm-1">
 				<button class="btn btn-default pull-right" id="btn_checkRepetition" onClick="checkRepetition(); return false;">중복체크</button>
 			</div>
-			<label for="" class="control-label col-sm-2">사용자명</label>
+			<label for="" class="control-label col-sm-2">사용자명<span>*</span></label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="TXT_USER_NAME" name="TXT_USER_NAME" />
+				<input type="text" class="form-control" id="user_name" name="user_name" />
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="" class="control-label col-sm-2">비밀번호</label>
+			<label for="" class="control-label col-sm-2">비밀번호<span>*</span></label>
 			<div class="col-sm-4">
-				<input type="password" class="form-control" id="TXT_USER_PW" name="TXT_USER_PW" />
+				<input type="password" class="form-control" id="user_pw" name="user_pw" />
 			</div>
 			<label for="" class="control-label col-sm-2">전화번호</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="TXT_CELL" name="TXT_CELL" />
+				<input type="text" class="form-control" id="cell" name="cell" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="" class="control-label col-sm-2">이메일</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="TXT_EMAIL" name="TXT_EMAIL" />
+				<input type="text" class="form-control" id="email" name="email" />
 			</div>
-			<label for="" class="control-label col-sm-2">권한</label>
+			<label for="" class="control-label col-sm-2">권한<span>*</span></label>
 			<div class="col-sm-4">
-				<select class="form-control" id="SLT_PRIVGRP_SN" name="SLT_PRIVGRP_SN">
+				<select class="form-control" id="privgrp_sn" name="privgrp_sn">
 					<option value="" selected="selected">선택</option>
 					<c:forEach var="result" items="${selectPrivGrp}" varStatus="status">
-						<option value="<c:out value="${result.PRIVGRP_SN}"/>"><c:out value="${result.PRIVGRP_NAME}" /></option>
+						<option value="<c:out value="${result.privgrpSn}"/>"><c:out value="${result.privgrpName}" /></option>
 					</c:forEach>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="" class="control-label col-sm-2">최종수정자ID</label>
+			<label for="" class="control-label col-sm-2">최종수정자</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="TXT_UPDUSR_SN" name="TXT_UPDUSR_SN" readonly="readonly" />
+				<input type="text" class="form-control" id="updusr_sn" name="updusr_sn" readonly="readonly" />
 			</div>
 			<label for="" class="control-label col-sm-2">최종수정일시</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" id="TXT_UPDT_DT" name="TXT_UPDT_DT" readonly="readonly" />
+				<input type="text" class="form-control" id="updt_dt" name="updt_dt" readonly="readonly" />
 			</div>
 		</div>
 		<div class="pull-right">
-			<c:if test="${program_auth[0].WRITE_YN == 'Y'}">
+			<c:if test="${program_auth[0].writeYn == 'Y'}">
 				<button type="button" class="btn btn-default" id="btn_init">초기화</button>
 				<button type="button" class="btn btn-default" id="btn_insert">등록</button>
 				<button type="button" class="btn btn-default" id="btn_update">수정</button>

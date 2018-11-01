@@ -12,9 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import Session.SessionUtil;
 import hhj.service.hhjService;
 import hhj.service.hhjServiceUser;
 
+/**
+ * 
+ * @author	: hhj
+ * @Date	: 2018. 11. 1.
+ * @version	: 1.0
+ * @see		: 
+ *
+ */
 @Controller
 public class UserController {
 	@Resource(name = "hhjService")
@@ -27,13 +36,13 @@ public class UserController {
 
 	@RequestMapping("/user/user.do")
 	public String ProgramView(@RequestParam Map<String, Object> param, Model model) {
-		log.debug("hhj - 사용자관리화면 view");
+		log.debug("hhj - /user/user.do");
 		
 		// 권한그룹 조회
 		List list = null;
 		try {
 			list = service.list("user.doSelectPrivGrp", param);
-			log.debug("list = " + list.toString());
+			log.debug("hhj - result list : " + list.toString());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,14 +55,13 @@ public class UserController {
 	
 	@RequestMapping("/user/doSelectDetail.do")
 	public @ResponseBody Map<String, Object> doSelectDetail(@RequestParam Map<String, Object> param) {
-		log.debug("SelectDetail param = " + param);
+		log.debug("hhj - /user/doSelectDetail.do");
 		
 		Map<String, String> map = null;
 
 		try {
 			map = service.selectByPk("user.doSelectDetail", param);
 			map.putAll(service.selectByPk("user.doSelect2", param));
-			log.debug("map = " + map);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -66,20 +74,21 @@ public class UserController {
 	
 	@RequestMapping("/user/doInsert.do")
 	public @ResponseBody Map<String, Object> doInsert(@RequestParam Map<String, Object> param) {
-		log.debug("Insert param = " + param);
-		
+		log.debug("hhj - /user/doInsert.do");
+
 		int cnt = -1;
-		String isSuccess = "FAIL";
+		String isSuccess = "fail";
 		
 		try {
+			param.put("updusr_sn", SessionUtil.getUserSn());
 			cnt = serviceUser.insertUserNPriv(param);
-			log.debug("insert return = " + cnt);
+			log.debug("hhj - insert cnt : " + cnt);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		isSuccess = cnt > -1 ? "SUCC" : "FAIL";
+		isSuccess = cnt > -1 ? "succ" : "fail";
 		param.put("isSuccess", isSuccess);
 		
 		return param;
@@ -87,19 +96,20 @@ public class UserController {
 	
 	@RequestMapping("/user/doUpdate.do")
 	public @ResponseBody Map<String, Object> doUpdate(@RequestParam Map<String, Object> param) {
-		log.debug("Update param = " + param);
+		log.debug("hhj - /user/doUpdate.do");
 		
 		int cnt = 0;
-		String isSuccess = "FAIL";
+		String isSuccess = "fail";
 		
 		try {
+			param.put("updusr_sn", SessionUtil.getUserSn());
 			cnt = serviceUser.updateUserNPriv(param);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		isSuccess = cnt > 0 ? "SUCC" : "FAIL";
+		isSuccess = cnt > 0 ? "succ" : "fail";
 		param.put("isSuccess", isSuccess);
 		
 		return param;
@@ -107,10 +117,10 @@ public class UserController {
 	
 	@RequestMapping("/user/doDelete.do")
 	public @ResponseBody Map<String, Object> doDelete(@RequestParam Map<String, Object> param) {
-		log.debug("Delete param = " + param);
+		log.debug("hhj - /user/doDelete.do");
 		
 		int cnt = 0;
-		String isSuccess = "FAIL";
+		String isSuccess = "fail";
 		
 		try {
 			cnt = serviceUser.deleteUserNPriv(param);
@@ -119,7 +129,7 @@ public class UserController {
 			e.printStackTrace();
 		}
 		
-		isSuccess = cnt > 0 ? "SUCC" : "FAIL";
+		isSuccess = cnt > 0 ? "succ" : "fail";
 		param.put("isSuccess", isSuccess);
 		
 		return param;

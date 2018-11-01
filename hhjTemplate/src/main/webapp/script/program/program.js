@@ -3,21 +3,21 @@ var search_set =
 	{
 		url : "../common/doSelect.do", //추가
 		postData : {
-			ACTION : 'program.doSelect',
-			TXT_SEARCH_MENU_ID : '', 		// 프로그램 ID
-			TXT_SEARCH_MENU_NAME : ''	// 프로그램명
+			action : 'program.doSelect',
+			srch_menu_id : '', 		// 프로그램 ID
+			srch_menu_name : ''	// 프로그램명
 		},
 	};
 
 function setSearchValue() {
-	search_set.postData.TXT_SEARCH_MENU_ID = jQuery('#TXT_SEARCH_MENU_ID').val();
-	search_set.postData.TXT_SEARCH_MENU_NAME = jQuery('#TXT_SEARCH_MENU_NAME').val();
+	search_set.postData.srch_menu_id = $('#srch_menu_id').val();
+	search_set.postData.srch_menu_name = $('#srch_menu_name').val();
 }
 
 $(document).ready(function() {
 	setSearchValue();
 	
-	jQuery("#tbody").jqGrid({
+	$("#tbody").jqGrid({
 		styleUI : "Bootstrap",
 		datatype : "json",
 		url : search_set.url,
@@ -35,20 +35,20 @@ $(document).ready(function() {
 			cell : '',
 			id : 'RNUM'
 		},
-		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 0, 		sortable : false,	align : 'center', 	hidden : true},
-		             {name : 'MENU_ID',		index : 'MENU_ID',		width : 100, 	sortable : false,	align : 'center', 	hidden : false},
-		             {name : 'UP_MENU_ID',	index : 'UP_MENU_ID',   width : 100,    sortable : false, 	align : 'center', 	hidden : false},
-		             {name : 'MENU_NAME',	index : 'MENU_NAME',    width : 220,	sortable : false, 	align : 'left', 	hidden : false},
-		             {name : 'PROGRM_URL',	index : 'PROGRM_URL',   width : 220,	sortable : false, 	align : 'left', 	hidden : false},
-		             {name : 'SORT_ORDER',	index : 'SORT_ORDER',   width : 80,		sortable : false, 	align : 'center',	hidden : false},
-		             {name : 'USE_YN',		index : 'USE_YN',	    width : 80,    	sortable : false, 	align : 'center',	hidden : false}
+		colModel : [ {name : 'rnum',	   	index : 'rnum',		    width : 0, 		sortable : false,	align : 'center', 	hidden : true},
+		             {name : 'menuId',		index : 'menuId',		width : 100, 	sortable : false,	align : 'center', 	hidden : false},
+		             {name : 'upMenuId',	index : 'upMenuId',   width : 100,    sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'menuName',	index : 'menuName',    width : 220,	sortable : false, 	align : 'left', 	hidden : false},
+		             {name : 'progrmUrl',	index : 'progrmUrl',   width : 220,	sortable : false, 	align : 'left', 	hidden : false},
+		             {name : 'sortOrder',	index : 'sortOrder',   width : 80,		sortable : false, 	align : 'center',	hidden : false},
+		             {name : 'useYn',		index : 'useYn',	    width : 80,    	sortable : false, 	align : 'center',	hidden : false}
 		],
 //		pager : '#tbodyPager',
 		rowNum : 10,
 		rowList:[10,20,30],
-		height: 370,
+		height: 345,
 		sortable: true,
-		sortname:'MENU_ID',
+		sortname:'menu_id',
 		sortorder:"asc",
 		gridview: true,
 		rownumbers: true,
@@ -70,45 +70,47 @@ $(document).ready(function() {
 //버튼
 function btnBind()
 {
-	jQuery("#btn_init").bind("click",doInit);			// 초기화
-	jQuery("#btn_search").bind("click",doSearch);   // 검색
-	jQuery("#btn_insert").bind("click",doInsert);       // 등록
-	jQuery("#btn_update").bind("click",doUpdate);       // 수정
-	jQuery("#btn_delete").bind("click",doDelete);       // 삭제
+	$("#btn_init").bind("click",doInit);			// 초기화
+	$("#btn_search").bind("click",function() { 	// 검색
+		doSearch(1); 
+	}); 		 // 검색
+	$("#btn_insert").bind("click",doInsert);       // 등록
+	$("#btn_update").bind("click",doUpdate);       // 수정
+	$("#btn_delete").bind("click",doDelete);       // 삭제
 }
 
 // 초기화
 function doInit()
 {
 	initTableDetail();
-	jQuery("#TXT_MENU_ID").focus();
+	$("#menu_id").focus();
 }
 
 // 초기화 상세
 function initTableDetail()
 {
-	jQuery("#SLT_UP_MENU_ID").val("");  	// 상위프로그램명
-	jQuery("#TXT_MENU_ID").val("");           	// 프로그램 ID
-	jQuery("#TXT_MENU_NAME").val("");         	// 프로그램명
-	jQuery("#TXT_PROGRM_URL").val("");             	// 프로그램 URL
-	jQuery("#TXT_SORT_ORDER").val("999");        	// 프로그램 순서
-	jQuery('#SLT_USE_AT option:eq(0)').attr('selected', 'selected')
-	jQuery("#TXT_UPDUSR_SN").val("0");                	// 수정자 ID
-	jQuery("#TXT_UPDT_DT").val("");              	// 수정일시
+	$("#up_menu_id").val("");  	// 상위프로그램명
+	$("#menu_id").val("");           	// 프로그램 ID
+	$("#menu_name").val("");         	// 프로그램명
+	$("#progrm_url").val("");             	// 프로그램 URL
+	$("#sort_order").val("999");        	// 프로그램 순서
+	$('#use_at option:eq(0)').attr('selected', 'selected')
+	$("#updusr_sn").val("0");                	// 수정자 ID
+	$("#updt_dt").val("");              	// 수정일시
 	
-	jQuery("#TXT_MENU_ID").prop('readonly', false);
+	$("#menu_id").prop('readonly', false);
 	
 	btnStatus(0,1,1);
 }
 
 //리스트 조회
-function doSearch()
+function doSearch(page)
 {
 	setSearchValue();
 	
-	jQuery("#tbody").clearGridData();		
-	jQuery("#tbody").jqGrid('setGridParam', {
-		page : 1,
+	$("#tbody").clearGridData();		
+	$("#tbody").jqGrid('setGridParam', {
+		page : page,
 		url : search_set.url,
 		postData : search_set.postData,
 	}
@@ -120,14 +122,14 @@ function doSearch()
 // 리스트 상세정보 조회
 function detail(nId)
 {
-	var TXT_MENU_ID = jQuery("#tbody").getCell(nId,'MENU_ID');
+	var menu_id = $("#tbody").getCell(nId,'menuId');
 
     $.ajax({
         type: "POST",
         url: "../common/doSelectDetail.do",
         data: {
-        	ACTION : 'program.doSelectDetail',
-        	TXT_MENU_ID : TXT_MENU_ID
+        	action : 'program.doSelectDetail',
+        	menu_id : menu_id
         },
         dataType: 'json',
         error: function(){
@@ -144,32 +146,32 @@ function doDetailCallback(jData)
 
 	initTableDetail();
 
-	jQuery("#SLT_UP_MENU_ID").val(response.UP_MENU_ID); 
- 	jQuery("#TXT_MENU_ID").val(response.MENU_ID);
- 	jQuery("#TXT_MENU_NAME").val(response.MENU_NAME);
-	jQuery("#TXT_PROGRM_URL").val(response.PROGRM_URL);
-	jQuery("#TXT_SORT_ORDER").val(response.SORT_ORDER);
-	jQuery("#SLT_USE_AT").val(response.USE_YN);
-	jQuery("#TXT_UPDUSR_SN").val(response.UPDUSR_SN);
-	jQuery("#TXT_UPDT_DT").val(dateToFormat(response.UPDT_DT));
+	$("#up_menu_id").val(response.upMenuId); 
+ 	$("#menu_id").val(response.menuId);
+ 	$("#menu_name").val(response.menuName);
+	$("#progrm_url").val(response.progrmUrl);
+	$("#sort_order").val(response.sortOrder);
+	$("#use_at").val(response.useYn);
+	$("#updusr_sn").val(response.updusrSn);
+	$("#updt_dt").val(dateToFormat(response.updtDt));
 	
-	jQuery("#TXT_MENU_ID").prop('readonly', true); 
+	$("#menu_id").prop('readonly', true); 
 	
 	btnStatus(1,0,0);
 }
 
 // 등록, 수정, 삭제 시 파라메타 값 체크
 function IUDcheckValue() {
-	if(jQuery("#TXT_MENU_ID").val().length == 0)
+	if($("#menu_id").val().length == 0)
 	{
 		alert("프로그램ID를 입력하십시오.");
-		jQuery("#TXT_MENU_ID").focus();
+		$("#menu_id").focus();
 		return false;
 	}
-	else if(jQuery("#TXT_MENU_NAME").val().length == 0)
+	else if($("#menu_name").val().length == 0)
 	{
 		alert("프로그램명을 입력하십시오.");
-		jQuery("#TXT_MENU_NAME").focus();
+		$("#menu_name").focus();
 		return false;
 	}
 	return true;
@@ -194,7 +196,7 @@ function doInsert()
 {
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=program.doInsert';
+	var actionData = '&action=program.doInsert';
 	var url = '../common/doInsert.do';
 	var uid = 'I';
 	
@@ -206,7 +208,7 @@ function doUpdate()
 {	
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=program.doUpdate';
+	var actionData = '&action=program.doUpdate';
 	var url = '../common/doUpdate.do';
 	var uid = 'U';
 	
@@ -218,7 +220,7 @@ function doDelete()
 {
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '&ACTION=program.doDelete';
+	var actionData = '&action=program.doDelete';
 	var url = '../common/doDelete.do';
 	var uid = 'D';
 	
@@ -235,14 +237,14 @@ function doIUDCallback(jData, iud) {
 	else if(iud=="D") msg = "삭제";
 	
 	
-	if (result == "SUCC")
+	if (result == "succ")
 	{
 		alert(msg + "되었습니다.");
 	
 		initTableDetail();
-		doSearch();
+		doSearch($("#tbody").getGridParam("page"));
 	}
-	else if (result == "FAIL")
+	else if (result == "fail")
 	{
 		if(iud=="D") alert(msg + "가 실패했습니다.");
 		else alert(msg + "이 실패했습니다.");

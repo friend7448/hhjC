@@ -13,6 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import hhj.service.hhjService;
 
+/**
+ * 
+ * @author	: hhj
+ * @Date	: 2018. 11. 1.
+ * @version	: 1.0
+ * @see		: 
+ *
+ */
 @Controller
 public class ProgramController {
 	@Resource(name = "hhjService")
@@ -22,13 +30,13 @@ public class ProgramController {
 
 	@RequestMapping("/program/program.do")
 	public String ProgramView(@RequestParam Map<String, Object> param, Model model) {
-		log.debug("hhj - 프로그램관리화면 view");
+		log.debug("hhj - /program/program.do");
 
 		// 상위프로그램 조회
 		List list = null;
 		try {
 			list = service.list("program.doSelectUpPrg", param);
-			log.debug("list = " + list.toString());
+			log.debug("hhj - result list : " + list.toString());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

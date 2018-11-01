@@ -22,7 +22,7 @@
 <script type="text/javascript" src="./jqGrid_JS_5.2.1/i18n/grid.locale-kr.js"></script>
 <script type="text/javascript" src="./jqGrid_JS_5.2.1/jquery.jqGrid.js"></script>
 <script type="text/javascript" src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="./script/common/hhj_default.js"></script>
+<!-- <script type="text/javascript" src="./script/common/hhj_default.js"></script> -->
 <script type="text/javascript" src="./script/common/paginate.js"></script>
 
 </head>

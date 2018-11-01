@@ -2,6 +2,7 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions> 
 
+<!-- 	login 화면용 -->
 	<definition name="empty-definition"
 		template="/WEB-INF/jsp/common/layout-empty.jsp">
 		<put-attribute name="title" value="" />
@@ -9,11 +10,12 @@
 	</definition> 
 	<definition name="/signin/*" extends="empty-definition">
 		<put-attribute name="content" value="/WEB-INF/jsp/signin/{1}.jsp" />
-	</definition> 
-	
+	</definition>
+  
+<!-- 	main 화면용 -->
 	<definition name="main-definition"
 		template="/WEB-INF/jsp/common/layout-main.jsp">
-		<put-attribute name="title" value="" />
+		<put-attribute name="title"  value="" />
 		<put-attribute name="header"
 			value="/WEB-INF/jsp/common/header.jsp" />
 		<put-attribute name="body" value="" />
@@ -24,8 +26,9 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/main/{1}.jsp" />
 	</definition> 
 	
+<!-- 	컨텐츠 용 -->
 	<definition name="content-definition"
-		template="/WEB-INF/jsp/common/Layout-content.jsp">
+		template="/WEB-INF/jsp/common/layout-content.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header"
 			value="/WEB-INF/jsp/common/header.jsp" />
@@ -40,7 +43,6 @@
 	<definition name="/*/*" extends="content-definition">
 		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
 	</definition> 
-	
 	
 </tiles-definitions>
 

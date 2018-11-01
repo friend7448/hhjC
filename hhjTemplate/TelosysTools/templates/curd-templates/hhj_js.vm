@@ -62,7 +62,7 @@ $(document).ready(function() {
 //		pager : '#tbodyPager',
 		rowNum : 10,
 		rowList:[10,20,30],
-		height: 370,
+		height: 270, //370
 		sortable:true,
 //		sortname:'AA',
 //		sortorder:"desc",

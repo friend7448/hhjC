@@ -3,8 +3,27 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="signin">
+	<typeAlias alias="SessionInfo" type="Session.SessionInfo"/>
+
+	<!-- 로그인 처리를 위한 resultMap -->
+    <resultMap id="login" class="SessionInfo">
+        <result property="userSn"       column="user_sn"        columnIndex="1"/>
+        <result property="userId"       column="user_id"        columnIndex="2"/>
+        <result property="userName"     column="user_name"      columnIndex="3"/>
+        <result property="userPw"   	column="user_pw"     	columnIndex="4"/>
+        <result property="cell"     	column="cell"      		columnIndex="5"/>
+        <result property="email"    	column="email"    		columnIndex="6"/>
+        <result property="updtDt"       column="updt_dt"        columnIndex="7"/>
+        <result property="updusrSn"     column="updusr_sn"      columnIndex="8"/>
+        <result property="privgrpSn"   	column="privgrp_sn"     columnIndex="9"/>
+        <result property="privgrpName"	column="privgrp_name"   columnIndex="10"/>
+        <result property="privgrpDesc" 	column="privgrp_desc"  	columnIndex="11"/>
+        <result property="priort"     	column="priort"   	   	columnIndex="12"/>
+        <result property="useYn"       	column="use_yn"         columnIndex="13"/>
+    </resultMap>
+	
     <!-- 로그인 체크 -->
-    <select id="doLogin" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+    <select id="doLogin" parameterClass="java.util.HashMap"  resultMap="login">
 		SELECT 
 			A.USER_SN,
 			A.USER_ID,
@@ -22,7 +41,7 @@
 		FROM SM_USER A, SM_USERPRIV B, SM_PRIVGRP C
 		WHERE A.USER_SN = B.USER_SN
 			AND B.PRIVGRP_SN = C.PRIVGRP_SN
-          	AND A.USER_ID = #USER_ID#
-          	AND A.USER_PW = #USER_PW# 
+          	AND A.USER_ID = #user_id#
+          	AND A.USER_PW = #user_pw# 
     </select>
 </sqlMap>

@@ -1,26 +1,16 @@
-$(function(){
-});
-
-/**
- * 날짜포맷변환 ex) 길이가 8자리인 경우 xxxxxxxx = > xxxx.xx.xx 길이가 14자리인 경우 xxxxxxxxxxxxxx = >
- * xxxx.xx.xx xx:xx:xx
- */
-function dateToFormat(parm)
-{
-	var return_val = "";
-	var parm_leng = parm.length;
-	
-	if(parm_leng == 8)
-	{
-		return_val = parm.substr(0,4) + "-" + parm.substr(4,2) + "-" + parm.substr(6,2); 
-	}
-	else if(parm_leng == 14)
-	{
-		return_val = parm.substr(0,4) + "-" + parm.substr(4,2) + "-" + parm.substr(6,2) + " " + parm.substr(8,2) + ":" + parm.substr(10,2) + ":" + parm.substr(12,2);	
-	}
-	
-	return return_val;
+// context 명을 반환
+function wini_getContextName() {
+    var path = location.pathname;
+    return path.substring(1, path.indexOf("/", 1));
 }
+
+$(function(){
+	 // 등록, 수정, 삭제 진행중 표시를 위한 div
+    var d=$("<div id=\"wini_submit_ing\"></div>").appendTo("body");
+    d.hide();
+    var d2=$("<div id=\"wini_window_mask_cont\"><img src=\""+"/"+wini_getContextName()+"/images/ajax-loader.gif\"/><br/>처리중입니다.</div>").appendTo("body");
+    d2.hide();
+});
 
 /**
  * @param obj :
@@ -75,7 +65,6 @@ function check_number(obj, type, tlen, flen, comma){
 	
 	returnVal = returnVal.replace(regexp, repexp);
 
-	
 	if(comma == "Y"){
 		var str = "" + returnVal.replace(/,/gi,'');
 		var regx = new RegExp(/(-?\d+)(\d{3})/);
@@ -96,8 +85,6 @@ function check_number(obj, type, tlen, flen, comma){
 		obj.value =  returnVal;
 	}
 }	
-
-
  
 /*******************************************************************************
  * 버튼상태 설정 btn_no: 버튼 아이디 btn_insert, btn_update, btn_delete 파라미터: 1:비활성화, 0:활성화
@@ -141,33 +128,6 @@ function checkEnter(event)
 		doSearch();
 }
 
-// ajaxSubmit 등록, 수정, 삭제 등 트랜젝션 발생 시 사용
-function ajaxSubmit(ajax_set, c_firm) {
-        
-    if (c_firm != null && c_firm != "") {
-    	submit_ingView(true);
-        if (!confirm(c_firm)) {
-        	submit_ingView(false);
-            return;
-        }
-    }
-    
-    $(ajax_set.form_name).ajaxSubmit({ 
-        type:"POST",
-        dataType:'json',
-        url:ajax_set.url, 
-        contentType : "application/x-www-form-urlencoded;charset=UTF-8",
-        async:false,
-        beforeSubmit : function() { submit_ingView(true);},
-        complete: function() { submit_ingView(false);},
-        error: function(){            
-            alert('처리중 오류가 발생하였습니다.');
-            submit_ingView(false);
-        },
-        success:ajax_set.return_fn
-    });
-}
-
 // 등록, 수정, 삭제 등 트랜젝션 발생 시 사용
 function ajax(ajax_set, c_firm) {
     if (c_firm != null && c_firm != "") {
@@ -202,16 +162,124 @@ function ajax(ajax_set, c_firm) {
 }
 
 // 저장등 do_submitIUD 발생시 진행중 표시 화면
-// hhj - 추후에 이미지 경로 잡고 체크!
 function submit_ingView(flag){
-//    
-//    if (flag) {
-//        var h = $("body").height();
-//        $("#wini_submit_ing").css({height:h});
-//        $("#wini_submit_ing").show();
-//        $("#wini_window_mask_cont").show();
-//    } else {
-//        $("#wini_submit_ing").hide();
-//        $("#wini_window_mask_cont").hide();
-//    }
+    
+    if (flag) {
+        var h = $("body").height();
+        $("#wini_submit_ing").css({height:h});
+        $("#wini_submit_ing").show();
+        $("#wini_window_mask_cont").show();
+    } else {
+        $("#wini_submit_ing").hide();
+        $("#wini_window_mask_cont").hide();
+    }
+}
+
+// ==================================================================== 아래는 현재 사용 안함
+//ajaxSubmit 등록, 수정, 삭제 등 트랜젝션 발생 시 사용
+function ajaxSubmit(ajax_set, c_firm) {
+        
+    if (c_firm != null && c_firm != "") {
+    	submit_ingView(true);
+        if (!confirm(c_firm)) {
+        	submit_ingView(false);
+            return;
+        }
+    }
+    
+    $(ajax_set.form_name).ajaxSubmit({ 
+        type:"POST",
+        dataType:'json',
+        url:ajax_set.url, 
+        contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+        async:false,
+        beforeSubmit : function() { submit_ingView(true);},
+        complete: function() { submit_ingView(false);},
+        error: function(){            
+            alert('처리중 오류가 발생하였습니다.');
+            submit_ingView(false);
+        },
+        success:ajax_set.return_fn
+    });
+}
+
+/**
+ * 전화번호 검사
+ */
+function check_tel(obj, event, maxLen)
+{
+	
+	if(gfn_isNumber(this.event.keyCode) && obj.readOnly == false)
+	{
+		var divChar = "-";
+
+		//if(Boolean(char)) divChar = char;
+
+		var oTxt = obj.value.replace(/-/g, "");
+
+		obj.value = transFormTelFormat(oTxt, divChar).substring(0, maxLen);
+	}
+	else
+	{
+		return;
+	}
+}
+
+
+function gfn_isNumber(keyCode)
+{
+	return ((keyCode > 47 && keyCode < 58) || (keyCode > 95 && keyCode < 106));
+
+}
+
+
+function transFormTelFormat(oTxt, divChar)
+{
+	if(Boolean(oTxt) && typeof divChar != 'undefined')
+	{
+		var temp = [];
+
+		if(oTxt.length == 8)	return oTxt.substring(0,4) + divChar + oTxt.substring(4);
+		else if(oTxt.length >= 12)	return oTxt.substring(0,4) + divChar + oTxt.substring(4,8) + divChar + oTxt.substring(8, 12);
+
+		if(/^02/.test(oTxt) && oTxt.length < 11)
+		{
+			temp.push(oTxt.substring(0,2) + divChar);
+			oTxt = oTxt.substring(2);
+		}
+		else if(/^\d{3}/.test(oTxt))
+		{
+			temp.push(oTxt.substring(0,3) + divChar);
+			oTxt = oTxt.substring(3);
+		}
+
+		var len = oTxt.length;
+
+		if(len > 2 && len < 8)	temp.push(oTxt.substring(0,3) + divChar + oTxt.substring(3));
+		else if(len == 8)	temp.push(oTxt.substring(0,4) + divChar + oTxt.substring(4));
+		else	temp.push(oTxt);
+
+		return temp.join("");
+	}
+}
+
+/**
+ * 날짜포맷변환 ex) 길이가 8자리인 경우 xxxxxxxx = > xxxx.xx.xx 길이가 14자리인 경우 xxxxxxxxxxxxxx = >
+ * xxxx.xx.xx xx:xx:xx
+ */
+function dateToFormat(parm)
+{
+	var return_val = "";
+	var parm_leng = parm.length;
+	
+	if(parm_leng == 8)
+	{
+		return_val = parm.substr(0,4) + "-" + parm.substr(4,2) + "-" + parm.substr(6,2); 
+	}
+	else if(parm_leng == 14)
+	{
+		return_val = parm.substr(0,4) + "-" + parm.substr(4,2) + "-" + parm.substr(6,2) + " " + parm.substr(8,2) + ":" + parm.substr(10,2) + ":" + parm.substr(12,2);	
+	}
+	
+	return return_val;
 }

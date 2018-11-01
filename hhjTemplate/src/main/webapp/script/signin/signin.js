@@ -2,23 +2,31 @@
 $(document).ready(function() {
 	getCookieId(); // cookie
 	
-	jQuery("#btn_signin").bind("click",doLogin);   // 검색
+	// 포커스
+    if ($("#user_id")[0].value != "") {
+        $("#user_pw")[0].focus();
+    } else {
+        $("#user_id")[0].focus();
+    }
+    
+	$("#signinBtn").bind("click",doLogin);   // 검색
+	
 });
 
 //입력항목 검사
 function checkInputText()
 {
-	if (jQuery("#USER_ID").val().length == 0) 
+	if ($("#user_id").val().length == 0) 
 	{
 		alert("아이디를 입력해주시기 바랍니다.");
-		jQuery("#USER_ID").focus();
+		$("#user_id").focus();
 		return false;
 	}
 
-	if (jQuery("#USER_PW").val().length == 0) 
+	if ($("#user_pw").val().length == 0) 
 	{
 		alert("비밀번호를 입력해주시기 바랍니다.");
-		jQuery("#USER_PW").focus();
+		$("#user_pw").focus();
 		return false;
 	}
 
@@ -29,60 +37,87 @@ function checkInputText()
 function doLogin()
 {
 	if (!checkInputText()) return;
+
+	var userId = $.trim($("#user_id").val());
+    var password = $.trim($("#user_pw").val());
+    var rsaPublicKeyModulus = $.trim($("#rsaPublicKeyModulus").val());
+    var rsaPublicKeyExponent = $.trim($("#rsaPublicKeyExponent").val());
+    
+    try {
+        encryptedForm(userId, password, rsaPublicKeyModulus, rsaPublicKeyExponent);
+    } catch(err) {
+        alert(err);
+        return false;
+    }
 	
+    $("#user_id").val(userId);
+    
+    
 	 $.ajax({
 	        type: "POST",
 	        url: "./signin/doLogin.do",
 	        data: {
-	        	ACTION : 'signin.doLogin',
-	        	USER_ID : jQuery("#USER_ID").val(),
-	        	USER_PW : jQuery("#USER_PW").val() 
+	        	action : 'signin.doLogin',
+	        	user_id : $("#user_id").val(),
+	        	user_pw : $("#user_pw").val(), 
+	        	rsaPublicKeyModulus : $("#rsaPublicKeyModulus").val(), 
+	        	rsaPublicKeyExponent : $("#rsaPublicKeyExponent").val(), 
+	        	securedUserId : $("#securedUserId").val(), 
+	        	securedPwd : $("#securedPwd").val() 
 	        },
 	        dataType: 'json',
 	        error: function(){
 	            alert('로그인 중 오류가 발생하였습니다.');
 	        },
 	        success: function(jData) {
-				if (jData.isSuccess == "SUCC") 
+				if (jData.isSuccess == "succ") 
 				{
-					doSaveCookie();	//Cookie 설정
-					location.href = "main/main.do";
-//					location.href = "privgrp/privgrp.do";
-//					location.href = "program/program.do";
+//					location.href = "main/main.do";
+					location.href = "./index.jsp";
+					return;
 				} 
 				else 
 				{
 					alert(jData.msg);
-					jQuery("#USER_PW").val("");
-					jQuery("#USER_ID").focus();
-					
-					if (jQuery('#SAVE_ID').prop("checked") == false)
-						jQuery("#USER_ID").val("");
+					$("#user_pw").val("");
+					$("#user_id").focus();
+					location.href = "./index.jsp";
+					return;
 				}
         	}
 	 });
+}
+
+function encryptedForm(userId, password, rsaPublicKeyModulus, rsaPpublicKeyExponent) {
+    var rsa = new RSAKey();
+    rsa.setPublic(rsaPublicKeyModulus, rsaPpublicKeyExponent);
+
+    // 사용자ID와 비밀번호를 RSA로 암호화한다.
+    var securedUserId = rsa.encrypt(userId);
+    var securedPwd = rsa.encrypt(password);
+
+    $("#securedUserId").val(securedUserId);
+    $("#securedPwd").val(securedPwd);
 }
 
 //쿠기 설정 
 function doSaveCookie()
 {
 	var expdate = new Date();
-	var user_id = jQuery("#USER_ID").val();
+	var user_id = $("#user_id").val();
 	
 	// 기본적으로 30일동안 기억하게 함. 일수를 조절하려면 * 30에서 숫자를 조절하면 됨
-	if (jQuery('#SAVE_ID').prop("checked") == true)
+	if ($('#save_id').prop("checked") == true)
 	{
 		expdate.setTime(expdate.getTime() + 1000 * 3600 * 24 * 30); // 30일
 	} 
 	else 
 	{
 		expdate.setTime(expdate.getTime() - 1); // 쿠키 삭제
-
 	}
 	 setCookie("saveId", user_id, expdate);
 }
 
-//
 function setCookie(name, value, expires)
 {
     document.cookie = name + "=" + escape (value) + "; path=/; expires=" + expires.toGMTString();
@@ -95,13 +130,13 @@ function getCookieId()
 	
 	if(cookieUserId.length != 0)
 	{
-		jQuery('#USER_ID').val(cookieUserId);
-		jQuery('#USER_PW').val("");
-		jQuery('#SAVE_ID').prop("checked", true);
+		$('#user_id').val(cookieUserId);
+		$('#user_pw').val("");
+		$('#save_id').prop("checked", true);
 	}
 	else
 	{
-		jQuery('#SAVE_ID').prop("checked", false);
+		$('#save_id').prop("checked", false);
 	}
 }
 

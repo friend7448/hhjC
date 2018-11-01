@@ -2,15 +2,14 @@ package hhj.service;
 
 import java.util.Map;
 
-
-/** 
-* @FileName      : hhjServiceUser.java 
-* @Project     : hhjTemplate 
-* @Date        : 2017. 11. 7. 
-* @작성자          : hhj 
-* @변경이력     : 
-* @프로그램 설명     : 
-*/
+/**
+ * 
+ * @author	: hhj
+ * @Date	: 2018. 11. 1.
+ * @version	: 1.0
+ * @see		: 
+ *
+ */
 public interface hhjServiceUser {
 	int insertUserNPriv(Map<String, Object> param) throws Exception;
 	

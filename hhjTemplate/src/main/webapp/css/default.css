@@ -1,0 +1,42 @@
+/*********************** Base Reset Style ***********************/
+html,body {font: 13px/1.2 "맑은 고딕","맑은고딕", "MalgunGothic", "Malgun Gothic"; width: 100%; height: auto; font-size-adjust: none; font-stretch: normal;} 
+
+
+html ,body{height:100%;}
+
+/*********************** Base Reset Style ***********************/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,textarea,p,blockquote,th,td,input,select,textarea,button {margin:0;padding:0}
+fieldset,img {border:0 none}
+dl,ul,ol,menu,li {list-style:none}
+blockquote, q {quotes: none}
+blockquote:before, blockquote:after,q:before, q:after {content:'';content:none}
+input,select,textarea,button {vertical-align:middle}
+button {border:0 none;background-color:transparent;cursor:pointer}
+caption, legend{display:none;}
+
+html, body {height:100% }
+body,th,td,input,select,textarea,button {color:#666; line-height: 1;font-size: 12px;} 
+a {color:#666;text-decoration:none;cursor:pointer;}
+a:active, a:hover {text-decoration:none;cursor:pointer;}
+address,caption,cite,code,dfn,em,var {font-style:normal;font-weight:normal}
+a.hov {text-decoration:none;}
+a:hover.hov{text-decoration:underline}
+
+label{vertical-align:middle;}
+input{vertical-align:middle;}
+a{vertical-align:middle;}
+img{vertical-align:middle; border:0}
+select{vertical-align:middle;}
+
+em{font-style:normal;font-weight:inherit;line-height:inherit;vertical-align:baseline;color:inherit;}
+a{font-style:normal;font-weight:inherit;line-height:inherit;color:inherit;vertical-align:baseline;text-decoration:inherit;text-shadow:none;}
+b{font-style:normal;line-height:inherit;vertical-align:baseline;color:inherit;}
+b.red {font-weight:normal;color:#e83771}
+b.redb {font-weight:bold;color:#e83771}
+b.t_mt15 {display:block; margin-top:15px;}
+b.gray {font-weight:normal;color:#666; font-size:18px; letter-spacing:-0.05em}
+b.dgray {font-size:12px; letter-spacing:-0.05em} 
+b.imp {color:#1e1e1e; letter-spacing:-0.05em} 
+
+textarea, input {   -webkit-box-sizing: border-box;     -moz-box-sizing: border-box;    box-sizing: border-box; }
+label span {color: red;}

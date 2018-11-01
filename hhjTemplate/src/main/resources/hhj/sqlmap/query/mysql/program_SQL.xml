@@ -3,8 +3,10 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="program">
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
     <!--상위프로그램 메뉴 조회 -->
-	<select id="doSelectUpPrg" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+	<select id="doSelectUpPrg" resultClass="egovMap" parameterClass="java.util.HashMap">
 		SELECT MENU_ID,
 			   MENU_NAME
 		FROM IS_MENU
@@ -17,12 +19,12 @@
     <select id="doSelectCnt" parameterClass="java.util.HashMap" resultClass="int">
 		SELECT COUNT(*)
 	    FROM IS_MENU
-	    WHERE MENU_ID LIKE CONCAT('%', #TXT_SEARCH_MENU_ID#, '%')
-			AND MENU_NAME LIKE CONCAT('%', #TXT_SEARCH_MENU_NAME#, '%')
+	    WHERE MENU_ID LIKE CONCAT('%', #srch_menu_id#, '%')
+			AND MENU_NAME LIKE CONCAT('%', #srch_menu_name#, '%')
     </select>
     
     <!--프로그램 정보 리스트 조회-->
-    <select id="doSelect" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+    <select id="doSelect" parameterClass="java.util.HashMap"  resultClass="egovMap">
 		SELECT A.*
 		FROM(
 				SELECT 
@@ -38,22 +40,22 @@
 				FROM IS_MENU,
 					(SELECT @ROWNUM := 0) R
 		        WHERE
-		        	MENU_ID LIKE CONCAT('%', #TXT_SEARCH_MENU_ID#, '%')
-		           	AND MENU_NAME LIKE CONCAT('%', #TXT_SEARCH_MENU_NAME#, '%')
+		        	MENU_ID LIKE CONCAT('%', #srch_menu_id#, '%')
+		           	AND MENU_NAME LIKE CONCAT('%', #srch_menu_name#, '%')
 		) A	
 		<![CDATA[
     	WHERE A.RNUM  >= #START_ROW# 
     		AND A.RNUM <= #END_ROW#
 		]]>
-		<isNotEmpty property="sidx">
-			<![CDATA[
-			ORDER BY $sidx$ $sord$, SORT_ORDER ASC
-			]]>
-		</isNotEmpty>
+<!-- 		<isNotEmpty property="sidx"> -->
+<!-- 			<![CDATA[ -->
+<!-- 			ORDER BY $sidx$ $sord$, SORT_ORDER ASC -->
+<!-- 			]]> -->
+<!-- 		</isNotEmpty> -->
     </select>
     
     <!--메뉴 상세조회-->
-    <select id="doSelectDetail" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap">
+    <select id="doSelectDetail" parameterClass="java.util.HashMap"  resultClass="egovMap">
         SELECT 
         	a.UP_MENU_ID, 
             a.MENU_ID, 
@@ -64,7 +66,7 @@
             a.UPDUSR_SN,
             a.UPDT_DT
          FROM IS_MENU a 
-         WHERE a.MENU_ID = #TXT_MENU_ID#
+         WHERE a.MENU_ID = #menu_id#
     </select> 
     
     <!--메뉴 등록-->
@@ -79,16 +81,16 @@
                       USE_YN,
                       UPDUSR_SN,
                       UPDT_DT)
-             VALUES  (#TXT_MENU_ID#,
-                      #SLT_UP_MENU_ID#,
-                      #TXT_MENU_NAME#,
-                      #TXT_PROGRM_URL#,
-                      #TXT_SORT_ORDER#,
-                      #SLT_USE_AT#,
-                      #TXT_UPDUSR_SN#,
+             VALUES  (#menu_id#,
+                      #up_menu_id#,
+                      #menu_name#,
+                      #progrm_url#,
+                      #sort_order#,
+                      #use_at#,
+                      #updusr_sn#,
                       SYSDATE() + 0)
         ]]>
-        <selectKey keyProperty="MENU_ID" resultClass="int">
+        <selectKey keyProperty="menu_id" resultClass="int">
 			SELECT	COUNT(*) + 1
 				FROM 	IS_MENU
 		</selectKey>
@@ -97,14 +99,14 @@
     <!--메뉴 수정-->
     <update id="doUpdate" parameterClass="java.util.HashMap" >
             UPDATE IS_MENU
-            SET    UP_MENU_ID = #SLT_UP_MENU_ID#,
-                   MENU_NAME = #TXT_MENU_NAME#,
-                   PROGRM_URL = #TXT_PROGRM_URL#, 
-                   SORT_ORDER = #TXT_SORT_ORDER#, 
-                   USE_YN = #SLT_USE_AT#,
-                   UPDUSR_SN = #TXT_UPDUSR_SN#,
+            SET    UP_MENU_ID = #up_menu_id#,
+                   MENU_NAME = #menu_name#,
+                   PROGRM_URL = #progrm_url#, 
+                   SORT_ORDER = #sort_order#, 
+                   USE_YN = #use_at#,
+                   UPDUSR_SN = #updusr_sn#,
                    UPDT_DT = SYSDATE() + 0
-            WHERE MENU_ID = #TXT_MENU_ID#
+            WHERE MENU_ID = #menu_id#
     </update>
     
 
@@ -112,9 +114,7 @@
     <delete id="doDelete" parameterClass="java.util.HashMap" >
         <![CDATA[
             DELETE FROM	IS_MENU
-             WHERE MENU_ID = #TXT_MENU_ID#
+             WHERE MENU_ID = #menu_id#
         ]]>				  
     </delete>  
-	
-	
 </sqlMap>

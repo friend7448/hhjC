@@ -1,4 +1,4 @@
-var pageCount2 = 10; // 한 페이지에 보여줄 페이지 수 (ex:1 2 3 4 5)
+//var data.RECORDS = 10; // 한 페이지에 보여줄 페이지 수 (ex:1 2 3 4 5)
 
 /**
  * 그리드 페이징
@@ -17,10 +17,10 @@ function initPage2(gridId, pagerId, data) {
 	var totalPage = data.TOTAL;
 
 	// 전체 페이지 수를 한화면에 보여줄 페이지로 나눈다. (전체페이지중 한번에 보여질 페이지 수)
-	var totalPageList = Math.ceil(totalPage / pageCount2);
+	var totalPageList = Math.ceil(totalPage / data.RECORDS);
 
 	// 페이지 리스트가 몇번째 리스트인지
-	var pageList = Math.ceil(currentPage / pageCount2);
+	var pageList = Math.ceil(currentPage / data.RECORDS);
 
 	// 페이지 리스트가 1보다 작으면 1로 초기화
 	if (pageList < 1)
@@ -31,9 +31,9 @@ function initPage2(gridId, pagerId, data) {
 		pageList = totalPageList;
 
 	// 시작 페이지
-	var startPageList = ((pageList - 1) * pageCount2) + 1;
+	var startPageList = ((pageList - 1) * data.RECORDS) + 1;
 	// 끝 페이지
-	var endPageList = startPageList + pageCount2 - 1;
+	var endPageList = startPageList + data.RECORDS - 1;
 
 	// 시작 페이지와 끝페이지가 1보다 작으면 1로 설정
 	// 끝 페이지가 마지막 페이지보다 클 경우 마지막 페이지값으로 설정
@@ -61,7 +61,7 @@ function initPage2(gridId, pagerId, data) {
 	// 이전 페이지 리스트가 있을 경우 (링크넣고 뚜렷한 이미지로 변경)
 	if (pageList > 1) {
 		pageInner += "<li><a href='javascript:firstPage2(\"" + gridId + "\");'><span class='glyphicon glyphicon-fast-backward'> </span></a></li>";
-		pageInner += "<li><a href='javascript:prePage2(\"" + gridId + "\");'><span class='glyphicon glyphicon-step-backward'> </span></a></li>";
+		pageInner += "<li><a href='javascript:prePage2(\""+ gridId + "\", " + data.RECORDS + ");'><span class='glyphicon glyphicon-step-backward'> </span></a></li>";
 	}
 
 	
@@ -75,7 +75,7 @@ function initPage2(gridId, pagerId, data) {
 	
 	// 다음 페이지 리스트가 있을 경우
 	if (totalPageList > pageList) {
-		pageInner += "<li><a href='javascript:nextPage2(\"" + gridId + "\");'><span class='glyphicon glyphicon-step-forward'> </span></a></li>";
+		pageInner += "<li><a href='javascript:nextPage2(\""+ gridId + "\", " + data.RECORDS + ");'><span class='glyphicon glyphicon-step-forward'> </span></a></li>";
 		pageInner += "<li><a href='javascript:lastPage2(\""+ gridId + "\", \"" + totalPage + "\");'><span class='glyphicon glyphicon-fast-forward'> </span></a></li>";
 	}
 
@@ -92,7 +92,7 @@ function initPage2(gridId, pagerId, data) {
 		pageInner += "<div class='pull-right' style='padding-top: 20px;'>표시할 데이터가 없습니다";
 	}
 	else {
-		pageInner += "<div class='pull-right' style='padding-top: 20px;'>총 " + totalSize + "개 중" + data.START_ROW + "~" + data.END_ROW;	
+		pageInner += "<div class='pull-right' style='padding-top: 20px;'>총 " + totalSize + "개";// 중" + data.START_ROW + "~" + data.END_ROW;	
 	}
 
 	pageInner += "</div>" +
@@ -114,22 +114,22 @@ function firstPage2(gridId) {
 }
 
 // 그리드 이전페이지 이동
-function prePage2(gridId) {
+function prePage2(gridId, records) {
 	var currentPage = $("#" + gridId).getGridParam('page');
-	currentPage -= pageCount2;
-	pageList = Math.ceil(currentPage / pageCount2);
-	currentPage = (pageList - 1) * pageCount2 + pageCount2;
+	currentPage -= records;
+	pageList = Math.ceil(currentPage / records);
+	currentPage = (pageList - 1) * records + records;
 	$("#" + gridId).jqGrid('setGridParam', {
 		page : currentPage,
 	}).trigger("reloadGrid");
 }
 
 // 그리드 다음페이지 이동
-function nextPage2(gridId) {
+function nextPage2(gridId, records) {
 	var currentPage = $("#" + gridId).getGridParam('page');
-	currentPage += pageCount2;
-	pageList = Math.ceil(currentPage / pageCount2);
-	currentPage = (pageList - 1) * pageCount2 + 1;
+	currentPage += records;
+	pageList = Math.ceil(currentPage / records);
+	currentPage = (pageList - 1) * records + 1;
 	$("#" + gridId).jqGrid('setGridParam', {
 		page : currentPage,
 	}).trigger("reloadGrid");

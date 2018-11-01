@@ -1,160 +1,123 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<link rel="stylesheet"
-	href="http://netdna.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<link type="text/css" rel="stylesheet" href="../jquery-ui-1.12.1.custom/jquery-ui.min.css" />
+<!-- <link type="text/css" rel="stylesheet" href="./jqGrid_JS_5.2.1/css/ui.jqgrid.css" /> -->
+<link type="text/css" rel="stylesheet" href="../jqGrid_JS_5.2.1/css/ui.jqgrid-bootstrap.css" />
+<!-- <link type="text/css" rel="stylesheet" href="./jqGrid_JS_5.2.1/css/ui.multiselect.css" /> -->
+<link type="text/css" rel="stylesheet" href="../bootstrap-3.3.7-dist/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="../css/overlap.css">
+<link type="text/css" rel="stylesheet" href="../css/hhj.css">
+<link type="text/css" rel="stylesheet" href="../css/common.css">
+<link type="text/css" rel="stylesheet" href="../css/default.css">
+
+<script type="text/javascript" src="../jquery-3.2.1/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../jqGrid_JS_5.2.1/i18n/grid.locale-kr.js"></script>
+<script type="text/javascript" src="../jqGrid_JS_5.2.1/jquery.jqGrid.js"></script>
+<script type="text/javascript" src="../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../script/common/hhj_default.js"></script>
+<script type="text/javascript" src="../script/common/paginate.js"></script>
+<script type="text/javascript" src="../script/common/paginate2.js"></script>
+
 
 <style>
-	nav { z-index: 1000} /* 메뉴 최상위 */ 
-	nav ul li ul { z-index:1001} 
-	
-	nav {
-		background-color: #555; /* 기본 배경 색 */
-	}
-	
-	nav ul {
-		font-size: 0;
-		margin: 0;
-		padding: 0;
-	}
-	
-	nav ul li {
-		display: inline-block;
-		position: relative;
-	}
-	
-	nav ul li a {
-/* 	 	color: #9d9d9d; /* 기본 글 색 */
-		color: #fff;
-		display: block;
-		font-size: 14px;
-		padding: 15px 14px;
-		transition: 0.3s linear;
-	}
-	
-	nav ul li:hover { 
-		background: #080808; /* 마우스 오버시 메뉴 색 */
-	}
-	
-	nav ul li a:hover {
- 		color: #fff; /* 마우스 오버시 글 색 */
-		text-decoration: none;
-	}
-	
-	nav ul li ul { /* 2뎁스 메뉴 아래 표시 */
-		border-bottom: 5px solid #080808;
-		display: none;
-	 	position: absolute; 
-	  	width: 250px;  
-	}
-	
-	nav ul li ul li { /* 2뎁스 메뉴 사이 선 긋기 */
-		border-top: 1px solid #444;
-		display: block;
-		background-color: #555; /* 기본 배경 색 */
-	}
-	
-	nav ul li ul li:first-child {
-		border-top: none;
-	}
-	
-	nav ul li ul li a {
-/* 		color: #9d9d9d; /* 기본 글 색 */
-		color: #fff;
-		display: block;
-		padding: 10px 14px;
-	}
-	
-	nav ul li ul li a:hover {
-		background: #080808; /* 마우스 오버시 메뉴 색 */
- 		color: #fff; /* 마우스 오버시 글 색 */
-		text-decoration: none;
-	}
-	
-	.up_menu_active {
-		background: #080808; /* 선택된 상위 메뉴 표시 */
-	}
+.up_menu_active {
+	background: #080808; /* 선택된 상위 메뉴 표시 */
 }
+
 </style>
 
-<div class="container-fluid">
-	<div class="form-group">
-		<span style="background-color: red" ><a href="../main/main.do">로고</a>
-		</span>
-		<div class="pull-right">
-			<span class="glyphicon glyphicon-user"> ${user_name} 님</span> 
-			<a href="<c:url value='/signin/signout.do'/>" class="btn btn-default"
-				role="button" style="margin-bottom: 5px"> <span class="glyphicon glyphicon-log-out"></span>
-				Logout
-			</a>
+<div id="header">
+	<div class="headerDiv">
+		<div id="topguide">
+			<div class="topLogo">
+				<h1>
+					<!-- 					<a href="../main/main.do"><img src="#" alt="로고" /></a> -->
+				</h1>
+			</div>
+			<ul class="topLogin">
+				<li class="userlogin"><span>${user_name}&nbsp;님</span></li>
+				<li class="loginbtn"><a
+					href="<c:url value='/signin/signout.do'/>">로그아웃</a></li>
+				<!-- 					<li class="loginbtn"><a href="#">비밀번호변경</a></li> -->
+			</ul>
 		</div>
 	</div>
 </div>
 
-<c:set var="up_menu_name" value="${menus_name[0].UP_MENU_NAME}" />
-<div class="body-nav">
-	<nav>
-		<div class="container-fluid">
-			<ul class="nav-justified">
-				<c:forEach items="${up_menu}" var="menu1">
-					<c:choose>
-						<c:when test="${menu1.MENU_NAME eq up_menu_name}">
-							<li class="up_menu_active"><a class="">${menu1.MENU_NAME}</a>		
-						</c:when>
-						<c:otherwise>
-							<li><a class="">${menu1.MENU_NAME}</a>
-						</c:otherwise>
-					</c:choose>
-								<ul>
-									<c:forEach items="${menu}" var="menu2">
-										<c:if test="${menu1.MENU_ID eq menu2.UP_MENU_ID}">
-											<li><a href="<c:url value='${menu2.PROGRM_URL}'/>">${menu2.MENU_NAME}</a></li>
-										</c:if>
-									</c:forEach>
-								</ul>
+<div id="gnbDiv">
+	<div class="gnbDiv" style="height: 65px;">
+		<div class="gnbWrap">
+			<h1 class="logo">
+				<a href="../main/main.do">A 시스템</a>
+			</h1>
+
+			<div class="gnb">
+				<ul>
+					<c:forEach items="${up_menu}" var="menuVO" varStatus="status">
+						<c:if test="${menuVO.upMenuId == ''}">
+							<li><a class="oneDep">${menuVO.menuName}</a>
+								<p class="twoDep">
+									<c:forEach items="${up_menu}" var="menuSubVO" varStatus="status2"> 
+ 										<c:if test="${menuVO.menuId eq menuSubVO.upMenuId}"> 
+ 											<a class="off" href="<c:url value='${menuSubVO.progrmUrl}'/>">${menuSubVO.menuName}</a> 
+ 										</c:if> 
+ 									</c:forEach> 
+								</p>
 							</li>
-				</c:forEach>
-			</ul>
+						</c:if>
+					</c:forEach>
+				</ul>
+			</div>
 		</div>
-	</nav>
+		<div class="twoDbg"></div>
+	</div>
 </div>
 
-<script>
-	$('nav li').hover(function() {
-		$('ul', this).stop().slideDown(200);
-	}, function() {
-		$('ul', this).stop().slideUp(200);
+<script type="text/javascript">
+	$(document).ready(function() {
+		var max_h = 0;
+		var tmp_h = 0;
+		
+		for (var i = 0; i < 7; i++) {
+			var h = $('.twoDep').eq(i).css("height");
+			if (h != null) {
+				tmp_h = Number(h.replace('px', ''));
+				if (tmp_h > max_h) {
+					max_h = tmp_h;
+				}
+			}
+		}
+		$('.twoDbg').css("height", (3 + max_h) + "px");
+		$('.twoDep').css("height", (max_h) + "px");
+		//gnb
+		jQuery(".gnb ul").children("li").each(function(q) {
+			jQuery(this).mouseenter(function() {
+				jQuery(".gnbDiv").stop().animate({
+					height : (70 + max_h)
+				}, 400, "easeOutCubic");
+				jQuery(this).addClass("on");
+			}).focusin(function() {
+				jQuery(this).mouseenter();
+			})
+
+			jQuery(this).mouseleave(function() {
+				jQuery(this).removeClass("on");
+				jQuery(".gnbDiv").stop().animate({
+					height : 65
+				}, 400, "easeOutCubic");
+			}).focusout(function() {
+				jQuery(this).mouseleave();
+			})
+
+			jQuery(this).find(".twoDep").find("a").each(function() {
+				jQuery(this).mouseover(function() {
+				})
+				jQuery(this).mouseout(function() {
+				})
+			})
+		})
 	});
 </script>
-
-
-<!-- <div class="container-fluid"> -->
-<!-- 	<div class="form-group"> -->
-<!-- 		<div class="pull-right"> -->
-<%-- 			<span class="glyphicon glyphicon-user"> ${user_name} 님</span> <a --%>
-<%-- 				href="<c:url value='/signin/signout.do'/>" class="btn btn-default" --%>
-<!-- 				role="button"> <span class="glyphicon glyphicon-log-out"></span> -->
-<!-- 				Logout -->
-<!-- 			</a> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
-<!-- </div> -->
-<!-- <div class="container-fluid"> -->
-<!-- 	<nav class="navbar navbar-default"> -->
-<!-- 		<ul class="nav nav-justified"> -->
-<%-- 			<c:forEach items="${up_menu}" var="menu1"> --%>
-<%-- 				<li><a class="">${menu1.MENU_NAME}</a> --%>
-<!-- 					<ul> -->
-<%-- 						<c:forEach items="${menu}" var="menu2"> --%>
-<%-- 							<c:if test="${menu1.MENU_ID eq menu2.UP_MENU_ID}"> --%>
-<%-- 								<li class="${menu2.MENU_ID}"><a --%>
-<%-- 									href="<c:url value='${menu2.PROGRM_URL}'/>">${menu2.MENU_NAME}</a></li> --%>
-<%-- 							</c:if> --%>
-<%-- 						</c:forEach> --%>
-<!-- 					</ul></li> -->
-<%-- 			</c:forEach> --%>
-<!-- 		</ul> -->
-<!-- 	</nav> -->
-<!-- </div> -->
-
-

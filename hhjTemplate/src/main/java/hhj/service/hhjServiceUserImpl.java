@@ -9,15 +9,14 @@ import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
-
-/** 
-* @FileName      : hhjServiceUserImpl.java 
-* @Project     : hhjTemplate 
-* @Date        : 2017. 11. 7. 
-* @작성자          : hhj 
-* @변경이력     : 
-* @프로그램 설명     : 
-*/
+/**
+ * 
+ * @author	: hhj
+ * @Date	: 2018. 11. 1.
+ * @version	: 1.0
+ * @see		: 
+ *
+ */
 @Service("hhjServiceUser")
 public class hhjServiceUserImpl extends EgovAbstractServiceImpl  implements hhjServiceUser 
 {
@@ -30,8 +29,8 @@ public class hhjServiceUserImpl extends EgovAbstractServiceImpl  implements hhjS
 	@Override
 	public int insertUserNPriv(Map<String, Object> param) throws Exception {
 		// TODO Auto-generated method stub
-		int USER_SN = (int) hhjDAO.insert("user.doInsert", param);
-		param.put("USER_SN", USER_SN);
+		int user_sn = (int) hhjDAO.insert("user.doInsert", param);
+		param.put("user_sn", user_sn);
 		hhjDAO.insert("user.doInsert2", param);
 		return 1;
 	}

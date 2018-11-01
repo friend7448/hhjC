@@ -3,30 +3,30 @@ var search_set =
 	{
 		url : "../common/doSelect.do", //추가
 		postData : {
-			ACTION : 'user.doSelect',
-			SEARCH_USER_ID : '',
-			SEARCH_USER_NAME : '',
-			SEARCH_PRIVGRP_SN : ''
+			action : 'user.doSelect',
+			srch_user_id : '',
+			srch_user_name : '',
+			srch_privgrp_sn : ''
 		},
 	};
 
 function setSearchValue() {
-	if($("#SLT_SEARCH").val() == 1) {
-		search_set.postData.SEARCH_USER_ID = jQuery('#TXT_SEARCH').val();
-		search_set.postData.SEARCH_USER_NAME = '';
+	if($("#slt_search").val() == 1) {
+		search_set.postData.srch_user_id = $('#txt_search').val();
+		search_set.postData.srch_user_name = '';
 	}
-	else if($("#SLT_SEARCH").val() == 2) {
-		search_set.postData.SEARCH_USER_ID = '';
-		search_set.postData.SEARCH_USER_NAME = jQuery('#TXT_SEARCH').val();
+	else if($("#slt_search").val() == 2) {
+		search_set.postData.srch_user_id = '';
+		search_set.postData.srch_user_name = $('#txt_search').val();
 	}
 	
-	search_set.postData.SEARCH_PRIVGRP_SN = jQuery('#SLT_SEARCH_PRIVGRP_SN').val();
+	search_set.postData.srch_privgrp_sn = $('#srch_privgrp_sn').val();
 }
 
 $(document).ready(function() {
 	setSearchValue();
 	
-	jQuery("#tbody").jqGrid({
+	$("#tbody").jqGrid({
 		styleUI : "Bootstrap",
 		datatype : "json",
 		url : search_set.url,
@@ -44,21 +44,21 @@ $(document).ready(function() {
 			cell : '',
 			id : 'RNUM'
 		},
-		colModel : [ {name : 'RNUM',	   	index : 'RNUM',		    width : 80, 	sortable : true,	align : 'center', 	hidden : true},
-		             {name : 'USER_SN',		index : 'USER_SN',		width : 100, 	sortable : true,	align : 'center', 	hidden : true},
-		             {name : 'PRIVGRP_NAME',index : 'PRIVGRP_NAME',	width : 50, 	sortable : true,	align : 'center', 	hidden : false},
-		             {name : 'USER_ID',		index : 'USER_ID',		width : 50,    	sortable : true, 	align : 'center', 	hidden : false},
-		             {name : 'USER_NAME',	index : 'USER_NAME',    width : 50,		sortable : true, 	align : 'center', 	hidden : false},
-		             {name : 'CELL',		index : 'CELL', 		width : 80,		sortable : true, 	align : 'center', 	hidden : false},
-		             {name : 'EMAIL',		index : 'EMAIL',	    width : 80,    	sortable : true, 	align : 'center',	hidden : false}
+		colModel : [ {name : 'rnum',	   	index : 'rnum',		    width : 80, 	sortable : false,	align : 'center', 	hidden : true},
+		             {name : 'userSn',		index : 'userSn',		width : 100, 	sortable : false,	align : 'center', 	hidden : true},
+		             {name : 'privgrpName',index : 'privgrpName',	width : 50, 	sortable : false,	align : 'center', 	hidden : false},
+		             {name : 'userId',		index : 'userId',		width : 50,    	sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'userName',	index : 'userName',    	width : 50,		sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'cell',		index : 'cell', 		width : 80,		sortable : false, 	align : 'center', 	hidden : false},
+		             {name : 'email',		index : 'email',	    width : 80,    	sortable : false, 	align : 'center',	hidden : false}
 		],
 //		pager : '#tbodyPager',
 		rowNum : 10,
 		rowList:[10,20,30],
-		height: 370,
-		sortable: true,
-		sortname:'USER_NAME',
-		sortorder:"asc",
+		height: 345, //실제로는 370
+//		sortable: true,
+//		sortname:'user_name',
+//		sortorder:"asc",
 		gridview: true,
 		rownumbers: true,
 	    rownumWidth : 40,
@@ -79,48 +79,50 @@ $(document).ready(function() {
 //버튼
 function btnBind()
 {
-	jQuery("#btn_init").bind("click",doInit);			// 초기화
-	jQuery("#btn_search").bind("click",doSearch);   // 검색
-	jQuery("#btn_insert").bind("click",doInsert);       // 등록
-	jQuery("#btn_update").bind("click",doUpdate);       // 수정
-	jQuery("#btn_delete").bind("click",doDelete);       // 삭제
+	$("#btn_init").bind("click",doInit);			// 초기화
+	$("#btn_search").bind("click",function() { 	// 검색
+		doSearch(1); 
+	}); 		 // 검색
+	$("#btn_insert").bind("click",doInsert);       // 등록
+	$("#btn_update").bind("click",doUpdate);       // 수정
+	$("#btn_delete").bind("click",doDelete);       // 삭제
 }
 
 // 초기화
 function doInit()
 {
 	initTableDetail();
-	jQuery("#TXT_USER_ID").focus();
+	$("#user_id").focus();
 }
 
 // 초기화 상세
 function initTableDetail()
 {
-	jQuery("#TXT_USER_ID").val("");  		// 사용자ID
-	jQuery("#TXT_USER_NAME").val("");       // 이름
-	jQuery("#TXT_USER_PW").val("");         // 비번
-	jQuery("#TXT_CELL").val("");            // 전번
-	jQuery("#TXT_EMAIL").val("");        	// 이메일
-	jQuery("#TXT_UPDUSR_SN").val("0");      // 수정자 ID
-	jQuery("#TXT_UPDT_DT").val("");         // 수정일시
-	jQuery("#SLT_PRIVGRP_SN").val("");  	// 사용자 권한
+	$("#user_id").val("");  		// 사용자ID
+	$("#user_name").val("");       // 이름
+	$("#user_pw").val("");         // 비번
+	$("#cell").val("");            // 전번
+	$("#email").val("");        	// 이메일
+	$("#updusr_sn").val("0");      // 수정자 ID
+	$("#updt_dt").val("");         // 수정일시
+	$("#privgrp_sn").val("");  	// 사용자 권한
 	
-	jQuery("#TXT_USER_ID").prop('readonly', false);
+	$("#user_id").prop('readonly', false);
 	
-	jQuery("#TXT_HIDDEN_USER_ID").val(""); //사용자 ID 중복체크용
-	jQuery("#TXT_HIDDEN_USER_SN").val(""); //사용자 ID 중복체크용
+	$("#hidden_user_id").val(""); //사용자 ID 중복체크용
+	$("#user_sn").val(""); //사용자 ID 중복체크용
 		
 	btnStatus(0,1,1);
 }
 
-//리스트 조회
-function doSearch()
+//리스트 조회 
+function doSearch(page)
 {
 	setSearchValue();
-
-	jQuery("#tbody").clearGridData();		
-	jQuery("#tbody").jqGrid('setGridParam', {
-		page : 1,
+	
+	$("#tbody").clearGridData();		
+	$("#tbody").jqGrid('setGridParam', {
+		page : page,
 		url : search_set.url,
 		postData : search_set.postData,
 	}
@@ -132,14 +134,14 @@ function doSearch()
 // 리스트 상세정보 조회
 function detail(nId)
 {
-	var TXT_HIDDEN_USER_SN = jQuery("#tbody").getCell(nId,'USER_SN');
+	var user_sn = $("#tbody").getCell(nId,'userSn');
 
     $.ajax({
         type: "POST",
         url: "../user/doSelectDetail.do",
         data: {
-        	ACTION : 'user.doSelectDetail',
-        	TXT_HIDDEN_USER_SN : TXT_HIDDEN_USER_SN
+        	action : 'user.doSelectDetail',
+        	user_sn : user_sn
         },
         dataType: 'json',
         error: function(){
@@ -156,45 +158,45 @@ function doDetailCallback(jData)
 
 	initTableDetail();
 
-	jQuery("#TXT_HIDDEN_USER_SN").val(response.USER_SN); 
-	jQuery("#TXT_USER_ID").val(response.USER_ID); 
- 	jQuery("#TXT_USER_NAME").val(response.USER_NAME);
-	jQuery("#TXT_USER_PW").val(response.USER_PW);
-	jQuery("#TXT_CELL").val(response.CELL);
-	jQuery("#TXT_EMAIL").val(response.EMAIL);
-	jQuery("#TXT_UPDUSR_SN").val(response.UPDUSR_SN);
-	jQuery("#TXT_UPDT_DT").val(dateToFormat(response.UPDT_DT));
-	jQuery("#SLT_PRIVGRP_SN").val(response.PRIVGRP_SN);
+	$("#user_sn").val(response.userSn); 
+	$("#user_id").val(response.userId); 
+ 	$("#user_name").val(response.userName);
+	$("#user_pw").val(response.userPw);
+	$("#cell").val(response.cell);
+	$("#email").val(response.email);
+	$("#updusr_sn").val(response.updusrSn);
+	$("#updt_dt").val(dateToFormat(response.updtDt));
+	$("#privgrp_sn").val(response.privgrpSn);
 	
-	jQuery("#TXT_USER_ID").prop('readonly', true); 
+	$("#user_id").prop('readonly', true); 
 	
 	btnStatus(1,0,0);
 }
 
 // 등록, 수정, 삭제 시 파라메타 값 체크
 function IUDcheckValue() {
-	if(jQuery("#TXT_USER_ID").val().length == 0)
+	if($("#user_id").val().length == 0)
 	{
 		alert("사용자ID를 입력하십시오.");
-		jQuery("#TXT_USER_ID").focus();
+		$("#user_id").focus();
 		return false;
 	}
-	else if(jQuery("#TXT_USER_NAME").val().length == 0)
+	else if($("#user_name").val().length == 0)
 	{
 		alert("사용자 이름을 입력하십시오.");
-		jQuery("#TXT_USER_NAME").focus();
+		$("#user_name").focus();
 		return false;
 	}
-	else if(jQuery("#TXT_USER_PW").val().length == 0)
+	else if($("#user_pw").val().length == 0)
 	{
 		alert("비밀번호를 입력하십시오.");
-		jQuery("#TXT_USER_PW").focus();
+		$("#user_pw").focus();
 		return false;
 	}
-	else if(jQuery("#SLT_PRIV_GRP").val() == '')
+	else if($("#privgrp_sn").val() == '')
 	{
 		alert("권한그룹을 선택하십시오.");
-		jQuery("#SLT_PRIV_GRP").focus();
+		$("#privgrp_sn").focus();
 		return false;
 	}
 	
@@ -218,9 +220,9 @@ function IUDdoAjax(actionData, url, uid) {
 // 등록
 function doInsert()
 {
-	if(jQuery("#TXT_HIDDEN_USER_ID").val() != "Y") {
+	if($("#hidden_user_id").val() != "Y") {
 		alert("사용자ID 중복체크 하세요.");
-		jQuery("#btn_checkRepetition").focus();
+		$("#btn_checkRepetition").focus();
 		return;
 	}
 	if(!IUDcheckValue()) return;
@@ -266,14 +268,14 @@ function doIUDCallback(jData, iud) {
 	else if(iud=="D") msg = "삭제";
 	
 	
-	if (result == "SUCC")
+	if (result == "succ")
 	{
 		alert(msg + "되었습니다.");
 	
 		initTableDetail();
-		doSearch();
+		doSearch($("#tbody").getGridParam("page"));
 	}
-	else if (result == "FAIL")
+	else if (result == "fail")
 	{
 		if(iud=="D") alert(msg + "가 실패했습니다.");
 		else alert(msg + "이 실패했습니다.");
@@ -285,12 +287,12 @@ function doIUDCallback(jData, iud) {
  * 함수기능 : 사용자 ID 중복체크
  */
 function checkRepetition(){
-	var TXT_USER_ID = $("#TXT_USER_ID").val();
+	var user_id = $("#user_id").val();
 	
-	if(TXT_USER_ID == ""){
+	if(user_id == ""){
 		alert("사용자 아이디를 입력해주세요");
-		$("#TXT_USER_ID").val("");
-		$("#TXT_USER_ID").focus();
+		$("#user_id").val("");
+		$("#user_id").focus();
 		return false;
 	} 
 
@@ -298,8 +300,8 @@ function checkRepetition(){
         type: "POST",
         url: "../common/doSelectDetail.do",
         data: {
-        	ACTION : 'user.doCheckUserId',
-        	TXT_USER_ID : TXT_USER_ID
+        	action : 'user.doCheckUserId',
+        	user_id : user_id
         },
         dataType: 'json',
         error: function(){
@@ -308,11 +310,11 @@ function checkRepetition(){
         success: function(jdata){
         	if(jdata.response.length == 0) {
         		alert("사용 가능합니다.");
-        		jQuery("#TXT_HIDDEN_USER_ID").val("Y");
+        		$("#hidden_user_id").val("Y");
         	}
         	else {
         		alert("사용중인 ID 입니다.");
-        		jQuery("#TXT_HIDDEN_USER_ID").val("");
+        		$("#hidden_user_id").val("");
         	}
         }
     });

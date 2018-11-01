@@ -22,14 +22,14 @@ import hhj.common.jqgridPaging;
 import hhj.service.hhjService;
 import hhj.service.hhjServicePrivGrp;
 
-/** 
-* @FileName      : PrivgrpController.java 
-* @Project     : hhjTemplate 
-* @Date        : 2017. 10. 23. 
-* @작성자          : hhj 
-* @변경이력     : 
-* @프로그램 설명     : 
-*/
+/**
+ * 
+ * @author	: hhj
+ * @Date	: 2018. 11. 1.
+ * @version	: 1.0
+ * @see		: 
+ *
+ */
 @Controller
 public class PrivGrpController {
 	@Resource(name = "hhjService")
@@ -42,26 +42,26 @@ public class PrivGrpController {
 
 	@RequestMapping("/privgrp/privgrp.do")
 	public String ProgramView(@RequestParam Map<String, Object> param, Model model) {
-		log.debug("hhj - 권한그룹관리화면 view");
+		log.debug("hhj - /privgrp/privgrp.do");
 
 		return "/privgrp/privgrp";
 	}
 	
 	@RequestMapping("/privgrp/doSelect2.do")
 	public @ResponseBody Map<String, Object> doSelect(@RequestParam Map<String, Object> param) {
-		log.debug("Select param = " + param);
+		log.debug("hhj - /privgrp/doSelect2.do");
 		
 		List list = null;
 		int cnt = -1;
 
 		try {
-			cnt = service.selectCnt(param.get("ACTION") + "Cnt", param);
-			log.debug("cnt = " + cnt);
+			cnt = service.selectCnt(param.get("action") + "Cnt", param);
+			log.debug("hhj - select cnt : " + cnt);
 			if(cnt > -1) {
 				param.put("totalCount", cnt);
 				param = jqgridPaging.setPaging(param);
-				list = service.list((String) param.get("ACTION"), param);
-				log.debug("list = " + list);
+				list = service.list((String) param.get("action"), param);
+				log.debug("hhj - result list : " + list);
 			}
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -74,24 +74,15 @@ public class PrivGrpController {
 		return param;
 	}
 	
-	
-	/** 
-	* @Method Name : doUpdate 
-	* @변경이력      : 
-	* @Method 설명     : 그룹별 권한 적용
-	* @param param
-	* @return 
-	*/
 	@RequestMapping("/privgrp/doUpdate2.do")
 	public @ResponseBody Map<String, Object> doUpdate2(@RequestParam Map<String, Object> param) {
-		//getMapFromJsonObject 함수 이용.
-		log.debug("Update param = " + param);
+		log.debug("hhj - /privgrp/doUpdate2.do");
 		int result = 0;
-		String isSuccess = "FAIL";
+		String isSuccess = "fail";
 		
 		//삭제 key
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("PRIVGRP_SN", (String) param.get("PRIVGRP_SN"));
+		map.put("privgrp_sn", (String) param.get("privgrp_sn"));
 		
 		try {
 			JSONParser jsonParser = new JSONParser();
@@ -99,6 +90,7 @@ public class PrivGrpController {
 			JSONArray jsonArray = (JSONArray) jsonobj.get("list");
 			List<Map<String, Object>> list = JsonUtil.getListMapFromJsonArray(jsonArray);
 			
+			log.debug("list - " + list.toString());
 			result = servicePrivGrp.updatePrivGrpPriv(map, list);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
@@ -108,7 +100,7 @@ public class PrivGrpController {
 			e.printStackTrace();
 		}
 		
-		isSuccess = result > 0 ? "SUCC" : "FAIL";
+		isSuccess = result > 0 ? "succ" : "fail";
 		param.put("isSuccess", isSuccess);
 		
 		return param;
