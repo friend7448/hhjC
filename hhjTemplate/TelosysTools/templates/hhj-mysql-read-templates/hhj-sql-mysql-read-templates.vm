@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="${entity.databaseTable}">
+	<sql id="where_clause">
+		WHERE	1 = 1
+#foreach( $field in $entity.attributes )
+#if( !$field.isAutoIncremented())
+			<isNotEmpty property="srch_$fn.toLowerCase($field.databaseName)">
+			<![CDATA[
+			AND	$field.databaseName LIKE CONCAT('%', #srch_$fn.toLowerCase($field.databaseName)#, '%')
+			]]>
+			</isNotEmpty>
+#end
+#end
+	</sql>
+
+	<select id="doSelect" parameterClass="java.util.HashMap"  resultClass="egovMap">
+		SELECT A.*
+		FROM (
+			SELECT
+#foreach( $field in $entity.attributes )
+#if( $foreach.count == 1)
+				$field.databaseName
+#else 
+				,$field.databaseName
+#end
+#end ## foreach				
+				,@ROWNUM := @ROWNUM + 1 AS RNUM
+			FROM	$fn.toUpperCase(${entity.databaseTable})
+					,(SELECT @ROWNUM := 0) R
+			<include refid="where_clause" />
+		) A
+		<![CDATA[
+    	WHERE	A.RNUM  >= #START_ROW# 
+    		AND	A.RNUM <= #END_ROW#
+		]]>
+	</select>
+
+	<select id="doSelectCnt" parameterClass="java.util.HashMap" resultClass="int">
+		SELECT	COUNT(*)
+	    FROM	$fn.toUpperCase(${entity.databaseTable})
+		<include refid="where_clause" />
+	</select>
+
+	<select id="doSelectDetail" parameterClass="java.util.HashMap"  resultClass="egovMap">
+		SELECT
+#foreach( $field in $entity.attributes )
+#if( $foreach.count == 1)
+				$field.databaseName
+#else
+				,$field.databaseName
+#end
+#end
+		FROM	$fn.toUpperCase(${entity.databaseTable})
+		WHERE	
+#foreach( $field in $entity.KeyAttributes )
+#if( $foreach.count == 1)
+				$field.databaseName = #$fn.toLowerCase($field.databaseName)#
+#else 
+			AND	$field.databaseName = #$fn.toLowerCase($field.databaseName)#
+#end
+#end
+	</select>
+
+</sqlMap>

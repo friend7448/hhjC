@@ -1,0 +1,279 @@
+##-------------------------------------------------------------------------------------------------------- 
+#set( $_ = "$" )
+##-------------------------------------------------------------------------------------------------------- 
+## Key fields = fields in Primary Key
+#set( $keyFields = $entity.keyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## Data fields = fields not in Primary Key and not in selected Links
+#set( $dataFields = $entity.nonKeyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## #set( $itemVariable = $fn.uncapitalize($entity.name) ) 
+#set( $itemVariable = $fn.uncapitalize($entity.name) )
+##--------------------------------------------------------------------------------------------------------
+// search param
+var search_set = 
+	{
+		url : "../common/doSelect.do",
+		postData : {
+			action : '${entity.databaseTable}.doSelect'
+#foreach( $field in $entity.attributes )
+#if( !$field.isAutoIncremented())
+			,srch_$fn.toLowerCase($field.databaseName) : ''
+#end
+#end
+		},
+	};
+
+function setSearchValue() {
+#foreach( $field in $entity.attributes )
+#if( !$field.isAutoIncremented())
+	search_set.postData.srch_$fn.toLowerCase($field.databaseName) = $('#srch_$fn.toLowerCase($field.databaseName)').val();
+#end
+#end
+}
+
+$(document).ready(function() {
+	setSearchValue();
+	
+	$("#tbody").jqGrid({
+		styleUI : "Bootstrap",
+		datatype : "json",
+		url : search_set.url,
+		postData : search_set.postData,
+		mtype : "POST", 
+		colNames : [ 'NO'#foreach( $field in $entity.attributes ),'$field.databaseComment'#end],
+		jsonReader : {
+			page : 'page',
+			total : 'total',
+			root : 'rows',
+			records : function(obj) {
+				return obj.length;
+			},
+			repeatitems : false,
+			cell : '',
+			id : 'RNUM'
+		},
+		colModel : [ {name : 'rnum',	   	index : 'rnum',		    width : 0, 		sortable : false,	align : 'center', 	hidden : true}
+#foreach( $field in $entity.attributes )
+					,{name : '$field.name',		index : '$field.name',		width : 0,	sortable : false,	align : 'center',		hidden : false}  
+#end		             
+		],
+//		pager : '#tbodyPager',
+		rowNum : 10,
+		rowList:[10,20,30],
+		height: 345,
+//		sortable:true,
+//		sortname:'AA',
+//		sortorder:"desc",
+		gridview: true,
+//		caption : 'caption',
+//		autowidth : true,
+		rownumbers: true,
+	    rownumWidth : 40,
+		viewrecords : true,
+		loadComplete: function(data) {
+			initPage("tbody", "paginate", data);
+		},
+		onSelectRow: function (nId) {
+			detail(nId);
+		}
+	});
+	hhj_resizeJqGridWidth('tbody', 'grid_container', $('#grid_container').width());
+
+	btnBind();
+	initTableDetail();
+});
+
+// button binding
+function btnBind()
+{
+	$("#btn_init").bind("click",doInit);		
+	$("#btn_search").bind("click",function() {
+		doSearch(1); 
+	});
+	$("#btn_insert").bind("click",doInsert);    
+	$("#btn_update").bind("click",doUpdate);    
+	$("#btn_delete").bind("click",doDelete);    
+}
+
+// init
+#set ( $cnt = 0 )
+function doInit()
+{
+	initTableDetail();
+#foreach( $field in $entity.attributes )
+#if( !$field.isAutoIncremented() && $cnt == 0)
+	$("#$fn.toLowerCase($field.databaseName)").focus();
+#set ( $cnt = 1 )
+#end
+#end
+}
+
+// init - Detail
+function initTableDetail()
+{
+#foreach( $field in $entity.attributes )
+	$("#$fn.toLowerCase($field.databaseName)").val("$field.databaseDefaultValue");
+#if(!$field.isAutoIncremented() && $field.isKeyElement())
+	$("#$fn.toLowerCase($field.databaseName)").prop('readonly', false);
+#end
+#if( $fn.toLowerCase($field.databaseName) == "updt_dt" || $fn.toLowerCase($field.databaseName) == "updusr_sn")
+	$("#$fn.toLowerCase($field.databaseName)").prop('readonly', true);
+#end
+#end		
+	
+btnStatus(0,1,1);
+}
+
+// doSearch
+function doSearch()
+{
+	setSearchValue();
+	
+	$("#tbody").clearGridData();		
+	$("#tbody").jqGrid('setGridParam', {
+		page : 1,
+		url : search_set.url,
+		postData : search_set.postData,
+	}
+	).trigger("reloadGrid");
+	
+	initTableDetail();
+}
+
+// list  Detail
+function detail(nId)
+{
+    $.ajax({
+        type: "POST",
+        url: "../common/doSelectDetail.do",
+        data: {
+        	action : '${entity.databaseTable}.doSelectDetail'
+#foreach( $field in $entity.KeyAttributes )
+        	, $fn.toLowerCase($field.databaseName) : $("#tbody").getCell(nId,'$field.name')
+#end
+        },
+        dataType: 'json',
+        error: function(){
+            alert('hhj_error msg!');
+        },
+        success: function(jdata){doDetailCallback(jdata);}
+    });
+}
+
+// list - Detail Callback
+function doDetailCallback(jData)
+{
+	var response = jData.response[0];
+
+	initTableDetail();
+
+#foreach( $field in $entity.attributes )
+#if( $fn.toLowerCase($field.databaseName) == "updt_dt")
+	$("#$fn.toLowerCase($field.databaseName)").val(dateToFormat(response.$field.name));
+#else
+	$("#$fn.toLowerCase($field.databaseName)").val(response.$field.name);
+#end
+#if(!$field.isAutoIncremented() && $field.isKeyElement())
+	$("#$fn.toLowerCase($field.databaseName)").prop('readonly', true);
+#end 
+#end
+
+	btnStatus(1,0,0);
+}
+
+#set( $cnt = 0)
+// not null check
+function IUDcheckValue() {
+#foreach( $field in $entity.attributes )
+#if($field.isDatabaseNotNull()  && !$field.isAutoIncremented())
+#if( $cnt > 0 )
+	else if($("#$fn.toLowerCase($field.databaseName)").val().length == 0)
+#end
+#if( $cnt == 0 )
+	if($("#$fn.toLowerCase($field.databaseName)").val().length == 0)
+#set ( $cnt = 1)
+#end
+	{
+		alert("hhj_$field.databaseComment not null!");
+		$("#$fn.toLowerCase($field.databaseName)").focus();
+		return false;
+	}
+#end
+#end
+
+	return true;
+}
+
+// iud ajax
+function IUDdoAjax(actionData, url, uid) {
+	var frmData = $("#frmDetail").serialize();
+	
+	var ajax_set =
+    {
+		data: frmData + actionData,
+        url:url,
+        return_fn:function(jdata){doIUDCallback(jdata, uid);}
+    }
+
+    ajax(ajax_set, uid);
+}
+
+// insert
+function doInsert()
+{
+	if(!IUDcheckValue()) return;
+	
+	var actionData = '&action=${entity.databaseTable}.doInsert';
+	var url = '../common/doInsert.do';
+	var uid = 'I';
+	
+	IUDdoAjax(actionData, url, uid);
+}
+
+// update
+function doUpdate()
+{	
+	if(!IUDcheckValue()) return;
+	
+	var actionData = '&action=${entity.databaseTable}.doUpdate';
+	var url = '../common/doUpdate.do';
+	var uid = 'U';
+	
+	IUDdoAjax(actionData, url, uid);
+}
+
+// delete
+function doDelete()
+{
+	if(!IUDcheckValue()) return;
+	
+	var actionData = '&action=${entity.databaseTable}.doDelete';
+	var url = '../common/doDelete.do';
+	var uid = 'D';
+	
+	IUDdoAjax(actionData, url, uid);
+}
+
+// iud callback
+function doIUDCallback(jData, iud) {
+	var result = jData.isSuccess;
+	var msg = "";
+	
+	if(iud=="I") msg = "hhj_insert";
+	else if(iud=="U") msg = "hhj_update";
+	else if(iud=="D") msg = "hhj_delete";
+	
+	if (result == "succ")
+	{
+		alert(msg + "hhj_msg!");
+	
+		initTableDetail();
+		doSearch($("#tbody").getGridParam("page"));
+	}
+	else if (result == "fail")
+	{
+		if(iud=="D") alert(msg + "hhj_msg!");
+		else alert(msg + "hhj_msg!");
+	}
+}

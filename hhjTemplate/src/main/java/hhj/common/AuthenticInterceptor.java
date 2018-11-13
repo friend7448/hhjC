@@ -56,6 +56,7 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 		} else {
 			// 인증 체크가 필요한 URL 체크
 			for (int i = 0; i < urls.size(); i++) {
+				// iud.do 도 적용..
 				if (request.getRequestURI().contains(urls.get(i))) {
 					Map<String, Object> param1 = new HashMap<String, Object>();
 					// *** 헤더 ***
@@ -70,12 +71,15 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 					List left_menu = null; // 왼쪽 메뉴
 					List menusName = null; // 상위메뉴, 하위메뉴 명치
 					
-					param1.put("progrm_url", request.getServletPath());
-					log.debug("param = " + param1.toString());
+					// 프로그램관리 DB정보에는 IUD 화면까지는 등록관리 하지않음. iud 제외하고 권한받기.
+//					param1.put("progrm_url", request.getServletPath());
+					param1.put("progrm_url", request.getServletPath().replaceFirst("IUD", ""));
+					
+//					log.debug("param = " + param1.toString());
 					left_menu = service.list("layout.doSelectProgram", param1);
 					menusName = service.list("layout.doSelectProgramName", param1);
-					log.debug("left_menu list = " + left_menu);
-					log.debug("menusName list = " + menusName);
+//					log.debug("left_menu list = " + left_menu);
+//					log.debug("menusName list = " + menusName);
 
 					request.setAttribute("left_menu", left_menu);
 					request.setAttribute("menus_name", menusName);
@@ -84,7 +88,7 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 					List program_auth = null; // 읽기/쓰기 권한(컨텐츠 - curd 버튼 관련)
 					
 					program_auth = service.list("layout.doSelectProgramAuth", param1);
-					log.debug("program_auth list = " + program_auth);
+//					log.debug("program_auth list = " + program_auth);
 					
 					request.setAttribute("program_auth", program_auth);
 				}

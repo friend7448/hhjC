@@ -1,0 +1,150 @@
+##-------------------------------------------------------------------------------------------------------- 
+#set( $_ = "$" )
+##-------------------------------------------------------------------------------------------------------- 
+## Key fields = fields in Primary Key
+#set( $keyFields = $entity.keyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## Data fields = fields not in Primary Key and not in selected Links
+#set( $dataFields = $entity.nonKeyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## #set( $itemVariable = $fn.uncapitalize($entity.name) ) 
+#set( $itemVariable = $fn.uncapitalize($entity.name) )
+##--------------------------------------------------------------------------------------------------------
+$(document).ready(function() {
+	$("#top_id").html("hhj_title_IUD");
+
+	btnBind();
+
+	// insert
+	if($("#save_iu").val() == 'I') {
+		initTableDetail(); 
+		btnStatus(0,1,1);
+	}
+	else { // update
+		$.ajax({
+	        type: "POST",
+	        url: "../common/doSelectDetail.do",
+	        data: {
+	        	action : '${entity.databaseTable}.doSelectDetail'
+#foreach( $field in $entity.KeyAttributes )
+        		, $fn.toLowerCase($field.databaseName) : $("#key_$fn.toLowerCase($field.databaseName)").val()
+#end
+        	},
+	        dataType: 'json',
+	        error: function(){
+	            alert('hhj_error msg!');
+	        },
+	        success: function(jdata){doDetailCallback(jdata);}
+	    });
+	}
+});
+
+// button binding
+function btnBind()
+{
+	$("#btn_close").bind("click",doClose);		
+	$("#btn_insert").bind("click",doInsert);    
+	$("#btn_update").bind("click",doUpdate);    
+	$("#btn_delete").bind("click",doDelete);   
+}
+
+// init - Detail
+function initTableDetail()
+{
+#foreach( $field in $entity.attributes )
+#if( !$field.isAutoIncremented())
+	$("#$fn.toLowerCase($field.databaseName)").val("$field.databaseDefaultValue");
+#end
+#if(!$field.isAutoIncremented() && $field.isKeyElement())
+	$("#$fn.toLowerCase($field.databaseName)").prop('readonly', false);
+#end
+#if( $fn.toLowerCase($field.databaseName) == "updt_dt" || $fn.toLowerCase($field.databaseName) == "updusr_sn")
+	$("#$fn.toLowerCase($field.databaseName)").prop('readonly', true);
+#end
+#end		
+}
+
+// list - Detail Callback
+function doDetailCallback(jData)
+{
+	var response = jData.response[0];
+
+	initTableDetail();
+
+#foreach( $field in $entity.attributes )
+#if( $fn.toLowerCase($field.databaseName) == "updt_dt")
+	$("#$fn.toLowerCase($field.databaseName)").val(dateToFormat(response.$field.name));
+#else
+	$("#$fn.toLowerCase($field.databaseName)").val(response.$field.name);
+#end
+#if(!$field.isAutoIncremented() && $field.isKeyElement())
+	$("#$fn.toLowerCase($field.databaseName)").prop('readonly', true);
+#end 
+#end
+
+	btnStatus(1,0,0);
+}
+
+#set( $cnt = 0)
+// not null check
+function IUDcheckValue() {
+#foreach( $field in $entity.attributes )
+#if($field.isDatabaseNotNull()  && !$field.isAutoIncremented())
+#if( $cnt > 0 )
+	else if($("#$fn.toLowerCase($field.databaseName)").val().length == 0)
+#end
+#if( $cnt == 0 )
+	if($("#$fn.toLowerCase($field.databaseName)").val().length == 0)
+#set ( $cnt = 1)
+#end
+	{
+		alert("hhj_$field.databaseComment not null!");
+		$("#$fn.toLowerCase($field.databaseName)").focus();
+		return false;
+	}
+#end
+#end
+
+	return true;
+}
+
+// insert
+function doInsert()
+{
+	if(!IUDcheckValue()) return;
+	
+	var actionData = '${entity.databaseTable}.doInsert';
+	var url = '../${entity.name}/${entity.name}.do';
+	var uid = 'I';
+	
+	IUDdoFormSubmit(actionData, url, uid);
+}
+
+// update
+function doUpdate()
+{	
+	if(!IUDcheckValue()) return;
+	
+	var actionData = '${entity.databaseTable}.doUpdate';
+	var url = '../${entity.name}/${entity.name}.do';
+	var uid = 'U';
+	
+	IUDdoFormSubmit(actionData, url, uid);
+}
+
+// delete
+function doDelete()
+{
+	var actionData = '${entity.databaseTable}.doDelete';
+	var url = '../${entity.name}/${entity.name}.do';
+	var uid = 'D';
+	
+	IUDdoFormSubmit(actionData, url, uid);
+}
+
+//close
+function doClose()
+{
+	document.frm.action = '../${entity.name}/${entity.name}.do';
+	document.frm.submit();  
+}

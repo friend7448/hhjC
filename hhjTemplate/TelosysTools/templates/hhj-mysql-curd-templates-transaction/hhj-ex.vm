@@ -1,0 +1,232 @@
+##-------------------------------------------------------------------------------------------------------- 
+#set( $_ = "$" ) 
+##-------------------------------------------------------------------------------------------------------- 
+## Key fields = fields in Primary Key     
+#set( $keyFields = $entity.keyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## Data fields = fields not in Primary Key and not in selected Links     
+#set( $dataFields = $entity.nonKeyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## #set( $itemVariable = $fn.uncapitalize($entity.name) ) 
+#set( $itemVariable = $fn.uncapitalize($entity.name) )
+##--------------------------------------------------------------------------------------------------------
+## 한글깨짐 방지
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+##a1. $ 사용을 위해서 선언 필요
+#set( $_ = "$" ) 
+##a2. 변수 선언
+#set ( $cnt = 0 )
+##외래키 추출?
+#set($countExternalReference=0)
+##Count of ForeignKey referencing the actual entity for angle calculation
+#foreach( $entityReferencing in $model.allEntites )
+	#foreach( $fkExternal in $entityReferencing.databaseForeignKeys )
+		#if("$fkExternal.referencedTableName" == "$entity.databaseTable")
+			#set($countExternalReference = $countExternalReference + 1)
+		#end
+	#end	
+#end	
+## 외래키 작업2
+## ============== Foreign Keys
+#if ( $entity.databaseForeignKeysCount > 0 )
+<table>
+<tr>
+  <th colspan="4">Foreign keys</th>
+</tr>
+#foreach( $fk in $entity.databaseForeignKeys )
+#set($rowspan=$fk.columnsCount+2)
+<tr>
+  <td style="font-weight:bold;" rowspan="$rowspan" >$fk.name</td>
+  <td>$fk.tableName</td>
+  <td>$fk.referencedTableName</td>
+</tr>
+#foreach( $fkcol in $fk.columns )
+<tr>
+  ## <td>&nbsp;</td>
+  <td>$fkcol.columnName</td>
+  <td>$fkcol.referencedColumnName</td>
+</tr>
+#end
+<tr>
+  ## <td>&nbsp;</td>
+  <td colspan="2">
+  on delete : $fk.deleteRule ($fk.deleteRuleCode) <br>
+  on update : $fk.updateRule ($fk.updateRuleCode)<br>
+  deferrable : $fk.deferrable ($fk.deferrableCode)<br>
+  </td>
+</tr>
+#end
+</table>
+#else
+<b>No foreign key.</b>
+#end
+
+==============================================================
+## $entity.name 뒤에 텍스트가 붙을경우 ${entity.name}.abc 라고 {} 사용
+## 테이블 명 (test_user -> testUser)
+${DOLLAR}entity.name : $entity.name
+## 테이블 명(test_user)
+${DOLLAR}entity.databaseTable : $entity.databaseTable
+## 페키지명
+${DOLLAR}entity.package : $entity.package
+## 테이블 명(test_user)
+${DOLLAR}target.entityName : $target.entityName
+==============================================================
+## 선택한 테이블 리스트
+${DOLLAR}selectedEntities : $selectedEntities
+## 테이블 컬럼타입, 컬럼명 리스트(Integer, USER_SN -> Integer, userSn ....)
+${DOLLAR}entity.attributes : $entity.attributes
+## 테이블에서 key 리스트
+${DOLLAR}entity.KeyAttributes : $entity.KeyAttributes
+## 테이블에서 non key 리스트
+${DOLLAR}entity.nonKeyAttributes : $entity.nonKeyAttributes
+==============================================================
+## 첫번째 항목 추출(Integer, USER_SN -> Integer, userSn)
+${DOLLAR}entity.attributes[0] : $entity.attributes[0]
+## 해당 컬럼명 추출 (USER_SN)
+${DOLLAR}entity.attributes[0].databaseName : $entity.attributes[0].databaseName
+## 해당 컬럼명 추출 (USER_SN)
+${DOLLAR}entity.attributes[0].name : $entity.attributes[0].name
+## 컬럼명 설명
+${DOLLAR}entity.attributes[0].databaseComment : $entity.attributes[0].databaseComment
+## 컬럼 크기
+${DOLLAR}entity.attributes[0].databaseSize : $entity.attributes[0].databaseSize
+## 컬럼 디폴트값
+${DOLLAR}entity.attributes[0].databaseDefaultValue : $entity.attributes[0].databaseDefaultValue
+==============================================================
+## 해당 컬럼이 key면 true
+${DOLLAR}entity.attributes[0].isKeyElement() : $entity.attributes[0].isKeyElement()
+## 해당 컬럼이 자동 증가 컬럼이면 true
+${DOLLAR}entity.attributes[0].isAutoIncremented() : $entity.attributes[0].isAutoIncremented()
+## 해당 컬럼이 not null 이면 true
+${DOLLAR}entity.attributes[0].isDatabaseNotNull() : $entity.attributes[0].isDatabaseNotNull()
+==============================================================
+## java
+## 패키지명
+${DOLLAR}{target.javaPackageFromFolder(${DOLLAR}{SRC})} : ${target.javaPackageFromFolder(${SRC})}
+## 클래스명 (org.demo.bean.TestUser)
+${DOLLAR}entity.fullName : $entity.fullName
+## 참조 테이블 import
+## #foreach( $import in $java.imports($entity.keyAttributes) )
+## import $import;
+## #end
+==============================================================
+## fn 함수
+## 시작을 소문자로
+${DOLLAR}{fn.uncapitalize(${DOLLAR}entity.name)} : ${fn.uncapitalize($entity.name)}
+## 시작을 대문자로
+${DOLLAR}{fn.capitalize(${DOLLAR}entity.name)} : ${fn.capitalize($entity.name)}
+## 컬럼의 타입 명 추출 (Integer userSn)
+${DOLLAR}fn.argumentsListWithType(${DOLLAR}entity.keyAttributes) : $fn.argumentsListWithType($entity.keyAttributes)
+## 컬럼명 (userSn)
+${DOLLAR}fn.argumentsList(${DOLLAR}keyFields) : $fn.argumentsList($keyFields)
+## 대소문자 변경
+${DOLLAR}fn.toLowerCase(${DOLLAR}entity.databaseTable) : $fn.toLowerCase($entity.databaseTable)
+${DOLLAR}fn.toUpperCase(${DOLLAR}entity.databaseTable) : $fn.toUpperCase($entity.databaseTable)
+==============================================================
+${DOLLAR}today.date = $today.date
+${DOLLAR}today.time = $today.time
+${DOLLAR}today.date("dd/MM/yyyy") = $today.date("dd/MM/yyyy")
+${DOLLAR}today.time("HH:mm")      = $today.date("HH:mm")
+==============================================================
+
+hhj start=================
+
+
+
+
+hhj end=================
+
+
+GENERATOR CONSTANTS FOR SPECIAL CHARACTERS :
+============================================
+${DOLLAR}DOLLAR = ${DOLLAR}
+${DOLLAR}SHARP  = ${SHARP}
+${DOLLAR}AMP    = ${AMP}
+${DOLLAR}QUOT   = ${QUOT}
+${DOLLAR}LT     = ${LT}
+${DOLLAR}GT     = ${GT}
+${DOLLAR}LBRACE = ${LBRACE}
+${DOLLAR}RBRACE = ${RBRACE}
+
+
+PROJECT VARIABLES :
+===================
+
+Project packages ( predefined variables ) :
+${DOLLAR}ROOT_PKG   = "$ROOT_PKG"
+${DOLLAR}ENTITY_PKG = "$ENTITY_PKG"
+
+Project folders ( predefined variables ) :
+${DOLLAR}SRC      = "$SRC"
+${DOLLAR}RES      = "$RES"
+${DOLLAR}WEB      = "$WEB"
+${DOLLAR}TEST_SRC = "$TEST_SRC"
+${DOLLAR}TEST_RES = "$TEST_RES"
+${DOLLAR}DOC      = "$DOC"
+${DOLLAR}TMP      = "$TMP"
+
+Project variables ( ${DOLLAR}project.variables ) including predefined variables :
+#foreach( $var in $project.allVariables )
+ . ${DOLLAR}$var.name = $var.value
+#end
+
+
+ENTITY VARIABLES :
+==================
+
+* BEAN CLASS
+${DOLLAR}entity.name            = $entity.name
+${DOLLAR}fn.uncapitalize(${DOLLAR}entity.name) = $fn.uncapitalize($entity.name)
+${DOLLAR}entity.package         = $entity.package
+${DOLLAR}entity.databaseTable   = $entity.databaseTable
+${DOLLAR}entity.databaseCatalog = $entity.databaseCatalog
+${DOLLAR}entity.databaseSchema  = $entity.databaseSchema
+
+* BEAN CLASS ATTRIBUTES ( ${DOLLAR}entity.attributes )
+#set ($attributes = $entity.attributes )
+## array.size() is available since Velocity 1.6
+${DOLLAR}entity.attributes.size() = $entity.attributes.size() 
+${DOLLAR}attributes.size() = $attributes.size() 
+
+* BEAN CLASS AUTOINCREMTED PRIMARY KEY ?
+#if ( $entity.hasAutoIncrementedKey() )
+ ${DOLLAR}entity.autoincrementedKeyAttribute.databaseName = $entity.autoincrementedKeyAttribute.databaseName
+#else
+ No autoincremented primary key
+#end
+
+KEY ATTRIBUTES : 
+#foreach( $field in $entity.keyAttributes )
+ . $field.name : type = $field.type , auto-incremented = $field.isAutoIncremented()
+#end
+
+#foreach( $field in $entity.attributes )
+ ------------------------------
+ Field : $field.name
+ ------------------------------
+ Java :
+  ${DOLLAR}field.name      = $field.name
+  ${DOLLAR}field.type      = $field.type
+  ${DOLLAR}field.getter    = $field.getter
+  ${DOLLAR}field.setter    = $field.setter
+  ${DOLLAR}field.label     = $field.label
+  ${DOLLAR}field.inputType = $field.inputType
+##  ${DOLLAR}field.isPrimitiveType() = $field.isPrimitiveType()   TODO
+ 
+ Database :
+  ${DOLLAR}field.isKeyElement() = $field.isKeyElement()
+  ${DOLLAR}field.isAutoIncremented() = $field.isAutoIncremented()
+  ${DOLLAR}field.isUsedInForeignKey() = $field.isUsedInForeignKey()
+  ${DOLLAR}field.databaseName = $field.databaseName
+  ${DOLLAR}field.databaseType = $field.databaseType
+  ${DOLLAR}field.jdbcTypeCode = $field.jdbcTypeCode
+  ${DOLLAR}field.databaseSize = $field.databaseSize
+  ${DOLLAR}field.isDatabaseNotNull = $field.isDatabaseNotNull()
+  ${DOLLAR}field.hasDatabaseDefaultValue() = $field.hasDatabaseDefaultValue()
+  ${DOLLAR}field.databaseDefaultValue = $field.databaseDefaultValue
+
+#end
+
+
+	

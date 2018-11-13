@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="layout">
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+
+	<!-- 사용자 권한가능 상위 메뉴 리스트 조회-->
+    <select id="doSelectUpProgram" resultClass="egovMap" parameterClass="java.util.HashMap">
+		SELECT 	A.MENU_ID, 
+				A.MENU_NAME,
+				A.UP_MENU_ID,
+				A.PROGRM_URL
+		FROM 	IS_MENU A,
+				SM_PRIVGRP_PRIV B 
+		WHERE 	A.USE_YN = 'Y'
+			AND	A.MENU_ID = B.MENU_ID
+			AND (B.INQIRE_YN = 'Y' OR B.WRITE_YN = 'Y')
+			AND B.PRIVGRP_SN = #privgrp_sn#
+		ORDER BY A.SORT_ORDER
+    </select>
+    
+    <!-- 사용자 권한가능 메뉴 리스트 조회-->
+    <select id="doSelectProgram" resultClass="egovMap" parameterClass="java.util.HashMap">
+		SELECT 	A.MENU_ID,
+				A.INQIRE_YN,
+				A.WRITE_YN,
+				B.MENU_NAME,
+				B.UP_MENU_ID,
+				B.PROGRM_URL
+		FROM 	SM_PRIVGRP_PRIV A, 
+				IS_MENU B
+		WHERE  	A.MENU_ID = B.MENU_ID
+			AND (A.INQIRE_YN = 'Y' OR A.WRITE_YN = 'Y')
+			AND B.USE_YN = 'Y'
+			AND A.PRIVGRP_SN = #privgrp_sn#
+			<isNotEqual property="progrm_url" compareValue="">
+			AND B.UP_MENU_ID IN (
+	      			SELECT 	UP_MENU_ID 
+	      			FROM 	IS_MENU
+	    			WHERE 	PROGRM_URL LIKE CONCAT('%', #progrm_url#, '%')
+				      			)
+   			</isNotEqual>
+		ORDER BY B.SORT_ORDER
+    </select>
+    
+    <!-- 상위메뉴, 메뉴 정보 조회 -->
+    <select id="doSelectProgramName" resultClass="egovMap" parameterClass="java.util.HashMap">
+		SELECT	A.MENU_NAME AS UP_MENU_NAME,
+				B.UP_MENU_ID,
+				B.MENU_NAME,
+				B.MENU_ID
+    	FROM 	IS_MENU A,
+    			IS_MENU B
+    	WHERE 	A.MENU_ID = B.UP_MENU_ID
+    	AND 	B.PROGRM_URL LIKE CONCAT('%', #progrm_url#, '%')
+    </select>
+    
+    <!-- 화면의 사용자 권한 조회-->
+    <select id="doSelectProgramAuth" resultClass="egovMap" parameterClass="java.util.HashMap">
+		SELECT 	A.INQIRE_YN, 
+				A.WRITE_YN
+		FROM 	SM_PRIVGRP_PRIV A, 
+				IS_MENU B
+		WHERE 	A.PRIVGRP_SN = #privgrp_sn#
+			AND A.MENU_ID = B.MENU_ID
+			AND B.PROGRM_URL LIKE CONCAT('%', #progrm_url#, '%')
+    </select>
+    
+    <!-- 비밀번호 체크 -->
+    <select id="doSelectPasswd" resultClass="egovMap" parameterClass="java.util.HashMap">
+        SELECT  CASE WHEN #prev_pw# = USER_PW THEN  'O'
+                ELSE  'X'
+                END AS USER_PW
+        FROM    SM_USER
+        WHERE   USER_SN = #user_sn#    
+    </select>
+    
+     <!-- 비밀번호변경  -->
+
+    <update id="doUpdatePassword">
+		UPDATE  SM_USER 
+		SET		USER_PW= #new_pw#
+				,UPDT_DT = SYSDATE() + 0
+           		,UPDUSR_SN = #updusr_sn#
+    	WHERE   USER_SN = #user_sn#
+    </update>
+</sqlMap>

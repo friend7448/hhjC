@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import hhj.common.JsonUtil;
 import hhj.common.jqgridPaging;
 import hhj.service.hhjService;
-import hhj.service.hhjServicePrivGrp;
+import hhj.service.PrivGrp.PrivGrpService;
 
 /**
  * 
@@ -36,19 +36,12 @@ public class PrivGrpController {
 	private hhjService service;
 	
 	@Resource(name = "hhjServicePrivGrp")
-	private hhjServicePrivGrp servicePrivGrp;
+	private PrivGrpService servicePrivGrp;
 
 	Logger log = Logger.getLogger(this.getClass());
 
-	@RequestMapping("/privgrp/privgrp.do")
-	public String ProgramView(@RequestParam Map<String, Object> param, Model model) {
-		log.debug("hhj - /privgrp/privgrp.do");
-
-		return "/privgrp/privgrp";
-	}
-	
-	@RequestMapping("/privgrp/doSelect2.do")
-	public @ResponseBody Map<String, Object> doSelect(@RequestParam Map<String, Object> param) {
+	@RequestMapping("/PrivGrp/doSelect2.do")
+	public @ResponseBody Map<String, Object> doSelect2(@RequestParam Map<String, Object> param) {
 		log.debug("hhj - /privgrp/doSelect2.do");
 		
 		List list = null;
@@ -74,7 +67,7 @@ public class PrivGrpController {
 		return param;
 	}
 	
-	@RequestMapping("/privgrp/doUpdate2.do")
+	@RequestMapping("/PrivGrp/doUpdate2.do")
 	public @ResponseBody Map<String, Object> doUpdate2(@RequestParam Map<String, Object> param) {
 		log.debug("hhj - /privgrp/doUpdate2.do");
 		int result = 0;

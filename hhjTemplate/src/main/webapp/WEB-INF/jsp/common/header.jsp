@@ -2,31 +2,38 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<link type="text/css" rel="stylesheet" href="../jquery-ui-1.12.1.custom/jquery-ui.min.css" />
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/jquery-ui-1.12.1.custom/jquery-ui.min.css" />
 <!-- <link type="text/css" rel="stylesheet" href="./jqGrid_JS_5.2.1/css/ui.jqgrid.css" /> -->
-<link type="text/css" rel="stylesheet" href="../jqGrid_JS_5.2.1/css/ui.jqgrid-bootstrap.css" />
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/jqGrid_JS_5.2.1/css/ui.jqgrid-bootstrap.css" />
 <!-- <link type="text/css" rel="stylesheet" href="./jqGrid_JS_5.2.1/css/ui.multiselect.css" /> -->
-<link type="text/css" rel="stylesheet" href="../bootstrap-3.3.7-dist/css/bootstrap.min.css">
-<link type="text/css" rel="stylesheet" href="../css/overlap.css">
-<link type="text/css" rel="stylesheet" href="../css/hhj.css">
-<link type="text/css" rel="stylesheet" href="../css/common.css">
-<link type="text/css" rel="stylesheet" href="../css/default.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/overlap.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/hhj.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css">
 
-<script type="text/javascript" src="../jquery-3.2.1/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="../jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-<script type="text/javascript" src="../jqGrid_JS_5.2.1/i18n/grid.locale-kr.js"></script>
-<script type="text/javascript" src="../jqGrid_JS_5.2.1/jquery.jqGrid.js"></script>
-<script type="text/javascript" src="../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../script/common/hhj_default.js"></script>
-<script type="text/javascript" src="../script/common/paginate.js"></script>
-<script type="text/javascript" src="../script/common/paginate2.js"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/jqGrid_JS_5.2.1/i18n/grid.locale-kr.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/jqGrid_JS_5.2.1/jquery.jqGrid.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/common/hhj_default.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/common/paginate.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/common/paginate2.js"></script>
 
 <style>
 .up_menu_active {
 	background: #080808; /* 선택된 상위 메뉴 표시 */
 }
-
+  .modal-header, .close {
+      background-color: #5cb85c;
+      color:white !important;
+      text-align: center;
+      font-size: 20px;
+  }
+  .modal-footer {
+      background-color: #f9f9f9;
+  }
 </style>
 
 <div id="header">
@@ -39,9 +46,10 @@
 			</div>
 			<ul class="topLogin">
 				<li class="userlogin"><span>${user_name}&nbsp;님</span></li>
-				<li class="loginbtn"><a
-					href="<c:url value='/signin/signout.do'/>">로그아웃</a></li>
-				<!-- 					<li class="loginbtn"><a href="#">비밀번호변경</a></li> -->
+				<li class="loginbtn"><a href="<c:url value='/SignIn/SignOut.do'/>">로그아웃</a></li>
+				<li class="loginbtn"><a href="javascript:void(0)" onclick="changeInfo();">비밀번호변경</a></li>
+<!-- 					 <a href="javascript:void(0)" onclick="changeInfo();" class="btn_rwhite b_h25">비번변경</a>  -->
+<!-- 					<li class="loginbtn"><a href="#">비밀번호변경</a></li> -->
 			</ul>
 		</div>
 	</div>
@@ -120,4 +128,69 @@
 			})
 		})
 	});
+	
+	//정보 변경창 이동
+	function changeInfo(){
+	    gfn_openPop(
+	            {
+	                url : "../signin/changeInfoPopUp.do",
+	                name : "changeInfo",
+	                width : 600,
+	                height : 320,
+	                scrollbars : "yes",
+	                resizable : "no",
+	                param:{},
+	                callback : ""
+	            });
+	}
+	
+	/**
+	 * 팝업창 띄움
+	 */
+	function gfn_openPop(option)
+	{
+	    var data = "";
+	    
+	    if(typeof option.callback != 'undefined')
+	    {
+	        if(data == "")
+	            data = data + "?" + "callback=" + option.callback;
+	        else
+	            data = data + "&" + "callback=" + option.callback;
+	    }
+	    
+	    if(typeof option.param != 'undefined')
+	    {
+	        $.each(option.param, function(key, value){
+	            
+	            if(data == "")
+	                data = data + "?" + key + "=" + encodeURIComponent(value);
+	            else
+	                data = data + "&" + key + "=" + encodeURIComponent(value);
+	        });
+	    }
+	    
+	    var pop = window.open(
+	        option.url + data, 
+	        option.name, 
+	        "width=" + (typeof option.width == 'undefined' ? 500 : option.width) +
+	        ",height=" + (typeof option.height == 'undefined' ? 500 : option.height) +
+	        ",scrollbars=" + (typeof option.scroll == 'undefined' ? 'yes' : option.scroll) +
+	        ",toolbar=" + (typeof option.toolbar == 'undefined' ? 'no' : option.toolbar) +
+	        ",menubar=" + (typeof option.menubar == 'undefined' ? 'no' : option.menubar) +
+	        ",location=" + (typeof option.location == 'undefined' ? 'no' : option.location) +
+	        ",resizable=" + (typeof option.resizable == 'undefined' ? 'yes' : option.resizable) +
+	        ",fullscreen=" + (typeof option.fullscreen == 'undefined' ? 'no' : option.fullscreen) +
+	        ",channelmode=" + (typeof option.channelmode == 'undefined' ? 'no' : option.channelmode) 
+	    );
+	    
+	    pop.focus();
+	    
+	    return pop;
+	}
+
+	//팝업창 닫기
+	function gfn_popClose() {    
+	    self.close();        
+	}
 </script>

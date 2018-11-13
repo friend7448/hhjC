@@ -8,8 +8,8 @@
 		<put-attribute name="title" value="" />
 		<put-attribute name="content" value="" />
 	</definition> 
-	<definition name="/signin/*" extends="empty-definition">
-		<put-attribute name="content" value="/WEB-INF/jsp/signin/{1}.jsp" />
+	<definition name="/SignIn/*" extends="empty-definition">
+		<put-attribute name="content" value="/WEB-INF/jsp/SignIn/{1}.jsp" />
 	</definition>
   
 <!-- 	main 화면용 -->
@@ -22,8 +22,8 @@
 		<put-attribute name="footer"
 			value="/WEB-INF/jsp/common/footer.jsp" />
 	</definition> 
-	<definition name="/main/*" extends="main-definition">
-		<put-attribute name="body" value="/WEB-INF/jsp/main/{1}.jsp" />
+	<definition name="/Main/*" extends="main-definition">
+		<put-attribute name="body" value="/WEB-INF/jsp/Main/{1}.jsp" />
 	</definition> 
 	
 <!-- 	컨텐츠 용 -->

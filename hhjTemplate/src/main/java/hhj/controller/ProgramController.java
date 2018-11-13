@@ -28,7 +28,7 @@ public class ProgramController {
 
 	Logger log = Logger.getLogger(this.getClass());
 
-	@RequestMapping("/program/program.do")
+	@RequestMapping("/Program/Program.do")
 	public String ProgramView(@RequestParam Map<String, Object> param, Model model) {
 		log.debug("hhj - /program/program.do");
 
@@ -44,6 +44,6 @@ public class ProgramController {
 
 		model.addAttribute("selectUpPrg", list);
 		
-		return "/program/program";
+		return "/Program/Program";
 	}
 }

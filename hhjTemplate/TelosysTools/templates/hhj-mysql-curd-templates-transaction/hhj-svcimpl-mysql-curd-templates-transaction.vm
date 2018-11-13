@@ -1,0 +1,65 @@
+##-------------------------------------------------------------------------------------------------------- 
+#set( $_ = "$" )
+##-------------------------------------------------------------------------------------------------------- 
+## Key fields = fields in Primary Key
+#set( $keyFields = $entity.keyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## Data fields = fields not in Primary Key and not in selected Links
+#set( $dataFields = $entity.nonKeyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## #set( $itemVariable = $fn.uncapitalize($entity.name) ) 
+#set( $itemVariable = $fn.uncapitalize($entity.name) )
+##--------------------------------------------------------------------------------------------------------
+package ${target.javaPackageFromFolder(${SRC})};
+
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import hhj.service.hhjDAO;
+
+/**
+ * 
+ * @author	: hhj
+ * @Date	: $today.date("yyyy. MM. dd.")
+ * @version	: 1.0
+ * @see		: 
+ *
+ */
+@Service("${entity.name}Service")
+public class ${entity.name}ServiceImpl extends EgovAbstractServiceImpl implements ${entity.name}Service
+{
+	Logger log = Logger.getLogger(this.getClass());
+	
+	/** cubridDAO */
+    @Resource(name="hhjDAO")
+    private hhjDAO hhjDAO;
+
+	@Override
+	public int insert(Map<String, Object> param) throws Exception {
+		int cnt = (int) hhjDAO.insert("${entity.databaseTable}.doInsert", param);
+		
+		log.debug("hhj - ${entity.name} insert ServiceImpl");
+		return cnt;
+	}
+
+	@Override
+	public int update(Map<String, Object> param) throws Exception {
+		int cnt = (int) hhjDAO.update("${entity.databaseTable}.doUpdate", param);
+		
+		log.debug("hhj - ${entity.name} update ServiceImpl");
+		return cnt;
+	}
+
+	@Override
+	public int delete(Map<String, Object> param) throws Exception {
+		int cnt = (int) hhjDAO.delete("${entity.databaseTable}.doDelete", param);
+		
+		log.debug("hhj - ${entity.name} delete ServiceImpl");		
+		return cnt;
+	}
+}

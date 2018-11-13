@@ -23,19 +23,16 @@
     </bean>
     
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-        <property name="webBindingInitializer">
-            <bean class="egovframework.example.cmmn.web.EgovBindingInitializer"/>
-        </property>
         <property name="messageConverters">
             <list>
                 <ref bean="jsonHttpMessageConverter" />
             </list>        
         </property>
     </bean>
+    
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
         <property name="interceptors">
             <list>
-                <ref bean="localeChangeInterceptor" />
                 <ref bean="authenticInterceptor" />
             </list>
         </property>
@@ -47,34 +44,34 @@
       	<list>
 <!--       		<value>/signin/signin</value> -->
 <!--       		<value>/signin/doLogin</value> -->
-      		<value>/main/main</value>
-      		<value>/privgrp/privgrp</value>
-      		<value>/program/program</value>
-      		<value>/user/user</value>
+      		<value>/Main/</value>
+      		<value>/PrivGrp/</value>
+      		<value>/Program/</value>
+      		<value>/User/</value>
       		<value>/a/</value>
       		<value>/b/</value>
       		<value>/c/</value>
+      		<value>/T1V1M/</value>
+      		<value>/T1V1R/</value>
+      		<value>/T1V1MT/</value>
+      		<value>/T1V2M/</value>
+      		<value>/T1V2R/</value>
+      		<value>/T1V2MT/</value>
       	</list>
       </property>
 	</bean>
     
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
-    <!-- 쿠키를 이용한 Locale 이용시 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/> -->
-    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="language" />
-    </bean>
-    
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="defaultErrorView" value="cmmn/egovError"/>
-        <property name="exceptionMappings">
-            <props>
-                <prop key="org.springframework.dao.DataAccessException">cmmn/dataAccessFailure</prop>
-                <prop key="org.springframework.transaction.TransactionException">cmmn/transactionFailure</prop>
-                <prop key="egovframework.rte.fdl.cmmn.exception.EgovBizException">cmmn/egovError</prop>
-                <prop key="org.springframework.security.AccessDeniedException">cmmn/egovError</prop>
-            </props>
-        </property>
-    </bean>
+<!--     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> -->
+<!--         <property name="defaultErrorView" value="cmmn/egovError"/> -->
+<!--         <property name="exceptionMappings"> -->
+<!--             <props> -->
+<!--                 <prop key="org.springframework.dao.DataAccessException">cmmn/dataAccessFailure</prop> -->
+<!--                 <prop key="org.springframework.transaction.TransactionException">cmmn/transactionFailure</prop> -->
+<!--                 <prop key="egovframework.rte.fdl.cmmn.exception.EgovBizException">cmmn/egovError</prop> -->
+<!--                 <prop key="org.springframework.security.AccessDeniedException">cmmn/egovError</prop> -->
+<!--             </props> -->
+<!--         </property> -->
+<!--     </bean> -->
     
     <!-- For Tiles Tag -->
     <bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver"
@@ -95,17 +92,5 @@
 <!-- 	    p:viewClass="org.springframework.web.servlet.view.JstlView" -->
 <!-- 	    p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/> -->
 
-    <!-- For Pagination Tag -->
-    <bean id="imageRenderer" class="egovframework.example.cmmn.web.EgovImgPaginationRenderer"/>
 
-    <bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
-        <property name="rendererType">
-            <map>
-                <entry key="image" value-ref="imageRenderer"/>
-            </map>
-        </property>
-    </bean>
-	<!-- /For Pagination Tag -->
-
-    <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
 </beans>

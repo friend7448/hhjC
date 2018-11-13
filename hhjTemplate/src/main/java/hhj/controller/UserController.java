@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import Session.SessionUtil;
 import hhj.service.hhjService;
-import hhj.service.hhjServiceUser;
+import hhj.service.User.UserService;
 
 /**
  * 
@@ -30,13 +30,13 @@ public class UserController {
 	private hhjService service;
 	
 	@Resource(name = "hhjServiceUser")
-	private hhjServiceUser serviceUser;
+	private UserService serviceUser;
 
 	Logger log = Logger.getLogger(this.getClass());
 
-	@RequestMapping("/user/user.do")
+	@RequestMapping("/User/User.do")
 	public String ProgramView(@RequestParam Map<String, Object> param, Model model) {
-		log.debug("hhj - /user/user.do");
+		log.debug("hhj - /User/User.do");
 		
 		// 권한그룹 조회
 		List list = null;
@@ -50,10 +50,10 @@ public class UserController {
 
 		model.addAttribute("selectPrivGrp", list);
 
-		return "/user/user";
+		return "/User/User";
 	}
 	
-	@RequestMapping("/user/doSelectDetail.do")
+	@RequestMapping("/User/doSelectDetail.do")
 	public @ResponseBody Map<String, Object> doSelectDetail(@RequestParam Map<String, Object> param) {
 		log.debug("hhj - /user/doSelectDetail.do");
 		
@@ -72,9 +72,9 @@ public class UserController {
 		return param;
 	}
 	
-	@RequestMapping("/user/doInsert.do")
+	@RequestMapping("/User/doInsert.do")
 	public @ResponseBody Map<String, Object> doInsert(@RequestParam Map<String, Object> param) {
-		log.debug("hhj - /user/doInsert.do");
+		log.debug("hhj - /User/doInsert.do");
 
 		int cnt = -1;
 		String isSuccess = "fail";
@@ -82,7 +82,6 @@ public class UserController {
 		try {
 			param.put("updusr_sn", SessionUtil.getUserSn());
 			cnt = serviceUser.insertUserNPriv(param);
-			log.debug("hhj - insert cnt : " + cnt);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -94,9 +93,9 @@ public class UserController {
 		return param;
 	}
 	
-	@RequestMapping("/user/doUpdate.do")
+	@RequestMapping("/User/doUpdate.do")
 	public @ResponseBody Map<String, Object> doUpdate(@RequestParam Map<String, Object> param) {
-		log.debug("hhj - /user/doUpdate.do");
+		log.debug("hhj - /User/doUpdate.do");
 		
 		int cnt = 0;
 		String isSuccess = "fail";
@@ -115,9 +114,9 @@ public class UserController {
 		return param;
 	}
 	
-	@RequestMapping("/user/doDelete.do")
+	@RequestMapping("/User/doDelete.do")
 	public @ResponseBody Map<String, Object> doDelete(@RequestParam Map<String, Object> param) {
-		log.debug("hhj - /user/doDelete.do");
+		log.debug("hhj - /User/doDelete.do");
 		
 		int cnt = 0;
 		String isSuccess = "fail";

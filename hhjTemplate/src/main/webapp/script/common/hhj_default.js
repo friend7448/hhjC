@@ -175,6 +175,59 @@ function submit_ingView(flag){
     }
 }
 
+//등록, 수정, 삭제 시 ajax 전송
+function IUDdoAjax(actionData, url, uid, frmId) {
+	var frmData = $(frmId).serialize();
+	
+	var ajax_set =
+    {
+		data: frmData + actionData,
+        url:url,
+        return_fn:function(jdata){doIUDCallback(jdata, uid);}
+    }
+
+    ajax(ajax_set, uid);
+}
+
+//등록, 수정, 삭제 결과
+function doIUDCallback(jData, iud) {
+	var result = jData.isSuccess;
+	var msg = "";
+	
+	if(iud=="I") msg = "등록";
+	else if(iud=="U") msg = "수정";
+	else if(iud=="D") msg = "삭제";
+	
+	
+	if (result == "succ")
+	{
+		alert(msg + "되었습니다.");
+	
+		initTableDetail();
+		doSearch($("#tbody").getGridParam("page"));
+	}
+	else if (result == "fail")
+	{
+		if(iud=="D") alert(msg + "가 실패했습니다.");
+		else alert(msg + "이 실패했습니다.");
+	}
+}
+
+//등록, 수정, 삭제 시 form 전송
+function IUDdoFormSubmit(query_id, action_url, uid)
+{
+	var msg = "";
+	if(uid=="I") msg = "등록 하시겠습니까?";
+	else if(uid=="U") msg = "수정 하시겠습니까?";
+	else if(uid=="D") msg = "삭제 하시겠습니까?";
+	
+	if (!confirm(msg)) return;
+	
+	$("#action").val(query_id);
+	document.frm.action = action_url;
+	document.frm.submit(); 
+}
+
 // ==================================================================== 아래는 현재 사용 안함
 //ajaxSubmit 등록, 수정, 삭제 등 트랜젝션 발생 시 사용
 function ajaxSubmit(ajax_set, c_firm) {

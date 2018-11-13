@@ -1,0 +1,23 @@
+##-------------------------------------------------------------------------------------------------------- 
+#set( $_ = "$" )
+##-------------------------------------------------------------------------------------------------------- 
+## Key fields = fields in Primary Key
+#set( $keyFields = $entity.keyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## Data fields = fields not in Primary Key and not in selected Links
+#set( $dataFields = $entity.nonKeyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## #set( $itemVariable = $fn.uncapitalize($entity.name) ) 
+#set( $itemVariable = $fn.uncapitalize($entity.name) )
+##--------------------------------------------------------------------------------------------------------
+package ${target.javaPackageFromFolder(${SRC})};
+
+import java.util.Map;
+
+public interface ${entity.name}Service {
+	int insert(Map<String, Object> param) throws Exception;
+	
+	int update(Map<String, Object> param) throws Exception;
+	
+	int delete(Map<String, Object> param) throws Exception;
+}

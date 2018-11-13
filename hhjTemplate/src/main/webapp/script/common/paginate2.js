@@ -1,5 +1,5 @@
 //var data.RECORDS = 10; // 한 페이지에 보여줄 페이지 수 (ex:1 2 3 4 5)
-
+var save_page = 1;
 /**
  * 그리드 페이징
  * 
@@ -119,6 +119,7 @@ function prePage2(gridId, records) {
 	currentPage -= records;
 	pageList = Math.ceil(currentPage / records);
 	currentPage = (pageList - 1) * records + records;
+	save_page = currentPage; // 저장
 	$("#" + gridId).jqGrid('setGridParam', {
 		page : currentPage,
 	}).trigger("reloadGrid");
@@ -130,6 +131,7 @@ function nextPage2(gridId, records) {
 	currentPage += records;
 	pageList = Math.ceil(currentPage / records);
 	currentPage = (pageList - 1) * records + 1;
+	save_page = currentPage; // 저장
 	$("#" + gridId).jqGrid('setGridParam', {
 		page : currentPage,
 	}).trigger("reloadGrid");
@@ -139,6 +141,7 @@ function nextPage2(gridId, records) {
 function lastPage2(gridId, lastPage) {
 //	var totalSize = data.totalCount;
 //	var totalPage = Math.ceil(data.totalSize / data.TOTAL);
+	save_page = lastPage; // 저장
 	$("#" + gridId).jqGrid('setGridParam', {
 		page : lastPage,
 	}).trigger("reloadGrid");
@@ -146,6 +149,7 @@ function lastPage2(gridId, lastPage) {
 
 // 그리드 페이지 이동
 function goPage2(gridId, num) {
+	save_page = num; // 저장
 	$("#" + gridId).jqGrid('setGridParam', {
 		page : num,
 	}).trigger("reloadGrid");

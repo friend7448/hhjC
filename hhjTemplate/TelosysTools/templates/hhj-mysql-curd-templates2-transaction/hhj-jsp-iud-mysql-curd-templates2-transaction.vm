@@ -1,0 +1,56 @@
+##-------------------------------------------------------------------------------------------------------- 
+#set( $_ = "$" ) 
+##-------------------------------------------------------------------------------------------------------- 
+## Key fields = fields in Primary Key     
+#set( $keyFields = $entity.keyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## Data fields = fields not in Primary Key and not in selected Links     
+#set( $dataFields = $entity.nonKeyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## #set( $itemVariable = $fn.uncapitalize($entity.name) ) 
+#set( $itemVariable = $fn.uncapitalize($entity.name) )
+##--------------------------------------------------------------------------------------------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<div class="container-fluid hhj-content-detail">
+	<form class="form-horizontal" id="frm" name="frm" method="post" action="" onsubmit="return false;">
+		<input type="hidden" id="save_page" name="save_page" value="${_}{param.save_page}" />
+		<input type="hidden" id="save_iu" name="save_iu" value="${_}{param.save_iu}" />
+		<input type="hidden" id="action" name="action"/>
+#foreach( $field in $entity.KeyAttributes )
+		<input type="hidden" id="key_$fn.toLowerCase($field.databaseName)" name="key_$fn.toLowerCase($field.databaseName)" value="${_}{param.key_$fn.toLowerCase($field.databaseName)}" />
+#end
+#foreach( $field in $entity.attributes )
+#if( !$field.isAutoIncremented())
+		<input type="hidden" id="srch_$fn.toLowerCase($field.databaseName)" name="srch_$fn.toLowerCase($field.databaseName)" value="${_}{param.srch_$fn.toLowerCase($field.databaseName)}" />
+#end
+#end
+#foreach( $field in $entity.attributes )
+#if( !$field.isAutoIncremented())
+		<div class="form-group">
+			<label for="$fn.toLowerCase($field.databaseName)" class="control-label col-sm-2">$field.databaseComment</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="$fn.toLowerCase($field.databaseName)" name="$fn.toLowerCase($field.databaseName)" maxlength="$field.databaseSize" />
+			</div>
+		</div>
+#end
+#end
+		<div class="pull-right">
+			<c:if test="${_}{program_auth[0].writeYn == 'Y'}">
+				<button type="button" class="btn btn-default" id="btn_insert">hhj_btn_insert</button>
+				<button type="button" class="btn btn-default" id="btn_update">hhj_btn_update</button>
+				<button type="button" class="btn btn-default" id="btn_delete">hhj_btn_delete</button>
+			</c:if>
+				<button type="button" class="btn btn-default" id="btn_close">hhj_btn_close</button>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript" src="${_}{pageContext.request.contextPath}/script/${entity.name}/${entity.name}IUD.js"></script>
+<script type="text/javascript" src="${_}{pageContext.request.contextPath}/script/common/hhj_defaultContent.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+	});
+</script>

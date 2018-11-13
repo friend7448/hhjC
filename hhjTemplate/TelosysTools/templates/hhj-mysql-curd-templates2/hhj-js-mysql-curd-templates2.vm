@@ -1,0 +1,123 @@
+##-------------------------------------------------------------------------------------------------------- 
+#set( $_ = "$" )
+##-------------------------------------------------------------------------------------------------------- 
+## Key fields = fields in Primary Key
+#set( $keyFields = $entity.keyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## Data fields = fields not in Primary Key and not in selected Links
+#set( $dataFields = $entity.nonKeyAttributes ) 
+##-------------------------------------------------------------------------------------------------------- 
+## #set( $itemVariable = $fn.uncapitalize($entity.name) ) 
+#set( $itemVariable = $fn.uncapitalize($entity.name) )
+##--------------------------------------------------------------------------------------------------------
+// search param
+var search_set = 
+	{
+		url : "../common/doSelect.do",
+		postData : {
+			action : '${entity.databaseTable}.doSelect'
+#foreach( $field in $entity.attributes )
+#if( !$field.isAutoIncremented())
+			,srch_$fn.toLowerCase($field.databaseName) : ''
+#end
+#end
+		},
+	};
+
+function setSearchValue() {
+#foreach( $field in $entity.attributes )
+#if( !$field.isAutoIncremented())
+	search_set.postData.srch_$fn.toLowerCase($field.databaseName) = $('#srch_$fn.toLowerCase($field.databaseName)').val();
+#end
+#end
+}
+
+$(document).ready(function() {
+	$("#top_id").html("hhj_title");
+
+	setSearchValue();
+	
+	$("#tbody").jqGrid({
+		styleUI : "Bootstrap",
+		datatype : "json",
+		url : search_set.url,
+		postData : search_set.postData,
+		mtype : "POST", 
+		colNames : [ 'NO'#foreach( $field in $entity.attributes ),'$field.databaseComment'#end],
+		jsonReader : {
+			page : 'page',
+			total : 'total',
+			root : 'rows',
+			records : function(obj) {
+				return obj.length;
+			},
+			repeatitems : false,
+			cell : '',
+			id : 'RNUM'
+		},
+		colModel : [ {name : 'rnum',	   	index : 'rnum',		    width : 0, 		sortable : false,	align : 'center', 	hidden : true}
+#foreach( $field in $entity.attributes )
+					,{name : '$field.name',		index : '$field.name',		width : 0,	sortable : false,	align : 'center',		hidden : false}  
+#end		             
+		],
+//		pager : '#tbodyPager',
+		rowNum : 10,
+		rowList:[10,20,30],
+		height: 345,
+//		sortable:true,
+//		sortname:'AA',
+//		sortorder:"desc",
+		gridview: true,
+//		caption : 'caption',
+//		autowidth : true,
+		rownumbers: true,
+	    rownumWidth : 40,
+		viewrecords : true,
+		loadComplete: function(data) {
+			initPage("tbody", "paginate", data);
+		},
+		onSelectRow: function (nId) {
+			doIUDLink('U', nId);
+		}
+	});
+	hhj_resizeJqGridWidth('tbody', 'grid_container', $('#grid_container').width());
+
+	btnBind();
+});
+
+// button binding
+function btnBind()
+{
+	$("#btn_search").bind("click",function() {
+		doSearch(1); 
+	});
+	$("#btn_iudLink").bind("click",function() {
+		doIUDLink('I'); 
+	});
+}
+
+// doSearch
+function doSearch()
+{
+	setSearchValue();
+	
+	$("#tbody").clearGridData();		
+	$("#tbody").jqGrid('setGridParam', {
+		page : 1,
+		url : search_set.url,
+		postData : search_set.postData,
+	}
+	).trigger("reloadGrid");
+}
+
+function doIUDLink(iu, nId)
+{
+	$('#save_page').val(save_page); // current page
+	$('#save_iu').val(iu);
+#foreach( $field in $entity.KeyAttributes )
+	$('#key_$fn.toLowerCase($field.databaseName)').val($("#tbody").getCell(nId,'$field.name'));
+#end
+
+	document.frm.action = "../${entity.name}/${entity.name}IUD.do";
+	document.frm.submit(); 
+}
