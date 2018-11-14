@@ -224,6 +224,7 @@ function IUDdoFormSubmit(query_id, action_url, uid)
 	if (!confirm(msg)) return;
 	
 	$("#action").val(query_id);
+	$("#save_iu").val(uid);
 	document.frm.action = action_url;
 	document.frm.submit(); 
 }

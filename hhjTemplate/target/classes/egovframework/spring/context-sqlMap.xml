@@ -12,7 +12,7 @@
     </bean>
     
 	<bean id="sqlMapClient" class="egovframework.rte.psl.orm.ibatis.SqlMapClientFactoryBean">
-		<property name="configLocation" value="classpath:/egovframework/sqlmap/example/sql-map-config.xml"/>
+<!-- 		<property name="configLocation" value="classpath:/egovframework/sqlmap/example/sql-map-config.xml"/> -->
 		<property name="configLocations">
 			<list>
 				<value>classpath:/hhj/sqlmap/config/${Globals.DbType}/*.xml</value>

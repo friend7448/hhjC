@@ -113,7 +113,7 @@ function doInsert()
 {
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '${entity.databaseTable}.doInsert';
+	var actionData = '';
 	var url = '../${entity.name}/${entity.name}.do';
 	var uid = 'I';
 	
@@ -125,7 +125,7 @@ function doUpdate()
 {	
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '${entity.databaseTable}.doUpdate';
+	var actionData = '';
 	var url = '../${entity.name}/${entity.name}.do';
 	var uid = 'U';
 	
@@ -135,7 +135,7 @@ function doUpdate()
 // delete
 function doDelete()
 {
-	var actionData = '${entity.databaseTable}.doDelete';
+	var actionData = '';
 	var url = '../${entity.name}/${entity.name}.do';
 	var uid = 'D';
 	

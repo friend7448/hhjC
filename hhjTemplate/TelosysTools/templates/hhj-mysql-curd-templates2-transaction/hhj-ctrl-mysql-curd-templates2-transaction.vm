@@ -18,9 +18,9 @@ import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import Session.SessionUtil;
 import hhj.service.hhjService;
@@ -44,66 +44,58 @@ public class ${entity.name}Controller {
 
 	Logger log = Logger.getLogger(this.getClass());
 
-	@RequestMapping("/${entity.name}/doInsert.do")
-	public @ResponseBody Map<String, Object> doInsert(@RequestParam Map<String, Object> param) {
-		log.debug("hhj - /${entity.name}/doInsert.do");
+	@RequestMapping(value = "/${entity.name}/${entity.name}.do")
+	public String returnUrl(@RequestParam Map<String, Object> param, Model model) throws Exception {
+		log.debug("hhj Ctrl - /${entity.name}/${entity.name}.do");
 		
 		int cnt = -1;
 		String isSuccess = "fail";
 		
-		try {
-			param.put("updusr_sn", SessionUtil.getUserSn());
-			cnt = ${itemVariable}Service.insert(param);
-			log.debug("hhj - insert return : " + cnt);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String iu = (String) param.get("save_iu");
+		param.put("updusr_sn", SessionUtil.getUserSn());
+		
+		if(iu == null) {
+			log.debug("query_id is null");
+		} else if(iu.equals("I")) {
+			log.debug("hhj - param : = " + param);
+			
+			try {
+				cnt = ${itemVariable}Service.insert(param);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			isSuccess = cnt > -1 ? "succ" : "fail";
+			param.put("isSuccess", isSuccess);
+		} else if(iu.equals("U")) {
+			log.debug("hhj - param : = " + param);
+			
+			try {
+				cnt = ${itemVariable}Service.update(param);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			isSuccess = cnt > 0 ? "succ" : "fail";
+			param.put("isSuccess", isSuccess);
+		} else if(iu.equals("D")) {
+			log.debug("hhj - param : = " + param);
+			
+			try {
+				cnt = ${itemVariable}Service.delete(param);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			isSuccess = cnt > 0 ? "succ" : "fail";
+			param.put("isSuccess", isSuccess);
 		}
 		
-		isSuccess = cnt > -1 ? "succ" : "fail";
-		param.put("isSuccess", isSuccess);
+		model.addAttribute("parm", param);
 		
-		return param;
-	}
-
-	@RequestMapping("/${entity.name}/doUpdate.do")
-	public @ResponseBody Map<String, Object> doUpdate(@RequestParam Map<String, Object> param) {
-		log.debug("hhj - /${entity.name}/doUpdate.do");
-		
-		int cnt = 0;
-		String isSuccess = "fail";
-		
-		try {
-			param.put("updusr_sn", SessionUtil.getUserSn());
-			cnt = ${itemVariable}Service.update(param);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		isSuccess = cnt > 0 ? "succ" : "fail";
-		param.put("isSuccess", isSuccess);
-		
-		return param;
-	}
-	
-	@RequestMapping("/${entity.name}/doDelete.do")
-	public @ResponseBody Map<String, Object> doDelete(@RequestParam Map<String, Object> param) {
-		log.debug("hhj - /${entity.name}/doDelete.do");
-		
-		int cnt = 0;
-		String isSuccess = "fail";
-		
-		try {
-			cnt = ${itemVariable}Service.delete(param);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		isSuccess = cnt > 0 ? "succ" : "fail";
-		param.put("isSuccess", isSuccess);
-		
-		return param;
+		return "/${entity.name}/${entity.name}";
 	}
 }
