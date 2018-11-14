@@ -155,7 +155,7 @@ function detail(nId)
         },
         dataType: 'json',
         error: function(){
-            alert('hhj_error msg!');
+            alert(alertSelectMsg());
         },
         success: function(jdata){doDetailCallback(jdata);}
     });
@@ -195,7 +195,7 @@ function IUDcheckValue() {
 #set ( $cnt = 1)
 #end
 	{
-		alert("hhj_$field.databaseComment not null!");
+		alert(alertMsg('$field.databaseComment'));
 		$("#$fn.toLowerCase($field.databaseName)").focus();
 		return false;
 	}
@@ -203,20 +203,6 @@ function IUDcheckValue() {
 #end
 
 	return true;
-}
-
-// iud ajax
-function IUDdoAjax(actionData, url, uid) {
-	var frmData = $("#frmDetail").serialize();
-	
-	var ajax_set =
-    {
-		data: frmData + actionData,
-        url:url,
-        return_fn:function(jdata){doIUDCallback(jdata, uid);}
-    }
-
-    ajax(ajax_set, uid);
 }
 
 // insert
@@ -228,7 +214,7 @@ function doInsert()
 	var url = '../${entity.name}/doInsert.do';
 	var uid = 'I';
 	
-	IUDdoAjax(actionData, url, uid);
+	IUDdoAjax(actionData, url, uid, "#frmDetail");
 }
 
 // update
@@ -240,7 +226,7 @@ function doUpdate()
 	var url = '../${entity.name}/doUpdate.do';
 	var uid = 'U';
 	
-	IUDdoAjax(actionData, url, uid);
+	IUDdoAjax(actionData, url, uid, "#frmDetail");
 }
 
 // delete
@@ -252,28 +238,5 @@ function doDelete()
 	var url = '../${entity.name}/doDelete.do';
 	var uid = 'D';
 	
-	IUDdoAjax(actionData, url, uid);
-}
-
-// iud callback
-function doIUDCallback(jData, iud) {
-	var result = jData.isSuccess;
-	var msg = "";
-	
-	if(iud=="I") msg = "hhj_insert";
-	else if(iud=="U") msg = "hhj_update";
-	else if(iud=="D") msg = "hhj_delete";
-	
-	if (result == "succ")
-	{
-		alert(msg + "hhj_msg!");
-	
-		initTableDetail();
-		doSearch($("#tbody").getGridParam("page"));
-	}
-	else if (result == "fail")
-	{
-		if(iud=="D") alert(msg + "hhj_msg!");
-		else alert(msg + "hhj_msg!");
-	}
+	IUDdoAjax(actionData, url, uid, "#frmDetail");
 }

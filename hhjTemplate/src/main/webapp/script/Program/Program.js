@@ -160,7 +160,7 @@ function doDetailCallback(jData)
 	btnStatus(1,0,0);
 }
 
-// 등록, 수정, 삭제 시 파라메타 값 체크
+// 등록, 수정 시 파라메타 값 체크
 function IUDcheckValue() {
 	if($("#menu_id").val().length == 0)
 	{
@@ -176,20 +176,6 @@ function IUDcheckValue() {
 	}
 	return true;
 }
-
-// 등록, 수정, 삭제 시 ajax 전송
-//function IUDdoAjax(actionData, url, uid) {
-//	var frmData = $("#frmDetail").serialize();
-//	
-//	var ajax_set =
-//    {
-//		data: frmData + actionData,
-//        url:url,
-//        return_fn:function(jdata){doIUDCallback(jdata, uid);}
-//    }
-//
-//    ajax(ajax_set, uid);
-//}
 
 // 등록
 function doInsert()
@@ -226,27 +212,3 @@ function doDelete()
 	
 	IUDdoAjax(actionData, url, uid, "#frmDetail");
 }
-
-// 등록, 수정, 삭제 결과
-//function doIUDCallback(jData, iud) {
-//	var result = jData.isSuccess;
-//	var msg = "";
-//	
-//	if(iud=="I") msg = "등록";
-//	else if(iud=="U") msg = "수정";
-//	else if(iud=="D") msg = "삭제";
-//	
-//	
-//	if (result == "succ")
-//	{
-//		alert(msg + "되었습니다.");
-//	
-//		initTableDetail();
-//		doSearch($("#tbody").getGridParam("page"));
-//	}
-//	else if (result == "fail")
-//	{
-//		if(iud=="D") alert(msg + "가 실패했습니다.");
-//		else alert(msg + "이 실패했습니다.");
-//	}
-//}

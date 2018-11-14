@@ -32,7 +32,7 @@ $(document).ready(function() {
         	},
 	        dataType: 'json',
 	        error: function(){
-	            alert('hhj_error msg!');
+	            alert(alertSelectMsg());
 	        },
 	        success: function(jdata){doDetailCallback(jdata);}
 	    });
@@ -98,7 +98,7 @@ function IUDcheckValue() {
 #set ( $cnt = 1)
 #end
 	{
-		alert("hhj_$field.databaseComment not null!");
+		alert(alertMsg('$field.databaseComment'));
 		$("#$fn.toLowerCase($field.databaseName)").focus();
 		return false;
 	}

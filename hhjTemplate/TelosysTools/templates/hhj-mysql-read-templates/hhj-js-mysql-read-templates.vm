@@ -142,7 +142,7 @@ function detail(nId)
         },
         dataType: 'json',
         error: function(){
-            alert('hhj_error msg!');
+            alert(alertSelectMsg());
         },
         success: function(jdata){doDetailCallback(jdata);}
     });

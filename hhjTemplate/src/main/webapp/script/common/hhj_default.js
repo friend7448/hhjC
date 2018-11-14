@@ -228,6 +228,15 @@ function IUDdoFormSubmit(query_id, action_url, uid)
 	document.frm.submit(); 
 }
 
+function alertMsg(key)
+{
+	return key +'(을)를 입력하십시오.';
+}
+
+function alertSelectMsg()
+{
+	return '조회중 오류가 발생하였습니다.';
+}
 // ==================================================================== 아래는 현재 사용 안함
 //ajaxSubmit 등록, 수정, 삭제 등 트랜젝션 발생 시 사용
 function ajaxSubmit(ajax_set, c_firm) {

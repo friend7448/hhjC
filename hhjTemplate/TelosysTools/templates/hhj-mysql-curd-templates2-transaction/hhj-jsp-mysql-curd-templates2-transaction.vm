@@ -45,7 +45,7 @@
 </div>
 
 <script type="text/javascript" src="${_}{pageContext.request.contextPath}/script/${entity.name}/${entity.name}.js"></script>
-<script type="text/javascript" src="${_}{pageContext.request.contextPath}./script/common/hhj_defaultContent.js"></script>
+<script type="text/javascript" src="${_}{pageContext.request.contextPath}/script/common/hhj_defaultContent.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 
