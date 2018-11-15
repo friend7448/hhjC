@@ -51,12 +51,12 @@
       		<value>/a/</value>
       		<value>/b/</value>
       		<value>/c/</value>
-      		<value>/T1V1M/</value>
-      		<value>/T1V1R/</value>
-      		<value>/T1V1MT/</value>
-      		<value>/T1V2M/</value>
-      		<value>/T1V2R/</value>
-      		<value>/T1V2MT/</value>
+      		<value>/A1View1Curd/</value>
+      		<value>/A2View1Read/</value>
+      		<value>/A3View1CurdTran/</value>
+      		<value>/B1View1Curd/</value>
+      		<value>/B2View1Read/</value>
+      		<value>/B3View1CurdTran/</value>
       	</list>
       </property>
 	</bean>

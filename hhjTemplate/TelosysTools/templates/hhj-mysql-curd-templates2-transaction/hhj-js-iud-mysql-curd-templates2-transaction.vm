@@ -114,10 +114,10 @@ function doInsert()
 	if(!IUDcheckValue()) return;
 	
 	var actionData = '';
-	var url = '../${entity.name}/${entity.name}.do';
+	var url = '../${entity.name}/doInsert.do';
 	var uid = 'I';
 	
-	IUDdoFormSubmit(actionData, url, uid);
+	IUDdoAjax2(actionData, url, uid, "#frm");
 }
 
 // update
@@ -126,20 +126,20 @@ function doUpdate()
 	if(!IUDcheckValue()) return;
 	
 	var actionData = '';
-	var url = '../${entity.name}/${entity.name}.do';
+	var url = '../${entity.name}/doUpdate.do';
 	var uid = 'U';
 	
-	IUDdoFormSubmit(actionData, url, uid);
+	IUDdoAjax2(actionData, url, uid, "#frm");
 }
 
 // delete
 function doDelete()
 {
 	var actionData = '';
-	var url = '../${entity.name}/${entity.name}.do';
+	var url = '../${entity.name}/doDelete.do';
 	var uid = 'D';
 	
-	IUDdoFormSubmit(actionData, url, uid);
+	IUDdoAjax2(actionData, url, uid, "#frm");
 }
 
 //close

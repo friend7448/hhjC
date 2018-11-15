@@ -213,6 +213,43 @@ function doIUDCallback(jData, iud) {
 	}
 }
 
+//등록, 수정, 삭제 시 ajax 전송
+function IUDdoAjax2(actionData, url, uid, frmId) {
+	var frmData = $(frmId).serialize();
+	
+	var ajax_set =
+    {
+		data: frmData + actionData,
+        url:url,
+        return_fn:function(jdata){doIUDCallback2(jdata, uid);}
+    }
+
+    ajax(ajax_set, uid);
+}
+
+//등록, 수정, 삭제 결과
+function doIUDCallback2(jData, iud) {
+	var result = jData.isSuccess;
+	var msg = "";
+	
+	if(iud=="I") msg = "등록";
+	else if(iud=="U") msg = "수정";
+	else if(iud=="D") msg = "삭제";
+	
+	
+	if (result == "succ")
+	{
+		alert(msg + "되었습니다.");
+	
+		doClose();
+	}
+	else if (result == "fail")
+	{
+		if(iud=="D") alert(msg + "가 실패했습니다.");
+		else alert(msg + "이 실패했습니다.");
+	}
+}
+
 //등록, 수정, 삭제 시 form 전송
 function IUDdoFormSubmit(query_id, action_url, uid)
 {

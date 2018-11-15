@@ -17,7 +17,6 @@
 	<form class="form-horizontal" id="frm" name="frm" method="post" action="" onsubmit="return false;">
 		<input type="hidden" id="save_page" name="save_page" value="${_}{param.save_page}" />
 		<input type="hidden" id="save_iu" name="save_iu" value="${_}{param.save_iu}" />
-		<input type="hidden" id="action" name="action"/>
 #foreach( $field in $entity.KeyAttributes )
 		<input type="hidden" id="key_$fn.toLowerCase($field.databaseName)" name="key_$fn.toLowerCase($field.databaseName)" value="${_}{param.key_$fn.toLowerCase($field.databaseName)}" />
 #end

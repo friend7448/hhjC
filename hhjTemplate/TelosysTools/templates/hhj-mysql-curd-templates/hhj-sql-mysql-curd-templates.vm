@@ -3,6 +3,8 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="${entity.databaseTable}">
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+
 	<sql id="where_clause">
 		WHERE	1 = 1
 #foreach( $field in $entity.attributes )

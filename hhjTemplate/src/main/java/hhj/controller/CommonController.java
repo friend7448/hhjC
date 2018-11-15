@@ -37,53 +37,6 @@ public class CommonController {
 	public String returnUrl(@PathVariable String a, @PathVariable String b, @RequestParam Map<String, Object> param, Model model) throws Exception {
 		log.debug("hhj - /{a}/{b}.do");
 		
-		int cnt = -1;
-		String isSuccess = "fail";
-		
-		String query_id = (String) param.get("action");
-		param.put("updusr_sn", SessionUtil.getUserSn());
-		
-		if(query_id == null) {
-			log.debug("query_id is null");
-		} else if(query_id.contains("Insert")) {
-			log.debug("hhj - param : = " + param);
-			
-			try {
-				// 등록, 수정자 정보 저장시 사용. 사용자 ID 세팅
-				cnt = service.insert((String) param.get("action"), param);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			isSuccess = cnt > -1 ? "succ" : "fail";
-			param.put("isSuccess", isSuccess);
-		} else if(query_id.contains("Update")) {
-			log.debug("hhj - param : = " + param);
-			
-			try {
-				cnt = service.update((String) param.get("action"), param);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			isSuccess = cnt > 0 ? "succ" : "fail";
-			param.put("isSuccess", isSuccess);
-		} else if(query_id.contains("Delete")) {
-			log.debug("hhj - param : = " + param);
-			
-			try {
-				cnt = service.delete((String) param.get("action"), param);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			isSuccess = cnt > 0 ? "succ" : "fail";
-			param.put("isSuccess", isSuccess);
-		}
-		
 		model.addAttribute("parm", param);
 		
 		return "/" + a + "/" + b;

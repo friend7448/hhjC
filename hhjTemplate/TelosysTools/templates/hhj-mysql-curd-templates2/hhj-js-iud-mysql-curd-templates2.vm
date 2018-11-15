@@ -113,11 +113,11 @@ function doInsert()
 {
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '${entity.databaseTable}.doInsert';
-	var url = '../${entity.name}/${entity.name}.do';
+	var actionData = '&action=${entity.databaseTable}.doInsert';
+	var url = '../common/doInsert.do';
 	var uid = 'I';
 	
-	IUDdoFormSubmit(actionData, url, uid);
+	IUDdoAjax2(actionData, url, uid, "#frm");
 }
 
 // update
@@ -125,21 +125,21 @@ function doUpdate()
 {	
 	if(!IUDcheckValue()) return;
 	
-	var actionData = '${entity.databaseTable}.doUpdate';
-	var url = '../${entity.name}/${entity.name}.do';
+	var actionData = '&action=${entity.databaseTable}.doUpdate';
+	var url = '../common/doUpdate.do';
 	var uid = 'U';
 	
-	IUDdoFormSubmit(actionData, url, uid);
+	IUDdoAjax2(actionData, url, uid, "#frm");
 }
 
 // delete
 function doDelete()
 {
-	var actionData = '${entity.databaseTable}.doDelete';
-	var url = '../${entity.name}/${entity.name}.do';
+	var actionData = '&action=${entity.databaseTable}.doDelete';
+	var url = '../common/doDelete.do';
 	var uid = 'D';
 	
-	IUDdoFormSubmit(actionData, url, uid);
+	IUDdoAjax2(actionData, url, uid, "#frm");
 }
 
 //close
